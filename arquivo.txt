@@ -1,0 +1,145 @@
+```python
+DEFAULT_CONFIG = {
+    "data_root": str(APP_HOME),
+    "reposicao_csv": "csv/Reposicao e Diversos.csv",
+    "labels_dir": "etiquetas",
+    "report_dir": "relatorio",
+    "base_file": "relatorio/base.xlsx",
+    "printer_name": "",
+
+    # 40mm largura + 3mm gap
+    "two_column_offset_dots": 345,
+
+    # 40mm em 203 DPI
+    "label_width_dots": 320,
+
+    # 25mm em 203 DPI
+    "label_height_dots": 200,
+
+    "source_section_prefix": "reposicaoediversos",
+}
+```
+
+Substitua TODA sua função:
+
+```python
+def build_dynamic_zpl_block(...)
+```
+
+por esta:
+
+```python
+def build_dynamic_zpl_block(item, rows, columns, config):
+    commands = [
+        "^XA",
+
+        # modo térmico
+        "^MMT",
+
+        # largura total da mídia
+        "^PW720",
+
+        # altura da etiqueta
+        f"^LL{config['label_height_dots']}",
+
+        # deslocamento global horizontal
+        "^LS0",
+
+        # UTF-8
+        "^CI28",
+    ]
+
+    for column in range(columns):
+        commands.extend(
+            build_label_column(
+                item,
+                column * config["two_column_offset_dots"],
+                config,
+            )
+        )
+
+    commands.extend([
+        f"^PQ{rows},0,1,Y",
+        "^XZ"
+    ])
+
+    return ("\r\n".join(commands) + "\r\n").encode("utf-8")
+```
+
+Agora substitua TODA sua função:
+
+```python
+def build_label_column(...)
+```
+
+por esta:
+
+```python
+def build_label_column(item, x_offset, config):
+
+    description = zpl_text(item.get("nome") or "")
+    code = zpl_text(item.get("codigo") or "")
+    barcode = only_digits(item.get("codigo_barras") or "")
+    current_date = datetime.now().strftime("%d/%m/%Y")
+
+    commands = [
+
+        # =========================
+        # DESCRIÇÃO
+        # =========================
+        f"""
+^FO{x_offset + 22},28
+^A0N,24,24
+^FB270,3,4,L,0
+^FD{description}^FS
+""".strip(),
+
+        # =========================
+        # CÓDIGO
+        # =========================
+        f"""
+^FO{x_offset + 22},96
+^A0N,22,22
+^FD{code}^FS
+""".strip(),
+
+        # =========================
+        # DATA
+        # =========================
+        f"""
+^FO{x_offset + 205},96
+^A0N,18,18
+^FD{current_date}^FS
+""".strip(),
+    ]
+
+    if barcode:
+
+        commands.extend([
+
+            # =========================
+            # CÓDIGO DE BARRAS
+            # =========================
+            f"""
+^BY2,2,52
+^FT{x_offset + 58},178
+^BEN,52,Y,N
+^FD{barcode}^FS
+""".strip()
+
+        ])
+
+    else:
+
+        commands.append(
+
+            f"""
+^FO{x_offset + 22},145
+^A0N,20,20
+^FDEAN NAO ENCONTRADO^FS
+""".strip()
+
+        )
+
+    return commands
+```

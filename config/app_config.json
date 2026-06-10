@@ -1,0 +1,52 @@
+{
+  "active_label_profile": "40x25",
+  "base_file": "relatorio/base.xlsx",
+  "data_root": ".",
+  "label_dpi": 203,
+  "label_height_dots": 200,
+  "label_profiles": {
+    "100x80": {
+      "columns": 1,
+      "gap_mm": 3.0,
+      "height_mm": 80.0,
+      "left_x_mm": 3.0,
+      "left_y_mm": 3.0,
+      "name": "100 mm x 80 mm",
+      "printer_name": "",
+      "right_x_mm": 53.0,
+      "right_y_mm": 3.0,
+      "width_mm": 100.0
+    },
+    "40x25": {
+      "columns": 2,
+      "gap_mm": 3.0,
+      "height_mm": 25.0,
+      "left_x_mm": 10.0,
+      "left_y_mm": -2.0,
+      "name": "40 mm x 25 mm",
+      "printer_name": "CÓDIGO DE BARRAS (40X25)",
+      "right_x_mm": 55.0,
+      "right_y_mm": -2.0,
+      "width_mm": 40.0
+    },
+    "50x25": {
+      "columns": 2,
+      "gap_mm": 3.0,
+      "height_mm": 25.0,
+      "left_x_mm": 3.0,
+      "left_y_mm": 2.0,
+      "name": "50 mm x 25 mm",
+      "printer_name": "",
+      "right_x_mm": 56.0,
+      "right_y_mm": 2.0,
+      "width_mm": 50.0
+    }
+  },
+  "label_width_dots": 320,
+  "labels_dir": "etiquetas",
+  "printer_name": "",
+  "report_dir": "relatorio",
+  "reposicao_csv": "csv/Reposicao e Diversos.csv",
+  "source_section_prefix": "reposicaoediversos",
+  "two_column_offset_dots": 360
+}

@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Configuração de Etiquetas</title>
+    <link rel="stylesheet" href="/style/styles.css">
+  </head>
+  <body class="label-config-page">
+    <main class="label-config-shell">
+      <section class="panel label-config-panel">
+        <div class="label-config-topbar">
+          <button class="secondary-button label-config-back-button" id="backButton" type="button">Voltar</button>
+          <div class="label-config-brandmarks" aria-label="Marcas da página">
+            <img src="/imagens/image.png" alt="Marca 1" class="label-config-brandmark">
+            <img src="/imagens/image.png" alt="Marca 2" class="label-config-brandmark label-config-brandmark--mirror">
+          </div>
+        </div>
+
+        <div class="panel-header">
+          <div>
+            <p class="eyebrow">Configuração de etiquetas</p>
+            <h1>Alinhar formatos e colunas</h1>
+            <p class="label-config-copy">
+              Ajuste os três formatos disponíveis, defina até 2 colunas e reposicione os campos da esquerda e da direita
+              para evitar cortes na impressão.
+            </p>
+          </div>
+          <div class="label-config-actions">
+            <button class="icon-button" id="themeButton" type="button" title="Alternar tema" aria-label="Alternar tema">
+              &#9728;
+            </button>
+            <button class="secondary-button" id="resetLabelConfigButton" type="button">Restaurar padrão</button>
+            <button class="primary-button" id="saveLabelConfigButton" type="button">Salvar</button>
+          </div>
+        </div>
+
+        <div id="profileTabs" class="label-config-tabs" aria-label="Perfis de etiqueta"></div>
+
+        <div class="label-config-layout">
+          <section class="label-config-card label-preview-shell">
+            <div class="label-config-card__header">
+              <div>
+                <h2>Visualização</h2>
+                <p id="profileDescription">Carregando configuração...</p>
+              </div>
+            </div>
+
+            <div class="label-meta-grid" id="profileMeta"></div>
+
+            <div id="labelPreview" class="label-preview" aria-label="Pré-visualização do layout">
+              <div id="previewLeft" class="label-sheet">
+                <div class="label-sheet__title">Esquerda</div>
+                <div class="label-sheet__sub">Posição principal</div>
+              </div>
+              <div id="previewRight" class="label-sheet label-sheet--secondary" hidden>
+                <div class="label-sheet__title">Direita</div>
+                <div class="label-sheet__sub">Coluna ajustável</div>
+              </div>
+            </div>
+
+            <div class="label-config-note" id="layoutNote">
+              A coluna direita usa o gap configurado entre as etiquetas. Quando houver apenas 1 coluna, a coluna direita
+              fica desativada.
+            </div>
+          </section>
+
+          <section class="label-config-card">
+            <div class="label-config-card__header">
+              <div>
+                <h2>Editor do formato</h2>
+                <p>Altere os valores do perfil selecionado e salve para aplicar na impressão.</p>
+              </div>
+            </div>
+
+            <form id="labelConfigForm" class="label-config-form">
+              <fieldset class="label-config-fieldset">
+                <legend>Formato</legend>
+                <div class="label-config-grid label-config-grid--single">
+                  <label>
+                    <span>Colunas</span>
+                    <select id="profileColumns">
+                      <option value="1">1 coluna</option>
+                      <option value="2">2 colunas</option>
+                    </select>
+                  </label>
+                  <label>
+                    <span>Gap entre colunas (mm)</span>
+                    <input id="profileGapMm" type="number" min="0" max="30" step="0.1">
+                  </label>
+                  <label>
+                    <span>DPI</span>
+                    <input id="profileDpi" type="number" disabled>
+                  </label>
+                  <label>
+                    <span>Impressora</span>
+                    <select id="profilePrinterName"></select>
+                  </label>
+                </div>
+                <div class="label-config-printer-row">
+                  <button class="secondary-button" id="refreshPrintersButton" type="button">Atualizar impressoras</button>
+                  <p class="label-config-help">Selecione a impressora do dispositivo para este formato. Se vazio, usamos a impressora padrão.</p>
+                </div>
+              </fieldset>
+
+              <fieldset class="label-config-fieldset">
+                <legend>Dimensões da etiqueta</legend>
+                <div class="label-config-grid">
+                  <label>
+                    <span>Largura (mm)</span>
+                    <input id="profileWidthMm" type="number" disabled>
+                  </label>
+                  <label>
+                    <span>Altura (mm)</span>
+                    <input id="profileHeightMm" type="number" disabled>
+                  </label>
+                  <label>
+                    <span>Largura (dots)</span>
+                    <input id="profileWidthDots" type="number" disabled>
+                  </label>
+                  <label>
+                    <span>Altura (dots)</span>
+                    <input id="profileHeightDots" type="number" disabled>
+                  </label>
+                </div>
+              </fieldset>
+
+              <fieldset class="label-config-fieldset">
+                <legend>Posição esquerda e direita</legend>
+                <div class="label-config-position">
+                  <label>
+                    <span>Esquerda X (mm)</span>
+                    <input id="profileLeftXMm" type="number" min="-500" max="200" step="0.1">
+                  </label>
+                  <label>
+                    <span>Esquerda Y (mm)</span>
+                    <input id="profileLeftYMm" type="number" min="-500" max="200" step="0.1">
+                  </label>
+                  <label>
+                    <span>Direita X (mm)</span>
+                    <input id="profileRightXMm" type="number" min="-500" max="200" step="0.1">
+                  </label>
+                  <label>
+                    <span>Direita Y (mm)</span>
+                    <input id="profileRightYMm" type="number" min="-500" max="200" step="0.1">
+                  </label>
+                </div>
+                <p class="label-config-help">
+                  Ajuste os offsets até que a coluna da direita fique dentro do papel. O preview abaixo mostra a área
+                  total ocupada pelo formato selecionado.
+                </p>
+              </fieldset>
+
+              <fieldset class="label-config-fieldset">
+                <legend>Resumo do layout</legend>
+                <div class="label-config-summary" id="profileSummary"></div>
+              </fieldset>
+
+              <p id="labelConfigStatus" class="label-config-status" role="status"></p>
+            </form>
+          </section>
+        </div>
+      </section>
+    </main>
+
+    <div id="saveConfirmOverlay" class="label-confirm-overlay" hidden>
+      <div class="label-confirm-card" role="dialog" aria-modal="true" aria-labelledby="saveConfirmTitle">
+        <div class="label-confirm-card__header">
+          <p class="eyebrow">Confirmar alteração</p>
+          <h2 id="saveConfirmTitle">Salvar configuração de etiquetas?</h2>
+          <p id="saveConfirmMessage">
+            As alterações de posição, impressora e formato serão gravadas e usadas na próxima impressão.
+          </p>
+        </div>
+        <div class="label-confirm-card__actions">
+          <button class="secondary-button" id="cancelSaveButton" type="button">Cancelar</button>
+          <button class="primary-button" id="confirmSaveButton" type="button">Confirmar e salvar</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="/style/label-config.js"></script>
+  </body>
+</html>

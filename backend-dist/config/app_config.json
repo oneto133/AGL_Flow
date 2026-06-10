@@ -1,0 +1,12 @@
+{
+  "base_file": "relatorio/base.xlsx",
+  "data_root": ".",
+  "label_height_dots": 200,
+  "label_width_dots": 330,
+  "labels_dir": "etiquetas",
+  "printer_name": "",
+  "report_dir": "relatorio",
+  "reposicao_csv": "csv/Reposicao e Diversos.csv",
+  "source_section_prefix": "reposicaoediversos",
+  "two_column_offset_dots": 330
+}

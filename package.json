@@ -1,0 +1,9 @@
+{
+  "name": "nova-pasta-etiquetas",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start:web": "python -m uvicorn --app-dir . app:app --reload",
+    "dist:web": "python -m PyInstaller --noconfirm --noconsole --onefile --name nova-pasta-web --add-data \"templates;templates\" --add-data \"style;style\" launcher.py"
+  }
+}

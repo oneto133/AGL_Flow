@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Impressao de Etiquetas</title>
+    <link rel="stylesheet" href="/style/styles.css">
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="panel">
+        <div class="panel-header">
+          <div>
+            <p class="eyebrow"></p>
+            <h1>Impressão de etiquetas</h1>
+          </div>
+          <div class="header-actions">
+            <button class="icon-button mobile-menu-button" id="menuButton" type="button" title="Menu" aria-label="Abrir menu">
+              &#9776;
+            </button>
+            <button class="secondary-button header-action-button" id="printAllButton" type="button">
+              Imprimir tudo
+            </button>
+            <button class="icon-button header-only-action" id="themeButton" type="button" title="Alternar tema" aria-label="Alternar tema">
+              &#9728;
+            </button>
+            <button class="icon-button header-only-action" id="labelConfigButton" type="button" title="Configurar etiquetas" aria-label="Abrir configuracao de etiquetas">
+              &#128451;
+            </button>
+            <button class="icon-button header-only-action" id="settingsButton" type="button" title="Configuracoes" aria-label="Abrir configuracoes">
+              &#9881;
+            </button>
+            <button class="icon-button header-only-action" id="refreshButton" type="button" title="Atualizar lista" aria-label="Atualizar lista">
+              &#8635;
+            </button>
+          </div>
+        </div>
+
+        <div id="mobileMenu" class="mobile-menu" hidden>
+          <div class="mobile-menu__actions">
+            <button class="secondary-button mobile-menu-action" id="mobileThemeButton" type="button">
+              &#9728; Tema
+            </button>
+            <button class="secondary-button mobile-menu-action" id="mobileLabelConfigButton" type="button">
+              &#128451; Etiquetas
+            </button>
+            <button class="secondary-button mobile-menu-action" id="mobileSettingsButton" type="button">
+              &#9881; Configuracoes
+            </button>
+            <button class="secondary-button mobile-menu-action" id="mobileRefreshButton" type="button">
+              &#8635; Atualizar
+            </button>
+          </div>
+          <div class="mobile-menu__item">
+            <span>Acesso na rede</span>
+            <strong id="mobileServerAddress">-</strong>
+          </div>
+          <div class="mobile-menu__item">
+            <span>Atualizado em</span>
+            <strong id="mobileReposicaoUpdatedAt">-</strong>
+          </div>
+        </div>
+        <div class="summary-strip">
+          <div class="summary-card summary-card--updated">
+            <span>Atualizado em</span>
+            <strong id="reposicaoUpdatedAt">-</strong>
+          </div>
+          <div class="summary-card summary-card--network">
+            <span>Acesso na rede</span>
+            <strong id="serverAddress">-</strong>
+          </div>
+        </div>
+
+        <form id="manualForm" class="manual-form">
+          <input id="manualCode" name="codigo" type="text" placeholder="Codigo interno" autocomplete="off" required>
+          <input id="manualQuantity" name="quantidade" type="number" min="1" max="500" value="1" required>
+          <button class="secondary-button" id="manualSearchButton" type="button">Buscar</button>
+          <button class="primary-button" type="submit">Imprimir</button>
+        </form>
+
+        <p id="manualResult" class="manual-result"></p>
+        <p id="statusMessage" class="status" role="status"></p>
+      </section>
+
+      <section class="list-wrap" aria-label="Etiquetas do CSV">
+        <div id="itemsList" class="items-list">
+          <p class="empty-message">Carregando etiquetas...</p>
+        </div>
+      </section>
+    </main>
+
+    <div id="settingsBackdrop" class="settings-backdrop" hidden></div>
+    <section id="settingsModal" class="settings-modal" aria-hidden="true" hidden>
+      <div class="settings-modal__header">
+        <div>
+          <p class="eyebrow">Configuracao</p>
+          <h2>Arquivos e impressao</h2>
+        </div>
+        <button class="icon-button icon-button--close" id="closeSettingsButton" type="button" aria-label="Fechar configuracoes">
+          X
+        </button>
+      </div>
+
+      <form id="settingsForm" class="settings-form">
+        <label>
+          <span>Diretorio raiz</span>
+          <input id="configDataRoot" type="text" placeholder="C:\Etiquetas">
+        </label>
+        <label>
+          <span>CSV de reposicao</span>
+          <input id="configReposicaoCsv" type="text" placeholder="csv\Reposicao e Diversos.csv">
+        </label>
+        <label>
+          <span>Pasta de etiquetas</span>
+          <input id="configLabelsDir" type="text" placeholder="etiquetas">
+        </label>
+        <label>
+          <span>Pasta de relatorio</span>
+          <input id="configReportDir" type="text" placeholder="relatorio">
+        </label>
+        <label>
+          <span>Base XLSX</span>
+          <input id="configBaseFile" type="text" placeholder="relatorio\base.xlsx">
+        </label>
+        <label>
+          <span>Impressora</span>
+          <input id="configPrinterName" type="text" placeholder="Zebra">
+        </label>
+        <label>
+          <span>Prefixo de secao</span>
+          <input id="configSectionPrefix" type="text" placeholder="reposicaoediversos">
+        </label>
+        <div class="settings-grid">
+          <label>
+            <span>Offset 2 colunas</span>
+            <input id="configTwoColumnOffsetDots" type="number" min="0" max="4000" step="1">
+          </label>
+          <label>
+            <span>Largura etiqueta</span>
+            <input id="configLabelWidthDots" type="number" min="1" max="4000" step="1">
+          </label>
+          <label>
+            <span>Altura etiqueta</span>
+            <input id="configLabelHeightDots" type="number" min="1" max="4000" step="1">
+          </label>
+        </div>
+
+        <div class="settings-actions">
+          <button class="secondary-button" id="resetSettingsButton" type="button">Restaurar padrao</button>
+          <div class="settings-actions__right">
+            <button class="secondary-button" id="cancelSettingsButton" type="button">Cancelar</button>
+            <button class="primary-button" type="submit">Salvar</button>
+          </div>
+        </div>
+        <p id="settingsStatus" class="settings-status" role="status"></p>
+      </form>
+    </section>
+
+    <script src="/style/script.js"></script>
+  </body>
+</html>
