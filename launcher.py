@@ -124,6 +124,13 @@ def serve():
     )
 
 
+def run_network_api():
+    """Inicia a API secundária usada por máquinas da rede para acessar o servidor principal."""
+    import network_api
+
+    network_api.main()
+
+
 def launch_browser_app():
     port = select_port()
     env = os.environ.copy()
@@ -154,5 +161,7 @@ def launch_browser_app():
 if __name__ == "__main__":
     if "--serve" in sys.argv:
         serve()
+    elif "--network-api" in sys.argv:
+        run_network_api()
     else:
         launch_browser_app()

@@ -28,6 +28,8 @@ const cancelSettingsButton = document.querySelector("#cancelSettingsButton");
 const resetSettingsButton = document.querySelector("#resetSettingsButton");
 const settingsForm = document.querySelector("#settingsForm");
 const settingsStatus = document.querySelector("#settingsStatus");
+const saveRemoteTargetButton = document.querySelector("#saveRemoteTargetButton");
+const remoteApiUrlInput = document.querySelector("#configRemoteApiUrl");
 
 const configFields = {
   data_root: document.querySelector("#configDataRoot"),
@@ -53,6 +55,33 @@ function setStatus(message, type = "") {
 function setSettingsStatus(message, type = "") {
   settingsStatus.textContent = message;
   settingsStatus.className = `settings-status ${type}`.trim();
+}
+
+function formatPreviewDate() {
+  return new Date().toLocaleDateString("pt-BR");
+}
+
+function renderZebraPreviewSample(item) {
+  const description = String(item?.nome || item?.codigo || "Sem descrição")
+    .replace(/\s+/g, " ")
+    .trim()
+    .toUpperCase();
+  const code = String(item?.codigo || "-").trim().toUpperCase();
+  const barcode = String(item?.codigo_barras || "").replace(/\D/g, "");
+
+  return `
+    <div class="preview-zebra-sample" aria-label="Layout da etiqueta Zebra">
+      <span class="preview-zebra-chip">Zebra</span>
+      <div class="preview-zebra-description">${description || "SEM DESCRIÇÃO"}</div>
+      <div class="preview-zebra-grid">
+        <span class="preview-zebra-code">${code}</span>
+        <span class="preview-zebra-date">${formatPreviewDate()}</span>
+      </div>
+      ${barcode
+        ? `<div class="preview-zebra-barcode" aria-label="Código de barras">${barcode}</div>`
+        : `<div class="preview-zebra-barcode preview-zebra-barcode--missing">EAN NÃO ENCONTRADO</div>`}
+    </div>
+  `;
 }
 
 function toggleMobileMenu(forceState) {
@@ -209,14 +238,81 @@ async function printItem(codigo, quantityInput, button) {
   }
 }
 
+async function loadPrintersForSearch() {
+  try {
+    const response = await fetch("/api/printers");
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(data.detail || "Nao foi possivel carregar as impressoras.");
+    }
+    return Array.isArray(data.printers) ? data.printers : [];
+  } catch (error) {
+    return [];
+  }
+}
+
+function renderManualCard(item, printers) {
+  const selectedPrinter = printers.includes(currentConfig?.printer_name) ? currentConfig.printer_name : (printers[0] || "");
+
+  manualResult.innerHTML = `
+    <article class="manual-card" aria-live="polite">
+      <div class="manual-card__header">
+        <div class="manual-card__title">
+          <strong>${item.codigo}</strong>
+          <span>${item.nome || "Sem descricao"}</span>
+        </div>
+        <button type="button" class="manual-card__close" id="manualCardClose" aria-label="Fechar busca">×</button>
+      </div>
+      <div class="manual-card__meta">
+        <span>EAN: ${item.codigo_barras || "nao encontrado"}</span>
+        <span>Secao: ${item.secao || "Sem secao"}</span>
+        <span>Vendidas: ${item.quantidade_vendida || 0}</span>
+      </div>
+      <div class="manual-card__actions">
+        <label class="manual-card__label" for="manualPrinterSelect">Impressora</label>
+        <select id="manualPrinterSelect" class="manual-card__select">
+          ${printers.length ? printers.map((printer) => `<option value="${printer}" ${printer === selectedPrinter ? "selected" : ""}>${printer}</option>`).join("") : `<option value="">Nenhuma impressora encontrada</option>`}
+        </select>
+        <button type="button" id="manualPrintCardButton" class="primary-button">Imprimir</button>
+      </div>
+    </article>
+  `;
+
+  const closeButton = document.querySelector("#manualCardClose");
+  const printerSelect = document.querySelector("#manualPrinterSelect");
+  const printButton = document.querySelector("#manualPrintCardButton");
+
+  closeButton?.addEventListener("click", () => {
+    manualResult.innerHTML = "";
+  });
+
+  printButton?.addEventListener("click", async () => {
+    const printerName = printerSelect?.value?.trim() || "";
+    if (printerName) {
+      try {
+        await fetch("/api/config", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ printer_name: printerName }),
+        });
+      } catch (error) {
+        setStatus("Nao foi possivel atualizar a impressora selecionada.", "error");
+        return;
+      }
+    }
+
+    await printItem(item.codigo, manualQuantity, printButton);
+  });
+}
+
 async function searchManualCode() {
   const codigo = manualCode.value.trim();
   if (!codigo) {
-    manualResult.textContent = "Digite um codigo interno.";
+    manualResult.innerHTML = "<span>Digite um codigo interno.</span>";
     return;
   }
 
-  manualResult.textContent = "Buscando na base...";
+  manualResult.textContent = "";
   try {
     const response = await fetch(`/api/base/${encodeURIComponent(codigo)}`);
     const data = await response.json();
@@ -225,9 +321,11 @@ async function searchManualCode() {
     }
 
     const item = data.item;
-    manualResult.textContent = `${item.codigo} - ${item.nome} - EAN ${item.codigo_barras || "nao encontrado"}`;
+    const printers = await loadPrintersForSearch();
+    renderManualCard(item, printers);
   } catch (error) {
     manualResult.textContent = error.message;
+    setStatus(error.message, "error");
   }
 }
 
@@ -274,7 +372,7 @@ function closeSettings() {
   setSettingsStatus("");
 }
 
-function fillSettingsForm(config) {
+function fillSettingsForm(config, remoteApiUrl = "") {
   currentConfig = config;
   configFields.data_root.value = config.data_root || "";
   configFields.reposicao_csv.value = config.reposicao_csv || "";
@@ -282,6 +380,9 @@ function fillSettingsForm(config) {
   configFields.report_dir.value = config.report_dir || "";
   configFields.base_file.value = config.base_file || "";
   configFields.printer_name.value = config.printer_name || "";
+  if (remoteApiUrlInput) {
+    remoteApiUrlInput.value = remoteApiUrl || config.remote_api_url || "";
+  }
   configFields.source_section_prefix.value = config.source_section_prefix || "";
   configFields.two_column_offset_dots.value = config.two_column_offset_dots ?? 330;
   configFields.label_width_dots.value = config.label_width_dots ?? 330;
@@ -296,7 +397,7 @@ async function loadConfig() {
       throw new Error(data.detail || "Nao foi possivel carregar a configuracao.");
     }
 
-    fillSettingsForm(data.config);
+    fillSettingsForm(data.config || {}, data.remote_api_url || "");
   } catch (error) {
     setSettingsStatus(error.message, "error");
   }
@@ -330,8 +431,35 @@ async function saveConfig(event) {
       throw new Error(data.detail || "Falha ao salvar configuracao.");
     }
 
-    fillSettingsForm(data.config);
+    fillSettingsForm(data.config || {}, data.remote_api_url || "");
     setSettingsStatus("Configuracao salva com sucesso.", "success");
+    await loadItems();
+  } catch (error) {
+    setSettingsStatus(error.message, "error");
+  }
+}
+
+async function applyRemoteTarget() {
+  const targetUrl = (remoteApiUrlInput?.value || "").trim();
+  if (!targetUrl) {
+    setSettingsStatus("Informe a URL do computador servidor.", "error");
+    return;
+  }
+
+  setSettingsStatus("Aplicando servidor remoto...");
+  try {
+    const response = await fetch("/api/remote-config", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ target_url: targetUrl }),
+    });
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.detail || "Falha ao aplicar o servidor remoto.");
+    }
+
+    setSettingsStatus(`Servidor remoto aplicado: ${data.remote_api_url}`, "success");
     await loadItems();
   } catch (error) {
     setSettingsStatus(error.message, "error");
@@ -351,7 +479,7 @@ async function resetConfig() {
       throw new Error(data.detail || "Falha ao restaurar configuracao.");
     }
 
-    fillSettingsForm(data.config);
+    fillSettingsForm(data.config || {}, data.remote_api_url || "");
     setSettingsStatus("Configuracao restaurada.", "success");
     await loadItems();
   } catch (error) {
@@ -399,6 +527,7 @@ closeSettingsButton.addEventListener("click", closeSettings);
 cancelSettingsButton.addEventListener("click", closeSettings);
 settingsBackdrop.addEventListener("click", closeSettings);
 settingsForm.addEventListener("submit", saveConfig);
+saveRemoteTargetButton?.addEventListener("click", applyRemoteTarget);
 resetSettingsButton.addEventListener("click", resetConfig);
 document.addEventListener("click", (event) => {
   if (!mobileMenu || mobileMenu.hidden || !menuButton) {
@@ -426,6 +555,10 @@ window.addEventListener("resize", () => {
     toggleMobileMenu(false);
   }
 });
+
+if (!localStorage.getItem("etiquetas-auth") && window.location.pathname !== "/") {
+  window.location.replace("/");
+}
 
 applyTheme(getTheme());
 toggleMobileMenu(false);

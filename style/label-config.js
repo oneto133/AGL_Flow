@@ -1,6 +1,10 @@
 const THEME_STORAGE_KEY = "nova-pasta-theme";
 const PROFILE_ORDER = ["100x80", "50x25", "40x25"];
 
+if (!localStorage.getItem("etiquetas-auth")) {
+  window.location.replace("/");
+}
+
 const themeButton = document.querySelector("#themeButton");
 const backButton = document.querySelector("#backButton");
 const saveButton = document.querySelector("#saveLabelConfigButton");
