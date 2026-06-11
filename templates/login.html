@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Acesso - Impressão de Etiquetas</title>
+    <link rel="stylesheet" href="/style/styles.css">
+  </head>
+  <body class="login-page">
+    <main class="login-shell">
+      <section class="login-card">
+        <p class="eyebrow">Acesso</p>
+        <h1>Impressão de etiquetas</h1>
+        <p class="login-copy">Entre com as credenciais para acessar o fluxo de reposição. A senha padrão é temporária e pode ser ajustada depois.</p>
+
+        <form id="loginForm" class="login-form">
+          <label>
+            <span>Usuário</span>
+            <input id="loginUser" type="text" value="admin" autocomplete="username" required>
+          </label>
+          <label>
+            <span>Senha</span>
+            <input id="loginPassword" type="password" value="123456" autocomplete="current-password" required>
+          </label>
+          <button class="primary-button" type="submit">Entrar</button>
+        </form>
+
+        <p id="loginStatus" class="login-status" role="status"></p>
+
+        <article class="login-card__grid">
+          <section class="login-card__option">
+            <span class="login-card__badge">Disponível</span>
+            <strong>Reposição</strong>
+            <p>Fluxo principal de hoje para buscar produtos, escolher impressora e imprimir etiquetas.</p>
+          </section>
+        </article>
+      </section>
+    </main>
+
+    <script src="/style/login.js"></script>
+  </body>
+</html>
