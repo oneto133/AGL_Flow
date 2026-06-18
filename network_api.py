@@ -6,6 +6,7 @@ import webbrowser
 from pathlib import Path
 from typing import Any
 from urllib import error, request
+from urllib.parse import urlparse
 
 import uvicorn
 from fastapi import FastAPI, HTTPException, Request
@@ -15,9 +16,17 @@ from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel, Field
 
 
-DEFAULT_REMOTE_API_URL = os.getenv("REMOTE_API_URL", "http://127.0.0.1:8000")
+DEFAULT_REMOTE_API_URL = os.getenv("REMOTE_API_URL", "http://192.168.1.67")
 DEFAULT_NETWORK_HOST = os.getenv("NETWORK_API_HOST", "0.0.0.0")
 DEFAULT_NETWORK_PORT = int(os.getenv("NETWORK_API_PORT", "8001"))
+REMOTE_API_PORTS = tuple(
+    int(port.strip())
+    for port in os.getenv("REMOTE_API_PORTS", "8000,8001,8002").split(",")
+    if port.strip().isdigit()
+)
+if not REMOTE_API_PORTS:
+    REMOTE_API_PORTS = (8000, 8001, 8002)
+REMOTE_ACCESS_ERROR = "Sem acesso ao servidor."
 
 
 app = FastAPI(title="API de rede para etiquetas")
@@ -40,9 +49,69 @@ class RemoteTargetRequest(BaseModel):
     target_url: str | None = None
 
 
+def _normalize_url(url: str | None) -> str:
+    return (url or "").strip().rstrip("/")
+
+
+def _is_loopback_url(url: str) -> bool:
+    parsed = urlparse(url)
+    host = (parsed.hostname or "").lower()
+    return host in {"127.0.0.1", "localhost", "::1"}
+
+
+def _ensure_scheme(url: str) -> str:
+    if "://" in url:
+        return url
+    return f"http://{url}"
+
+
+def _candidate_remote_urls(url: str):
+    normalized = _ensure_scheme(_normalize_url(url))
+    parsed = urlparse(normalized)
+    scheme = parsed.scheme or "http"
+    host = parsed.hostname or ""
+
+    if not host:
+        return []
+
+    if parsed.port:
+        return [f"{scheme}://{host}:{parsed.port}"]
+
+    return [f"{scheme}://{host}:{port}" for port in REMOTE_API_PORTS]
+
+
+def _remote_is_available(base_url: str) -> bool:
+    try:
+        req = request.Request(f"{base_url}/api/config", method="GET")
+        with request.urlopen(req, timeout=2) as response:
+            return 200 <= response.status < 300
+    except Exception:
+        return False
+
+
+def _get_remote_candidate_urls(target_url: str | None = None) -> list[str]:
+    if target_url:
+        return _candidate_remote_urls(_normalize_url(target_url))
+
+    configured_url = _normalize_url(os.getenv("REMOTE_API_URL"))
+    if configured_url and not _is_loopback_url(configured_url):
+        return _candidate_remote_urls(configured_url)
+
+    return _candidate_remote_urls(DEFAULT_REMOTE_API_URL)
+
+
+def resolve_remote_base_url(target_url: str | None = None) -> str:
+    """Resolve a URL remota acessivel para o servidor principal da rede."""
+    for candidate in _get_remote_candidate_urls(target_url):
+        if _remote_is_available(candidate):
+            return candidate
+    raise HTTPException(status_code=503, detail=REMOTE_ACCESS_ERROR)
+
+
 def get_remote_base_url(target_url: str | None = None) -> str:
-    """Resolve a URL remota para o servidor principal da rede."""
-    return (target_url or os.getenv("REMOTE_API_URL") or DEFAULT_REMOTE_API_URL).rstrip("/")
+    """Resolve a melhor URL remota conhecida, mesmo se o servidor nao responder."""
+    candidates = _get_remote_candidate_urls(target_url)
+    return candidates[0] if candidates else _normalize_url(DEFAULT_REMOTE_API_URL)
 
 
 def get_local_access_url() -> str:
@@ -54,7 +123,7 @@ def get_local_access_url() -> str:
 
 def _proxy_request(method: str, path: str, payload: dict[str, Any] | None = None, target_url: str | None = None):
     """Encaminha a requisicao para a API principal e devolve o JSON da resposta."""
-    base_url = get_remote_base_url(target_url)
+    base_url = resolve_remote_base_url(target_url)
     url = f"{base_url}{path}"
     data = None
     headers = {}
@@ -77,7 +146,7 @@ def _proxy_request(method: str, path: str, payload: dict[str, Any] | None = None
             parsed = {"detail": body or str(exc)}
         raise HTTPException(status_code=exc.code, detail=parsed.get("detail", parsed)) from exc
     except Exception as exc:  # pragma: no cover - falha de rede
-        raise HTTPException(status_code=502, detail=f"Falha ao acessar a API do servidor: {exc}") from exc
+        raise HTTPException(status_code=503, detail=REMOTE_ACCESS_ERROR) from exc
 
 
 @app.get("/", response_class=HTMLResponse)
