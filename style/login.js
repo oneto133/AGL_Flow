@@ -17,15 +17,10 @@ loginForm?.addEventListener("submit", (event) => {
   const password = document.querySelector("#loginPassword")?.value || "";
 
   if (user === "admin" && password === "123456") {
-    localStorage.setItem("etiquetas-auth", "1");
     setStatus("Acesso liberado. Redirecionando...", "success");
-    window.location.replace("/reposicao");
+    window.location.replace("/tela_inicial");
     return;
   }
 
   setStatus("Usuário ou senha inválidos.", "error");
 });
-
-if (localStorage.getItem("etiquetas-auth") && window.location.pathname === "/") {
-  window.location.replace("/reposicao");
-}

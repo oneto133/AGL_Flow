@@ -1342,6 +1342,10 @@ def serialize_label_config(config):
 def index(request: Request):
     return templates.TemplateResponse(request, "login.html")
 
+@app.get("/tela_inicial", response_class=HTMLResponse)
+def tela_inicial(request: Request):
+    return templates.TemplateResponse(request, "tela_inicial.html")
+
 
 @app.get("/reposicao", response_class=HTMLResponse)
 def reposicao_page(request: Request):

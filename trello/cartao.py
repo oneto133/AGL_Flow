@@ -69,4 +69,4 @@ def ler_base_de_dados(arq, codigo) -> list:
 
 #atualizar_base_de_dados(r"Y:\Produção\Etiquetas\Nova pasta\xlsx\base_de_dados.xlsx")
 
-ler_base_de_dados(r"Y:\Produção\Etiquetas\Nova pasta\csv\base_de_dados.csv", 2001161)
+ler_base_de_dados(r"csv\base_de_dados.csv", 2001161)

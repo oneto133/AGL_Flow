@@ -207,6 +207,14 @@ async function loadItems() {
   }
 }
 
+async function voltar_login() {
+  window.location.replace("/");
+}
+
+async function tela_inicial() {
+  window.location.href = "/tela_inicial";
+}
+
 async function printItem(codigo, quantityInput, button) {
   const quantidade = Number(quantityInput.value);
   if (!codigo || quantidade < 1) {
@@ -498,12 +506,16 @@ printAllButton.addEventListener("click", printAllItems);
 menuButton.addEventListener("click", () => toggleMobileMenu());
 themeButton.addEventListener("click", toggleTheme);
 labelConfigButton.addEventListener("click", openLabelConfigPage);
+logoutButton.addEventListener("click",async () => await voltar_login())
+homeButton.addEventListener("click", async () => await tela_inicial())
 settingsButton.addEventListener("click", async () => {
   openSettings();
   if (!currentConfig) {
     await loadConfig();
   }
 });
+
+
 mobileThemeButton.addEventListener("click", () => {
   toggleTheme();
   toggleMobileMenu(false);
@@ -519,10 +531,22 @@ mobileSettingsButton.addEventListener("click", async () => {
     await loadConfig();
   }
 });
+
 mobileRefreshButton.addEventListener("click", async () => {
   toggleMobileMenu(false);
   await loadItems();
 });
+
+mobileLogoutButton.addEventListener("click", async () => {
+  toggleMobileMenu(false);
+  await voltar_login();
+});
+
+mobileHomeButton.addEventListener("click", () => {
+  toggleMobileMenu(false);
+  window.location.href = "/tela_inicial";
+});
+
 closeSettingsButton.addEventListener("click", closeSettings);
 cancelSettingsButton.addEventListener("click", closeSettings);
 settingsBackdrop.addEventListener("click", closeSettings);
@@ -555,10 +579,6 @@ window.addEventListener("resize", () => {
     toggleMobileMenu(false);
   }
 });
-
-if (!localStorage.getItem("etiquetas-auth") && window.location.pathname !== "/") {
-  window.location.replace("/");
-}
 
 applyTheme(getTheme());
 toggleMobileMenu(false);

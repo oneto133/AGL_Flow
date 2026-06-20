@@ -1306,6 +1306,29 @@ body.modal-open {
   margin-top: 16px;
 }
 
+.login-header {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  width: 100%;
+  z-index: 1000;
+}
+
+
+.login-card__link {
+  text-decoration: none; /* Remove o sublinhado padrão de links */
+  color: inherit;        /* Mantém as cores de texto originais das seções */
+  display: block;        /* Garante que toda a área da seção seja clicável */
+}
+
+/* Opcional: Adiciona um efeito visual quando o usuário passar o mouse */
+.login-card__link:hover .login-card__option {
+  cursor: pointer;
+  filter: brightness(0.95); /* Dá um leve feedback visual de clique */
+  transform: translateY(-5px); /* Efeito suave de levantamento */
+  transition: transform 0.5s ease, filter 0.5s ease;
+}
+
 @media (max-width: 720px) {
   .label-config-actions {
     width: 100%;

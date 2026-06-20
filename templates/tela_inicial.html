@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tela inicials</title>
+    <link rel="stylesheet" href="/style/styles.css">
+  </head>
+  <body class="login-page">
+    <main class="login-shell">
+      <header class="login-header">
+        <a href="/" class="primary-button">
+          Voltar
+        </a>
+      </header>
+      <section class="login-card">
+        <h1>Selecione uma opção</h1>
+        <a href="/reposicao" class="login-card__link">
+        <section class="login-card__option">
+          <span class="login-card__badge">Disponível</span>
+          <strong>Reposição</strong>
+          <p>Fluxo para impressão de etiquetas de peças de reposição</p>
+        </section>
+        </a>
+
+        <p id="loginStatus" class="login-status" role="status"></p>
+
+        
+        <article class="login-card__grid">
+          <a href="/trello" class="login-card__link">
+          <section class="login-card__option">
+            <span class="login-card__badge">Disponível</span>
+            <strong>Cartão Trello</strong>
+            <p>Criar um cartão trello de forma automática e padronizada.</p>
+          </section>
+          </a>
+        </article>
+      </section>
+    </main>
+
+    <script src="/style/login.js"></script>
+  </body>
+</html>

@@ -11,8 +11,7 @@
       <section class="login-card">
         <p class="eyebrow">Acesso</p>
         <h1>Impressão de etiquetas</h1>
-        <p class="login-copy">Entre com as credenciais para acessar o fluxo de reposição. A senha padrão é temporária e pode ser ajustada depois.</p>
-
+        
         <form id="loginForm" class="login-form">
           <label>
             <span>Usuário</span>
@@ -22,18 +21,17 @@
             <span>Senha</span>
             <input id="loginPassword" type="password" value="123456" autocomplete="current-password" required>
           </label>
+
+          <label>
+            <span>Setor</span>
+            <input id="loginDepartment" type="text" value="Motores" autocomplete="organization" required>
+          </label>
           <button class="primary-button" type="submit">Entrar</button>
         </form>
 
         <p id="loginStatus" class="login-status" role="status"></p>
 
-        <article class="login-card__grid">
-          <section class="login-card__option">
-            <span class="login-card__badge">Disponível</span>
-            <strong>Reposição</strong>
-            <p>Fluxo principal de hoje para buscar produtos, escolher impressora e imprimir etiquetas.</p>
-          </section>
-        </article>
+
       </section>
     </main>
 
