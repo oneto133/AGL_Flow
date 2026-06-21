@@ -35,18 +35,20 @@ function renderizarDropdown(textoDigitado, forcarMostrarTudo = false) {
     return;
   }
 
-  // Guarda o primeiro item para a função do TAB
   primeiraOpcaoFiltrada = filtradas[0];
 
   filtradas.forEach((opcao, index) => {
     const li = document.createElement("li");
-    li.textContent = opcao;
+    li.textContent = opacity = opcao;
     
     if (index === 0) {
       li.classList.add("highlighted");
     }
 
-    li.addEventListener("click", () => {
+    // ALTERADO: Usar mousedown e impedir a propagação do clique
+    li.addEventListener("mousedown", (e) => {
+      e.preventDefault(); // Evita que o input perca o foco antes da hora
+      e.stopPropagation(); // Evita que o clique feche/reabra o menu incorretamente
       trelloLine.value = opcao;
       trelloLineDropdown.style.display = "none";
     });
@@ -56,6 +58,7 @@ function renderizarDropdown(textoDigitado, forcarMostrarTudo = false) {
 
   trelloLineDropdown.style.display = "block";
 }
+
 
 // Evento ao digitar no campo (Filtra dinamicamente)
 trelloLine?.addEventListener("input", (e) => {

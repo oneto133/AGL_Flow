@@ -44,7 +44,7 @@
   },
   "label_width_dots": 320,
   "labels_dir": "etiquetas",
-  "printer_name": "ZDesigner ZD220-203dpi ZPL",
+  "printer_name": "Microsoft Print to PDF",
   "report_dir": "relatorio",
   "reposicao_csv": "csv/Reposicao e Diversos.csv",
   "source_section_prefix": "reposicaoediversos",
