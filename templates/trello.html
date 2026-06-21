@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Criar Cartão Trello</title>
+    <link rel="stylesheet" href="/style/styles.css">
+    <style>
+      /* Estilos para o Combobox Autocomplete */
+      .autocomplete-container {
+        position: relative;
+        width: 100%;
+      }
+      .custom-dropdown {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background-color: white;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        list-style: none;
+        padding: 0;
+        margin: 4px 0 0 0;
+        max-height: 200px;
+        overflow-y: auto;
+        z-index: 999;
+      }
+      .custom-dropdown li {
+        padding: 10px 12px;
+        color: #333;
+        cursor: pointer;
+        font-size: 14px;
+        transition: background-color 0.2s;
+      }
+      .custom-dropdown li:hover {
+        background-color: #f1f3f5;
+      }
+      .custom-dropdown li.highlighted {
+        background-color: #eef2f7;
+        font-weight: bold;
+        border-left: 4px solid #0056b3;
+      }
+    </style>
+  </head>
+  <body class="login-page">
+    <main class="login-shell">
+      <header class="login-header" style="width: 100%; text-align: left; margin-bottom: 20px;">
+        <a href="/tela_inicial" class="primary-button" style="text-decoration: none; display: inline-block;">
+          Voltar
+        </a>
+      </header>
+
+      <img src="imagens/logo_agl.png" alt="Logo AGL" class="logo">
+      
+      <section class="login-card">
+        <p class="eyebrow">Integração Trello</p>
+        <h1>Criar Cartão no Quadro</h1>
+        
+        <form id="trelloForm" class="login-form">
+          <label>
+            <span>Código do Produto</span>
+            <div class="search-group">
+              <input id="manualCode" name="codigo" type="text" placeholder="Digite o código" autocomplete="off" required>
+            </div>
+          </label>
+
+          <label>
+            <span>Descrição do Produto</span>
+            <input style="background-color:white; color: black;" id="manualDescription" type="text" placeholder="Aguardando busca..." readonly disabled>
+          </label>
+
+          <label>
+            <span>Quantidade</span>
+            <input id="manualQuantity" name="quantidade" type="number" min="1" max="500" value="1" required>
+          </label>
+
+          <label>
+            <span>OP</span>
+            <input id="manualOP" name="op" type="text" placeholder="Digite a OP" autocomplete="off" required>
+          </label>
+
+          <label>
+            <span>Linha / Célula</span>
+            <div class="autocomplete-container">
+              <!-- Input interativo que substitui o select antigo -->
+              <input 
+                id="trelloLine" 
+                type="text" 
+                placeholder="Digite ou selecione a célula..." 
+                required
+                autocomplete="off"
+              >
+              <!-- Lista flutuante onde as opções vão aparecer -->
+              <ul id="trelloLineDropdown" class="custom-dropdown" style="display: none;"></ul>
+            </div>
+          </label>
+
+          <button class="primary-button" type="submit">Enviar para o Trello</button>
+        </form>
+
+        <p id="statusMessage" class="login-status" role="status"></p>
+      </section>
+    </main>
+
+    <script src="/style/trello.js"></script>
+  </body>
+</html>

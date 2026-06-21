@@ -762,6 +762,70 @@ body.modal-open {
   color: var(--muted);
 }
 
+.logo {
+  display: block;
+  max-width: 200px;
+  height: auto;
+  margin: 0 auto 1px;
+}
+
+
+.autocomplete-container {
+  position: relative;
+  width: 100%;
+  display: inline-block;
+}
+
+/* Estilo da seta lateral */
+.combobox-arrow {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #666;
+  font-size: 12px;
+  user-select: none;
+  z-index: 5;
+}
+
+/* Menu suspenso */
+.custom-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  list-style: none;
+  padding: 0;
+  margin: 4px 0 0 0;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 999;
+}
+
+.custom-dropdown li {
+  padding: 10px 12px;
+  color: #333;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.15s;
+}
+
+.custom-dropdown li:hover {
+  background-color: #f1f3f5;
+}
+
+/* Destaque para o primeiro item (Autocompletar com TAB) */
+.custom-dropdown li.highlighted {
+  background-color: #eef2f7;
+  font-weight: bold;
+  border-left: 4px solid #0056b3;
+}
+
 
 @media (max-width: 720px) {
   .app-shell {

@@ -18,6 +18,24 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from openpyxl import load_workbook
 from pydantic import BaseModel, Field
+from trello import ler_base_de_dados, enviar_trello
+from dotenv import load_dotenv
+
+load_dotenv()
+
+TRELLO_KEY = os.getenv("TRELLO_API_KEY")
+TRELLO_TOKEN = os.getenv("TRELLO_TOKEN")
+
+MAPEAMENTO = {
+    "celula_1": os.getenv("TRELLO_CELULA1_DZ"),
+    "celula_2": os.getenv("TRELLO_CELULA2_DZ")
+}
+
+class DadosCartao(BaseModel):
+    codigo: str
+    quantidade: str
+    op: str
+    linhaCelula: str
 
 try:
     from config_store import APP_HOME, CONFIG_PATH, DEFAULT_CONFIG, load_config, resolve_path, save_config
@@ -1346,6 +1364,39 @@ def index(request: Request):
 def tela_inicial(request: Request):
     return templates.TemplateResponse(request, "tela_inicial.html")
 
+@app.get("/cartao-trello", response_class=HTMLResponse)
+def cartao_trello(request: Request):
+    return templates.TemplateResponse(request, "trello.html")
+
+@app.get("/api/produto")
+def buscar_produto(codigo: str):
+    from trello import produto as descricao_do_Produto
+
+    descricao = descricao_do_Produto(codigo)
+
+    if descricao is None:
+        return {"erro": "Produto não encontrado"}
+
+    return {
+        "descricao": str(descricao["descricao"]),
+        "opcoes": descricao['opcoes']
+    }
+
+@app.post("/api/enviar-para-trello")
+def enviar_cartao_trello(dados: DadosCartao):
+
+    from trello import executar
+    
+    enviar_trello = executar(dados.codigo, dados.op, dados.quantidade, dados.linhaCelula)
+
+    if enviar_trello:
+        return {"messagem": "Cartão enviado para o Trello com sucesso."}
+
+    return {'erro': 'Não foi possível enviar o cartão parao Trello'}
+
+    
+    
+
 
 @app.get("/reposicao", response_class=HTMLResponse)
 def reposicao_page(request: Request):
@@ -1507,8 +1558,15 @@ def api_print_all(background_tasks: BackgroundTasks):
         "message": "Impressao de todos os itens vendidos enfileirada.",
         "total_enviados": len(sold_items),
         "total_itens": len(sold_items),
-        "itens": [{"codigo": item["codigo"], "quantidade": numeric_quantity(item.get("quantidade_vendida"))} for item in sold_items],
+        "itens": [
+            {
+                "codigo": item["codigo"], "quantidade": numeric_quantity(item.get("quantidade_vendida"))
+                } 
+                for item in sold_items
+                ],
     }
+
+
 
 
 if __name__ == "__main__":
