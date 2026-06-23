@@ -4,17 +4,17 @@ import csv
 import textwrap
 
 caminho_origem = {
-    "BASE_DESLIZANTES_XLSX": r"xlsx\base_de_dados.xlsx",
-    "BASE_NEWBV_XLSX": r"xlsx\new_bv.xlsx",
-    "BASE_BASCULANTES_XLSX": r"xlsx\basculantes.xlsx",
-    "BASE_PIVOTANTE_XLSX": r"xlsx\pivotante.xlsx"
+    "BASE_DESLIZANTES_XLSX": r"dados\xlsx\base_de_dados.xlsx",
+    "BASE_NEWBV_XLSX": r"dados\xlsx\new_bv.xlsx",
+    "BASE_BASCULANTES_XLSX": r"dados\xlsx\basculantes.xlsx",
+    "BASE_PIVOTANTE_XLSX": r"dados\xlsx\pivotante.xlsx"
 }
 
 caminho_destino = {
-    "BASE_DESLIZANTES_CSV": r"csv\base_de_dados.csv",
-    "BASE_NEWBV_CSV": r"csv\new_bv.csv",
-    "BASE_BASCULANTES_CSV": r"csv\basculantes.csv",
-    "BASE_PIVOTANTE_CSV": r"csv\pivotante.csv"
+    "BASE_DESLIZANTES_CSV": r"dados\csv\base_de_dados.csv",
+    "BASE_NEWBV_CSV": r"dados\csv\new_bv.csv",
+    "BASE_BASCULANTES_CSV": r"dados\csv\basculantes.csv",
+    "BASE_PIVOTANTE_CSV": r"dados\csv\pivotante.csv"
 }
 
 def cartao_dz(
@@ -158,8 +158,8 @@ KIT DE INSTALAÇÃO: {kit_de_instalação}
 
 
 def atualizar_base_de_dados():
-    if not os.path.exists("csv"):
-        os.makedirs("csv")
+    if not os.path.exists(r"dados\csv"):
+        os.makedirs(r"dados\csv")
 
     # Adicionado a base pivotante nas tarefas de atualização automática
     tarefas = [

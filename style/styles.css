@@ -130,6 +130,7 @@ input {
 .primary-button,
 .icon-button {
   border: 0;
+  border-bottom: 5%;
   background: var(--accent);
   color: var(--accent-text);
   cursor: pointer;
@@ -139,6 +140,8 @@ input {
 
 .primary-button {
   padding: 0 14px;
+  height: 15px;
+  width: auto;
   
 }
 

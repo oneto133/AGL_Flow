@@ -46,7 +46,7 @@
   "labels_dir": "etiquetas",
   "printer_name": "Microsoft Print to PDF",
   "report_dir": "relatorio",
-  "reposicao_csv": "csv/Reposicao e Diversos.csv",
+  "reposicao_csv": "dados/csv/Reposicao e Diversos.csv",
   "source_section_prefix": "reposicaoediversos",
   "two_column_offset_dots": 360
 }

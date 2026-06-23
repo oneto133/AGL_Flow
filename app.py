@@ -19,17 +19,12 @@ from fastapi.templating import Jinja2Templates
 from openpyxl import load_workbook
 from pydantic import BaseModel, Field
 from trello import ler_base_de_dados, enviar_trello
-from dotenv import load_dotenv
+from schemas import ConfigRequest
+from utils import (
+    send_raw_to_printer,
+    get_default_printer_name
+    )
 
-load_dotenv()
-
-TRELLO_KEY = os.getenv("TRELLO_API_KEY")
-TRELLO_TOKEN = os.getenv("TRELLO_TOKEN")
-
-MAPEAMENTO = {
-    "celula_1": os.getenv("TRELLO_CELULA1_DZ"),
-    "celula_2": os.getenv("TRELLO_CELULA2_DZ")
-}
 
 class DadosCartao(BaseModel):
     codigo: str
@@ -45,7 +40,7 @@ except ImportError:
     CONFIG_PATH = CONFIG_DIR / "app_config.json"
     DEFAULT_CONFIG = {
         "data_root": str(APP_HOME),
-        "reposicao_csv": "csv/Reposicao e Diversos.csv",
+        "reposicao_csv": "dados/csv/Reposicao e Diversos.csv",
         "labels_dir": "etiquetas",
         "report_dir": "relatorio",
         "base_file": "relatorio/base.xlsx",
@@ -168,19 +163,6 @@ SERVER_PORT = int(os.getenv("PORT", "8000"))
 class PrintRequest(BaseModel):
     etiqueta: str = Field(min_length=1)
     quantidade: int = Field(ge=1, le=500)
-
-
-class ConfigRequest(BaseModel):
-    data_root: str | None = None
-    reposicao_csv: str | None = None
-    labels_dir: str | None = None
-    report_dir: str | None = None
-    base_file: str | None = None
-    printer_name: str | None = None
-    two_column_offset_dots: int | None = Field(default=None, ge=0, le=4000)
-    label_width_dots: int | None = Field(default=None, ge=1, le=4000)
-    label_height_dots: int | None = Field(default=None, ge=1, le=4000)
-    source_section_prefix: str | None = None
 
 
 class LabelProfileRequest(BaseModel):
@@ -429,7 +411,7 @@ def get_paths(config=None):
     active_profile_id = get_active_label_profile_id(config, active_profiles)
     return {
         "data_root": data_root,
-        "reposicao_csv": resolve_path(config.get("reposicao_csv"), data_root) or data_root / "csv" / "Reposicao e Diversos.csv",
+        "reposicao_csv": resolve_path(config.get("reposicao_csv"), data_root) or data_root / "dados"/ "csv" / "Reposicao e Diversos.csv",
         "labels_dir": resolve_path(config.get("labels_dir"), data_root) or data_root / "etiquetas",
         "report_dir": resolve_path(config.get("report_dir"), data_root) or data_root / "relatorio",
         "base_file": resolve_path(config.get("base_file"), data_root) or data_root / "relatorio" / "base.xlsx",
@@ -1221,54 +1203,6 @@ def _find_draw_start(data):
     return min(positions) if positions else None
 
 
-def get_default_printer_name():
-    winspool = ctypes.WinDLL("winspool.drv")
-    needed = ctypes.wintypes.DWORD(0)
-    winspool.GetDefaultPrinterW(None, ctypes.byref(needed))
-
-    if needed.value == 0:
-        raise RuntimeError("Nenhuma impressora padrao encontrada.")
-
-    buffer = ctypes.create_unicode_buffer(needed.value)
-    if not winspool.GetDefaultPrinterW(buffer, ctypes.byref(needed)):
-        raise ctypes.WinError()
-
-    return buffer.value
-
-
-def send_raw_to_printer(printer_name, data, job_name):
-    winspool = ctypes.WinDLL("winspool.drv")
-    printer_handle = ctypes.wintypes.HANDLE()
-
-    if not winspool.OpenPrinterW(printer_name, ctypes.byref(printer_handle), None):
-        raise ctypes.WinError()
-
-    class DOC_INFO_1(ctypes.Structure):
-        _fields_ = [
-            ("pDocName", ctypes.wintypes.LPWSTR),
-            ("pOutputFile", ctypes.wintypes.LPWSTR),
-            ("pDatatype", ctypes.wintypes.LPWSTR),
-        ]
-
-    doc_info = DOC_INFO_1(job_name, None, "RAW")
-    written = ctypes.wintypes.DWORD(0)
-
-    try:
-        if not winspool.StartDocPrinterW(printer_handle, 1, ctypes.byref(doc_info)):
-            raise ctypes.WinError()
-        try:
-            if not winspool.StartPagePrinter(printer_handle):
-                raise ctypes.WinError()
-            buffer = ctypes.create_string_buffer(data)
-            if not winspool.WritePrinter(printer_handle, buffer, len(data), ctypes.byref(written)):
-                raise ctypes.WinError()
-            winspool.EndPagePrinter(printer_handle)
-        finally:
-            winspool.EndDocPrinter(printer_handle)
-    finally:
-        winspool.ClosePrinter(printer_handle)
-
-
 def serialize_settings(config, paths):
     layout = get_label_layout(config)
     return {
@@ -1393,9 +1327,6 @@ def enviar_cartao_trello(dados: DadosCartao):
         return {"messagem": "Cartão enviado para o Trello com sucesso."}
 
     return {'erro': 'Não foi possível enviar o cartão parao Trello'}
-
-    
-    
 
 
 @app.get("/reposicao", response_class=HTMLResponse)
@@ -1565,8 +1496,6 @@ def api_print_all(background_tasks: BackgroundTasks):
                 for item in sold_items
                 ],
     }
-
-
 
 
 if __name__ == "__main__":

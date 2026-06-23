@@ -1,0 +1,6 @@
+versao 1.2.1
+
+- Limpei um pouco do código divindo em arquivos mais organizados
+- Adicionei agora a cor automática no cartão de acordo com o usuário.
+- Organizei pastas e subpastas, criação de pasta dados para centralizar xlsx e csv
+
