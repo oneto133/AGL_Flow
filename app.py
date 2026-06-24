@@ -1,7 +1,5 @@
-﻿import csv
-import ctypes
+﻿import csv, ctypes, ipaddress
 import ctypes.wintypes
-import ipaddress
 import json
 import os
 import re
