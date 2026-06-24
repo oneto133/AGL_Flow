@@ -12,17 +12,19 @@ import threading
 from datetime import datetime
 from pathlib import Path
 
-from fastapi import BackgroundTasks, FastAPI, HTTPException, Request
-from fastapi.responses import HTMLResponse
+from fastapi import BackgroundTasks, FastAPI, HTTPException, Request, UploadFile, File
+from fastapi.responses import HTMLResponse, FileResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from openpyxl import load_workbook
 from pydantic import BaseModel, Field
-from trello import ler_base_de_dados, enviar_trello
+from trello import ler_base_de_dados, enviar_trello, atualizar_base_de_dados
 from schemas import ConfigRequest
+
 from utils import (
     send_raw_to_printer,
-    get_default_printer_name
+    get_default_printer_name,
+    _find_draw_start
     )
 
 
@@ -33,7 +35,7 @@ class DadosCartao(BaseModel):
     linhaCelula: str
 
 try:
-    from config_store import APP_HOME, CONFIG_PATH, DEFAULT_CONFIG, load_config, resolve_path, save_config
+    from utils.config_store import APP_HOME, CONFIG_PATH, DEFAULT_CONFIG, load_config, resolve_path, save_config
 except ImportError:
     APP_HOME = Path(__file__).resolve().parent
     CONFIG_DIR = APP_HOME / "config"
@@ -128,7 +130,14 @@ except ImportError:
         return (base_dir or APP_HOME) / path
 
 
-RESOURCE_DIR = Path(getattr(sys, "_MEIPASS", APP_HOME))
+if getattr(sys, "fronzen", False) and hasattr(sys, "_MEIPASS"):
+    RESOURCE_DIR = Path(sys._MEIPASS)
+
+else:
+    _atual = Path(__file__).resolve().parent
+    RESOURCE_DIR = _atual.parent if _atual.name == "utils" else _atual
+
+
 RAW_LABEL_EXTENSIONS = {".zpl", ".prn", ".epl"}
 SOURCE_CSV_CODE_KEYS = ("codigo", "cod", "codproduto", "sku", "etiqueta", "unnamed1")
 SOURCE_CSV_SOLD_KEY = "unnamed11"
@@ -147,7 +156,7 @@ LABEL_STORAGE_KEYS = (
     "printer_name",
 )
 
-app = FastAPI(title="Impressao de Etiquetas")
+app = FastAPI(title="PCP - AGL Brasil")
 style_dir = RESOURCE_DIR / "style"
 images_dir = RESOURCE_DIR / "imagens"
 if style_dir.is_dir():
@@ -1198,11 +1207,6 @@ def _shift_zpl_position(data, x_offset=0, y_offset=0):
     return data
 
 
-def _find_draw_start(data):
-    positions = [position for position in (data.find(b"^FO"), data.find(b"^FT"), data.find(b"^BY")) if position >= 0]
-    return min(positions) if positions else None
-
-
 def serialize_settings(config, paths):
     layout = get_label_layout(config)
     return {
@@ -1496,6 +1500,68 @@ def api_print_all(background_tasks: BackgroundTasks):
                 for item in sold_items
                 ],
     }
+
+@app.get("/api/config/download")
+def baixar_base_de_dados(tipo: str):
+    
+    deslizante = 'dados/xlsx/base_de_dados.xlsx'
+    basculante = 'dados/xlsx/basculantes.xlsx'
+    new_bv = 'dados/xlsx/new_bv.xlsx'
+    pivotante = 'dados/xlsx/pivotante.xlsx'
+    
+    if tipo == "deslizante":
+        caminho_arquivo = deslizante
+    if tipo == "basculantes":
+        caminho_arquivo = basculante
+    if tipo == "new_bv":
+        caminho_arquivo = new_bv
+    if tipo == "pivotante":
+        caminho_arquivo = pivotante
+
+
+    if not caminho_arquivo:
+        raise HTTPException(status_code=404, detail="Arquivo de base nao encontrado.")
+
+    return FileResponse(
+        path=caminho_arquivo,
+        media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        filename="Base_de_dados"
+    )
+
+
+@app.post("/api/config/upload")
+async def fazer_upload_base(tipo: str, arquivo: UploadFile = File(...)):
+    ARQUIVOS_BASE = {
+    "deslizante": "dados/xlsx/base_de_dados.xlsx",
+    "basculantes": "dados/xlsx/basculantes.xlsx",
+    "new bv": "dados/xlsx/new_bv.xlsx",
+    "pivotante": "dados/xlsx/pivotante.xlsx"
+}
+
+
+    if tipo not in ARQUIVOS_BASE:
+        raise HTTPException(status_code=400, detail="Tipo de base de dados inválido.")
+    
+    # 2. Valida a extensão do arquivo (apenas .xlsx)
+    if not arquivo.filename.endswith('.xlsx'):
+        raise HTTPException(status_code=400, detail="Apenas arquivos .xlsx são permitidos.")
+        
+    caminho_destino = Path(ARQUIVOS_BASE[tipo])
+    
+    try:
+        # 3. Garante que a pasta de destino exista no servidor
+        caminho_destino.parent.mkdir(parents=True, exist_ok=True)
+        
+        # 4. Salva o arquivo sobrescrevendo o antigo
+        with open(caminho_destino, "wb") as buffer:
+            content = await arquivo.read()
+            buffer.write(content)
+        atualizar_base_de_dados()
+        
+        return {"status": "sucesso", "mensagem": f"Base de {tipo} atualizada com sucesso."}
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Erro ao salvar o arquivo: {str(e)}")
 
 
 if __name__ == "__main__":

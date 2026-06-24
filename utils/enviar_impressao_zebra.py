@@ -53,3 +53,9 @@ def get_default_printer_name():
         raise ctypes.WinError()
 
     return buffer.value
+
+def _find_draw_start(data):
+    "identifica onde inicia os elementos da etiqueta para inserir os dados no local correto"
+
+    positions = [position for position in (data.find(b"^FO"), data.find(b"^FT"), data.find(b"^BY")) if position >= 0]
+    return min(positions) if positions else None

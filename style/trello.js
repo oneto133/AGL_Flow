@@ -3,69 +3,43 @@ const manualSearchButton = document.querySelector("#manualSearchButton");
 const manualDescription = document.querySelector("#manualDescription");
 const manualQuantity = document.querySelector("#manualQuantity");
 const trelloLine = document.querySelector("#trelloLine");
-const trelloLineArrow = document.querySelector("#trelloLineArrow"); // Nova seta mapeada
+const trelloLineArrow = document.querySelector("#trelloLineArrow");
 const trelloLineDropdown = document.querySelector("#trelloLineDropdown");
 const trelloForm = document.querySelector("#trelloForm");
 const statusMessage = document.querySelector("#statusMessage");
 const manualOP = document.querySelector("#manualOP");
 
+const btnConfig = document.getElementById('config-button');
+const sideBar = document.getElementById('configSidebar');
+const btnFechar = document.getElementById('fecharSidebar');
+
+
 let timeout = null;
 let ultimaBusca = "";
-
-// CORRIGIDO: Alterado de 'const' para 'let' para permitir a atualização da lista dinamicamente
 let opcoesCelulas = []; 
 let primeiraOpcaoFiltrada = "";
 
-function renderizarDropdown(textoDigitado, forcarMostrarTudo = false) {
-  if (!trelloLineDropdown) return;
-  trelloLineDropdown.innerHTML = "";
+btnConfig?.addEventListener('click', (e) => {
+  e.preventDefault();
   
-  if (!opcoesCelulas || opcoesCelulas.length === 0) {
-    trelloLineDropdown.style.display = "none";
-    return;
-  }
+  btnConfig.classList.add('girar-engrenagem');
+  
+  setTimeout(() => {
+    btnConfig.classList.remove('girar-engrenagem');
+  }, 800);
 
-  const filtradas = forcarMostrarTudo ? opcoesCelulas : opcoesCelulas.filter(opcao => 
-    opcao.toLowerCase().includes(textoDigitado.toLowerCase())
-  );
+  sideBar?.classList.add('aberto');
+});
 
-  if (filtradas.length === 0) {
-    trelloLineDropdown.style.display = "none";
-    primeiraOpcaoFiltrada = "";
-    return;
-  }
-
-  primeiraOpcaoFiltrada = filtradas[0];
-
-  filtradas.forEach((opcao, index) => {
-    const li = document.createElement("li");
-    li.textContent = opacity = opcao;
-    
-    if (index === 0) {
-      li.classList.add("highlighted");
-    }
-
-    // ALTERADO: Usar mousedown e impedir a propagação do clique
-    li.addEventListener("mousedown", (e) => {
-      e.preventDefault(); // Evita que o input perca o foco antes da hora
-      e.stopPropagation(); // Evita que o clique feche/reabra o menu incorretamente
-      trelloLine.value = opcao;
-      trelloLineDropdown.style.display = "none";
-    });
-
-    trelloLineDropdown.appendChild(li);
-  });
-
-  trelloLineDropdown.style.display = "block";
-}
+btnFechar?.addEventListener('click', () => {
+  sideBar?.classList.remove('aberto');
+});
 
 
-// Evento ao digitar no campo (Filtra dinamicamente)
 trelloLine?.addEventListener("input", (e) => {
   renderizarDropdown(e.target.value.trim());
 });
 
-// Evento ao clicar na SETA LATERAL (Abre ou fecha todas as opções)
 trelloLineArrow?.addEventListener("click", (e) => {
   e.stopPropagation(); // Evita que o evento de clique global feche o menu imediatamente
   if (trelloLineDropdown.style.display === "block") {
@@ -168,7 +142,6 @@ async function enviar_para_trello(codigo, quantidade, op, linhaCelula) {
     headers: {
       "Content-Type": "application/json"
     },
-    // CORRIGIDO: Chave alterada de 'quantidade: quantidade' para 'quantidade' combinando com o Pydantic do Python
     body: JSON.stringify({ codigo, quantidade, op, linhaCelula })
   });
   const data = await response.json();
@@ -207,3 +180,181 @@ trelloForm?.addEventListener("submit", async (event) => {
     statusMessage.className = "login-status error";
   }
 });
+
+function renderizarDropdown(textoDigitado, forcarMostrarTudo = false) {
+  if (!trelloLineDropdown) return;
+  trelloLineDropdown.innerHTML = "";
+  
+  if (!opcoesCelulas || opcoesCelulas.length === 0) {
+    trelloLineDropdown.style.display = "none";
+    return;
+  }
+
+  const filtradas = forcarMostrarTudo ? opcoesCelulas : opcoesCelulas.filter(opcao => 
+    opcao.toLowerCase().includes(textoDigitado.toLowerCase())
+  );
+
+  if (filtradas.length === 0) {
+    trelloLineDropdown.style.display = "none";
+    primeiraOpcaoFiltrada = "";
+    return;
+  }
+
+  primeiraOpcaoFiltrada = filtradas[0];
+
+  filtradas.forEach((opcao, index) => {
+    const li = document.createElement("li");
+    li.textContent = opacity = opcao;
+    
+    if (index === 0) {
+      li.classList.add("highlighted");
+    }
+
+    // ALTERADO: Usar mousedown e impedir a propagação do clique
+    li.addEventListener("mousedown", (e) => {
+      e.preventDefault(); // Evita que o input perca o foco antes da hora
+      e.stopPropagation(); // Evita que o clique feche/reabra o menu incorretamente
+      trelloLine.value = opcao;
+      trelloLineDropdown.style.display = "none";
+    });
+
+    trelloLineDropdown.appendChild(li);
+  });
+
+  trelloLineDropdown.style.display = "block";
+}
+
+// --- LÓGICA DE EXIBIÇÃO DA SIDEBAR (BOTÕES DIREOTOS) ---
+const botoesMenuConfig = document.querySelectorAll('.config-menu-btn');
+
+botoesMenuConfig.forEach(botao => {
+  botao.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const grupoAtual = Math = botao.parentElement;
+    
+    // Fecha as outras abas para manter a organização visual do painel
+    document.querySelectorAll('.config-grupo').forEach(grupo => {
+      if (grupo !== grupoAtual) {
+        grupo.classList.remove('ativo');
+      }
+    });
+
+    // Abre os botões do grupo clicado
+    grupoAtual.classList.toggle('ativo');
+  });
+});
+
+const botoesAcao = document.querySelectorAll('.btn-acao');
+botoesAcao.forEach(btn => {
+  btn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const tipo = btn.getAttribute('data-tipo'); // ex: deslizante, new_bv...
+    const acao = btn.getAttribute('data-acao'); // ex: upload, download
+    
+    if (acao === 'download') {
+      executarDownloadBase(tipo);
+    } else if (acao === 'upload') {
+      console.log(`Ação de Upload para a linha: ${tipo}`);
+      executarUploadBase(tipo); // <--- CORREÇÃO 1: A função precisa ser chamada aqui!
+    }
+  });
+});
+
+async function executarUploadBase(tipoProduto) {
+  // 1. Cria um seletor de arquivos
+  const inputArquivo = document.createElement('input');
+  inputArquivo.type = 'file';
+  inputArquivo.accept = '.xlsx'; 
+  inputArquivo.style.display = 'none'; // Garante que fique invisível
+
+  // CORREÇÃO 2: Anexa ao documento temporariamente para evitar bloqueios do navegador
+  document.body.appendChild(inputArquivo);
+
+  // 2. Quando o usuário escolher o arquivo, o evento dispara
+  inputArquivo.addEventListener('change', async () => {
+    const arquivo = inputArquivo.files[0];
+    
+    // Limpa o elemento do HTML logo após a escolha
+    document.body.removeChild(inputArquivo);
+    
+    if (!arquivo) return;
+
+    // 3. Monta os dados para o envio (Multipart Form Data)
+    const formData = new FormData();
+    formData.append('arquivo', arquivo);
+
+    try {
+      console.log(`Iniciando upload para a linha: ${tipoProduto}`);
+      
+      // 4. Faz a requisição enviando o tipo na URL e o arquivo no corpo
+      const response = await fetch(`/api/config/upload?tipo=${tipoProduto}`, {
+        method: "POST",
+        body: formData
+      });
+
+      const resultado = await response.json();
+
+      if (!response.ok) {
+        throw new Error(resultado.detail || "Erro desconhecido ao enviar o arquivo.");
+      }
+
+      alert(`Sucesso: ${resultado.mensagem}`);
+      console.log(`Upload da linha ${tipoProduto} concluído.`);
+
+    } catch (error) {
+      console.error("Erro no fluxo de upload:", error);
+      alert("Erro ao enviar o arquivo: " + error.message);
+    }
+  });
+
+  // Cancelar a seleção também remove o input da tela para não acumular lixo
+  window.addEventListener('focus', () => {
+    setTimeout(() => {
+      if (document.body.contains(inputArquivo) && !inputArquivo.files.length) {
+        document.body.removeChild(inputArquivo);
+      }
+    }, 300);
+  }, { once: true });
+
+  inputArquivo.click();
+}
+
+// --- FUNÇÃO ADICIONAL PARA ENVIAR A REQUISIÇÃO E BAIXAR O ARQUIVO ---
+async function executarDownloadBase(tipoProduto) {
+  try {
+    console.log(`Iniciando requisição de download para a linha: ${tipoProduto}`);
+    
+    // Faz a chamada para a sua rota do FastAPI
+    const response = await fetch(`/api/config/download?tipo=${tipoProduto}`, {
+      method: "GET"
+    });
+
+    if (!response.ok) {
+      throw new Error("Não foi possível baixar o arquivo da base de dados.");
+    }
+
+    // O segredo está aqui: Transforma a resposta em um arquivo binário (Blob)
+    const blob = await response.blob();
+    
+    // Cria um link invisível na memória do navegador para disparar o download
+    const urlScript = window.URL.createObjectURL(blob);
+    const linkInvisivel = document.createElement('a');
+    linkInvisivel.href = urlScript;
+
+    // Define o nome padrão do arquivo que o operador vai salvar
+    // O ideal é que o Python envie isso no cabeçalho, mas aqui fixamos um padrão seguro
+    linkInvisivel.download = `base_${tipoProduto}_${new Date().toISOString().split('T')[0]}.xlsx`;
+    
+    // Insere o link na tela, clica nele sozinho e depois apaga tudo
+    document.body.appendChild(linkInvisivel);
+    linkInvisivel.click();
+    document.body.removeChild(linkInvisivel);
+    window.URL.revokeObjectURL(urlScript);
+
+    console.log(`Download da linha ${tipoProduto} concluído com sucesso.`);
+
+  } catch (error) {
+    console.error("Erro no fluxo de download:", error);
+    alert("Erro ao baixar o arquivo: " + error.message);
+  }
+}
