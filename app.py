@@ -19,20 +19,14 @@ from fastapi.templating import Jinja2Templates
 from openpyxl import load_workbook
 from pydantic import BaseModel, Field
 from trello import ler_base_de_dados, enviar_trello, atualizar_base_de_dados
-from schemas import ConfigRequest
+from schemas import ConfigRequest, DadosCartao
 
 from utils import (
     send_raw_to_printer,
     get_default_printer_name,
-    _find_draw_start
+    _find_draw_start,
+    value_to_text
     )
-
-
-class DadosCartao(BaseModel):
-    codigo: str
-    quantidade: str
-    op: str
-    linhaCelula: str
 
 try:
     from utils.config_store import APP_HOME, CONFIG_PATH, DEFAULT_CONFIG, load_config, resolve_path, save_config
@@ -480,14 +474,6 @@ def _normalize_key(value):
     normalized = unicodedata.normalize("NFKD", value)
     plain = "".join(char for char in normalized if not unicodedata.combining(char)).lower()
     return re.sub(r"[^a-z0-9]", "", plain)
-
-
-def value_to_text(value):
-    if value is None:
-        return ""
-    if isinstance(value, float) and value.is_integer():
-        return str(int(value))
-    return str(value).strip()
 
 
 def only_digits(value):
@@ -1538,26 +1524,21 @@ async def fazer_upload_base(tipo: str, arquivo: UploadFile = File(...)):
     "pivotante": "dados/xlsx/pivotante.xlsx"
 }
 
-
     if tipo not in ARQUIVOS_BASE:
         raise HTTPException(status_code=400, detail="Tipo de base de dados inválido.")
     
-    # 2. Valida a extensão do arquivo (apenas .xlsx)
     if not arquivo.filename.endswith('.xlsx'):
         raise HTTPException(status_code=400, detail="Apenas arquivos .xlsx são permitidos.")
         
     caminho_destino = Path(ARQUIVOS_BASE[tipo])
     
     try:
-        # 3. Garante que a pasta de destino exista no servidor
         caminho_destino.parent.mkdir(parents=True, exist_ok=True)
-        
-        # 4. Salva o arquivo sobrescrevendo o antigo
         with open(caminho_destino, "wb") as buffer:
             content = await arquivo.read()
             buffer.write(content)
         atualizar_base_de_dados()
-        
+
         return {"status": "sucesso", "mensagem": f"Base de {tipo} atualizada com sucesso."}
         
     except Exception as e:
