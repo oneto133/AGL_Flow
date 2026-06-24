@@ -4,3 +4,8 @@ versao 1.2.1
 - Adicionei agora a cor automática no cartão de acordo com o usuário.
 - Organizei pastas e subpastas, criação de pasta dados para centralizar xlsx e csv
 
+versao 1.2.2
+
+- Adição do painel lateral onde o usuário agora pode baixar a base de dados e depois fazer upload dela alterada
+- Organização de códigos e exclusão de arquivos não utilizados
+
