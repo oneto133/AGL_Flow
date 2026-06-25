@@ -7,7 +7,7 @@ from pathlib import Path
 def get_app_home():
     if getattr(sys, "frozen", False):
         return Path(sys.executable).resolve().parent
-    return Path(__file__).resolve().parent
+    return Path(__file__).resolve().parent.parent
 
 
 APP_HOME = get_app_home()
@@ -16,7 +16,7 @@ CONFIG_PATH = CONFIG_DIR / "app_config.json"
 
 DEFAULT_CONFIG = {
     "data_root": str(APP_HOME),
-    "reposicao_csv": "csv/Reposicao e Diversos.csv",
+    "reposicao_csv": "dados/csv/Reposicao e Diversos.csv",
     "labels_dir": "etiquetas",
     "report_dir": "relatorio",
     "base_file": "relatorio/base.xlsx",
