@@ -1,6 +1,6 @@
 # Nota de ataualização
 
-Documentação principal: [README.md](READEME.md)
+Documentação principal: [README.md](README.md)
 
 ## [1.2.3] - 24/06/2026
 
