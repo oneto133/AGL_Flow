@@ -248,31 +248,18 @@ def produto(codigo):
     except (ValueError, TypeError):
         return None
 
-    # Grupo 1: Apenas Deslizantes
-    celulas_dz = [
-        "Célula 6 - MARCIELE", 
-        "Célula 2 - JULLIE", 
-        "Célula 5 - CRISTIANE", 
-        "Célula 3 - BIANCA"
-    ]
+    df = pd.read_csv(r"dados/csv/config_linhas.csv", encoding="utf-8")
+    celulas_dz = df.loc[df["secao"] == "deslizante", "celula_linha"].tolist()
+    
+    celulas_outros = df.loc[df["secao"] != "deslizante", "celula_linha"].tolist()
 
-    # Grupo 2: Apenas as outras linhas (Basculante, New BV e Pivotantes)
-    celulas_outros = [
-        "NEW BV",
-        "BASCULANTE", 
-        "Célula 1 - PIVOTANTE - ADRIANO", 
-        "Célula 2 - PIVOTANTE - CARLOS", 
-        "Célula 3 - PIVOTANTE - ROLF"
-    ]
-
-    # 1. Busca na base de Deslizantes -> Se achar, exibe APENAS as células DZ
     if os.path.exists(caminho_destino["BASE_DESLIZANTES_CSV"]):
         df = pd.read_csv(caminho_destino["BASE_DESLIZANTES_CSV"], encoding='utf-8')
         retorno = df[df["CÓD DO PRODUTO"] == codigo_int]
         if not retorno.empty:
             return {"descricao": str(retorno.values[0][1]), "opcoes": celulas_dz}
 
-    # 2. Busca New BV -> Se achar, exibe APENAS as outras linhas
+
     if os.path.exists(caminho_destino["BASE_NEWBV_CSV"]):
         df = pd.read_csv(caminho_destino["BASE_NEWBV_CSV"], encoding='utf-8')
         retorno = df[df["CÓD DO PRODUTO"] == codigo_int]

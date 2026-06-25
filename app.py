@@ -23,7 +23,9 @@ from utils import (
     send_raw_to_printer,
     get_default_printer_name,
     _find_draw_start,
-    value_to_text
+    value_to_text,
+    _alterar_nome_linha,
+    _consultar_nome_linhas
     )
 
 try:
@@ -1542,6 +1544,23 @@ async def fazer_upload_base(tipo: str, arquivo: UploadFile = File(...)):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Erro ao salvar o arquivo: {str(e)}")
 
+@app.post("/api/config/alterar-nome-celula")
+async def alterar_nome_celula(atual: str, novo: str):
+    response = _alterar_nome_linha(atual, novo)
+    
+    if response:
+        return{
+            "status": 200,
+            "mensagem": response['mensagem']
+        }
+
+@app.get("/api/consultar/linhas")
+async def consultar_nome_linhas():
+    linhas = _consultar_nome_linhas()
+    return {
+        "status": 200,
+        "mensagem": linhas
+    }
 
 if __name__ == "__main__":
     import uvicorn

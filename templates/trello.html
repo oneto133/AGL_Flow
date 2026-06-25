@@ -84,46 +84,68 @@
         <button id="fecharSidebar" class="sidebar-fechar">&times;</button>
       </div>
       <div class="sidebar-conteudo">
-        <p class="atualizacao" style="margin-bottom: 20px; font-weight: bold;">Atualização de base</p>
+        
+        <div class="secao-retratil">
+          <p class="atualizacao titulo-gatilho" style="margin-bottom: 10px; font-weight: bold; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
+            <span>Atualização de base</span>
+            <span class="seta-icone">▼</span>
+          </p>
+          
+          <div class="conteudo-gatilho" style="display: none;">
+            <div class="config-grupo">
+              <button type="button" class="config-menu-btn">Deslizante</button>
+              <div class="config-sub-opcoes">
+                <button type="button" class="btn-acao btn-upload" data-tipo="deslizante" data-acao="upload">Upload</button>
+                <button type="button" class="btn-acao btn-download" data-tipo="deslizante" data-acao="download">Download</button>
+              </div>
+            </div>
 
-        <!-- Grupo Deslizante -->
-        <div class="config-grupo">
-          <button type="button" class="config-menu-btn">Deslizante</button>
-          <div class="config-sub-opcoes">
-            <button type="button" class="btn-acao btn-upload" data-tipo="deslizante" data-acao="upload">Upload</button>
-            <button type="button" class="btn-acao btn-download" data-tipo="deslizante" data-acao="download">Download</button>
+            <!-- Grupo New BV -->
+            <div class="config-grupo">
+              <button type="button" class="config-menu-btn">New BV</button>
+              <div class="config-sub-opcoes">
+                <button type="button" class="btn-acao btn-upload" data-tipo="new_bv" data-acao="upload">Upload</button>
+                <button type="button" class="btn-acao btn-download" data-tipo="new_bv" data-acao="download">Download</button>
+              </div>
+            </div>
+
+            <!-- Grupo Pivotante -->
+            <div class="config-grupo">
+              <button type="button" class="config-menu-btn">Pivotante</button>
+              <div class="config-sub-opcoes">
+                <button type="button" class="btn-acao btn-upload" data-tipo="pivotante" data-acao="upload">Upload</button>
+                <button type="button" class="btn-acao btn-download" data-tipo="pivotante" data-acao="download">Download</button>
+              </div>
+            </div>
+
+            <!-- Grupo Basculantes -->
+            <div class="config-grupo">
+              <button type="button" class="config-menu-btn">Basculantes</button>
+              <div class="config-sub-opcoes">
+                <button type="button" class="btn-acao btn-upload" data-tipo="basculante" data-acao="upload">Upload</button>
+                <button type="button" class="btn-acao btn-download" data-tipo="basculante" data-acao="download">Download</button>
+              </div>
+            </div>
           </div>
         </div>
 
-        <!-- Grupo New BV -->
-        <div class="config-grupo">
-          <button type="button" class="config-menu-btn">New BV</button>
-          <div class="config-sub-opcoes">
-            <button type="button" class="btn-acao btn-upload" data-tipo="new_bv" data-acao="upload">Upload</button>
-            <button type="button" class="btn-acao btn-download" data-tipo="new_bv" data-acao="download">Download</button>
-          </div>
-        </div>
+        <div class="secao-retratil" style="margin-top: 20px;">
+          <p class="atualizacao titulo-gatilho" style="margin-bottom: 10px; font-weight: bold; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
+            <span>Alterar nome da Célula/linha</span>
+            <span class="seta-icone">▼</span>
+          </p>
 
-        <!-- Grupo Pivotante -->
-        <div class="config-grupo">
-          <button type="button" class="config-menu-btn">Pivotante</button>
-          <div class="config-sub-opcoes">
-            <button type="button" class="btn-acao btn-upload" data-tipo="pivotante" data-acao="upload">Upload</button>
-            <button type="button" class="btn-acao btn-download" data-tipo="pivotante" data-acao="download">Download</button>
-          </div>
-        </div>
-
-        <div class="config-grupo">
-          <button type="button" class="config-menu-btn">Basculantes</button>
-          <div class="config-sub-opcoes">
-            <button type="button" class="btn-acao btn-upload" data-tipo="basculante" data-acao="upload">Upload</button>
-            <button type="button" class="btn-acao btn-download" data-tipo="basculante" data-acao="download">Download</button>
+          <div class="conteudo-gatilho" style="display: none;">
+            <div class="config-grupo">
+              <button type="button" class="config-menu-btn" id="btnMenuLinhas">Linhas</button>
+              <div class="config-sub-opcoes" id="containerListaLinhas" style="display: none; flex-direction: column; gap: 10px; padding: 10px 0;">
+              </div>
+            </div>
           </div>
         </div>
 
       </div>
     </div>
-
 
     <script src="/style/trello.js"></script>
   </body>

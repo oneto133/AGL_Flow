@@ -307,7 +307,6 @@ async function executarUploadBase(tipoProduto) {
     }
   });
 
-  // Cancelar a seleção também remove o input da tela para não acumular lixo
   window.addEventListener('focus', () => {
     setTimeout(() => {
       if (document.body.contains(inputArquivo) && !inputArquivo.files.length) {
@@ -319,7 +318,6 @@ async function executarUploadBase(tipoProduto) {
   inputArquivo.click();
 }
 
-// --- FUNÇÃO ADICIONAL PARA ENVIAR A REQUISIÇÃO E BAIXAR O ARQUIVO ---
 async function executarDownloadBase(tipoProduto) {
   try {
     console.log(`Iniciando requisição de download para a linha: ${tipoProduto}`);
@@ -358,3 +356,127 @@ async function executarDownloadBase(tipoProduto) {
     alert("Erro ao baixar o arquivo: " + error.message);
   }
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+    const btnMenuLinhas = document.getElementById("btnMenuLinhas");
+    const containerListaLinhas = document.getElementById("containerListaLinhas");
+
+    // 1. Controla o abrir/fechar do menu de linhas e busca os dados da API
+    btnMenuLinhas.addEventListener("click", () => {
+        if (containerListaLinhas.style.display === "none" || containerListaLinhas.style.display === "") {
+            containerListaLinhas.style.display = "flex";
+            renderizarLinhasDoCSV();
+        } else {
+            containerListaLinhas.style.display = "none";
+        }
+    });
+
+    // 2. Busca as linhas na API e renderiza os elementos na tela
+    function renderizarLinhasDoCSV() {
+        containerListaLinhas.innerHTML = "<p style='color: gray; font-size: 12px;'>Carregando linhas...</p>";
+
+        fetch('/api/consultar/linhas')
+            .then(response => response.json())
+            .then(res => {
+                if (res.status === 200) {
+                    containerListaLinhas.innerHTML = ""; // Limpa o carregando
+
+                    res.mensagem.forEach(nomeLinha => {
+                        // Cria o container individual da linha
+                        const itemLinha = document.createElement("div");
+                        itemLinha.style.marginBottom = "8px";
+
+                        // Cria o botão/texto com o nome da linha
+                        const btnLinha = document.createElement("button");
+                        btnLinha.type = "button";
+                        btnLinha.className = "btn-acao"; // Reaproveita seus estilos
+                        btnLinha.style.width = "100%";
+                        btnLinha.style.textAlign = "left";
+                        btnLinha.innerText = nomeLinha;
+
+                        // Cria o bloco do formulário de edição (escondido por padrão)
+                        const formEdicao = document.createElement("div");
+                        formEdicao.style.display = "none";
+                        formEdicao.style.marginTop = "5px";
+                        formEdicao.style.gap = "5px";
+
+                        formEdicao.innerHTML = `
+                            <input type="text" class="input-edicao-linha" value="${nomeLinha}" style="flex: 1; padding: 4px; border: 1px solid #ccc; border-radius: 4px; color: #000;">
+                            <button type="button" class="btn-salvar-linha" style="padding: 4px 8px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer;">✔</button>
+                        `;
+
+                        // Evento: Ao clicar no nome da linha, abre/fecha o input embaixo
+                        btnLinha.addEventListener("click", () => {
+                            formEdicao.style.display = formEdicao.style.display === "none" ? "flex" : "none";
+                        });
+
+                        // Evento: Ao clicar no botão de check (salvar)
+                        const btnSalvar = formEdicao.querySelector(".btn-salvar-linha");
+                        const inputNovoNome = formEdicao.querySelector(".input-edicao-linha");
+
+                        btnSalvar.addEventListener("click", () => {
+                            const novoNome = inputNovoNome.value.trim();
+                            if (novoNome && novoNome !== nomeLinha) {
+                                salvarNovoNomeLinha(nomeLinha, novoNome);
+                            }
+                        });
+
+                        // Junta as partes e joga no container principal
+                        itemLinha.appendChild(btnLinha);
+                        itemLinha.appendChild(formEdicao);
+                        containerListaLinhas.appendChild(itemLinha);
+                    });
+                } else {
+                    containerListaLinhas.innerHTML = `<p style='color: red;'>Erro: ${res.mensagem}</p>`;
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                containerListaLinhas.innerHTML = "<p style='color: red;'>Erro de conexão.</p>";
+            });
+    }
+
+    // 3. Envia o comando de alteração para o seu FastAPI
+    function salvarNovoNomeLinha(nomeAtual, nomeNovo) {
+        const url = `/api/config/alterar-nome-celula?atual=${encodeURIComponent(nomeAtual)}&novo=${encodeURIComponent(nomeNovo)}`;
+
+        fetch(url, { method: 'POST' })
+            .then(response => response.json())
+            .then(dados => {
+                if (dados.status === 200) {
+                    alert(`Sucesso! ${dados.mensagem}`);
+                    renderizarLinhasDoCSV(); // Recarrega a lista com os novos nomes atualizados
+                } else {
+                    alert(`Erro: ${dados.mensagem}`);
+                }
+            })
+            .catch(erro => {
+                console.error(erro);
+                alert('Erro de comunicação com o servidor.');
+            });
+    }
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+    // Captura todas as seções retráteis da sidebar
+    const titulosGatilho = document.querySelectorAll(".titulo-gatilho");
+
+    titulosGatilho.forEach(titulo => {
+        titulo.addEventListener("click", () => {
+            // Encontra o container de conteúdo logo abaixo do título clicado
+            const conteudo = titulo.nextElementSibling;
+            const seta = titulo.querySelector(".seta-icone");
+
+            // Alterna a exibição entre bloco e oculto
+            if (conteudo.style.display === "none") {
+                conteudo.style.display = "block";
+                seta.innerText = "▼"; // Seta para baixo se aberto
+            } else {
+                conteudo.style.display = "none";
+                seta.innerText = "►"; // Seta para o lado se fechado
+            }
+        });
+    });
+
+    // ... Mantenha o restante das suas funções de renderizarLinhasDoCSV() e salvarNovoNomeLinha() abaixo ...
+});
