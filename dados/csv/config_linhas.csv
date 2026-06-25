@@ -3,11 +3,8 @@ id,celula_linha,secao,cor_cartao,id_lista
 4,Célula 3 - BIANCA,deslizante,red,67090b4ce2eb006f55301420
 3,Célula 5 - CRISTIANE,deslizante,blue,67090b55def36384fdaecaf0
 1,Célula 6 - MARCIELE,deslizante,green,6807d09f630e923a7a6f4357
-
-
-
 5,NEW BV,newbv,orange,6787f8b09eb096ccc694bd5a
 6,BASCULANTE,basculante,green,65e8ce62e06fcb0089e09d00
 7,Célula 1 - PIVOTANTE - ADRIANO,pivotante,blue,68c9668e66279a3ce2c2c962
 8,Célula 2 - PIVOTANTE - CARLOS,pivotante,purple,68c96695d275d94d9daba124
-9,Célula 3 - PIVOTANTE - ROLF,pivotante,red,69a6be4d9ffb44018d6dd8d2
+9,Célula 3 - PIVOTANTE - THALES,pivotante,red,69a6be4d9ffb44018d6dd8d2
