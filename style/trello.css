@@ -947,22 +947,6 @@ body.modal-open {
   margin: 14px auto;
 }
 
-.label-config-panel {
-  position: relative;
-  overflow: hidden;
-}
-
-.label-config-panel::after {
-  content: "";
-  position: absolute;
-  inset: auto -12% -28% auto;
-  width: 320px;
-  height: 320px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(241, 194, 50, 0.12), transparent 66%);
-  pointer-events: none;
-}
-
 .label-config-copy {
   margin: 8px 0 0;
   color: var(--muted);
@@ -1629,6 +1613,24 @@ body.modal-open {
 }
 
 .btn-download {
-  background-color: gray !important; /* Azul padrão do primary-button */
+  background-color: gray !important;
   color: white !important;
+}
+
+.container-enviar-trello{
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.prioridade{
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  
+}
+
+.prioridade-check{
+  transform: scale(0.6);
 }

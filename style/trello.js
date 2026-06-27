@@ -56,7 +56,6 @@ trelloLine?.addEventListener("click", (e) => {
   renderizarDropdown(trelloLine.value.trim(), true);
 });
 
-// Captura a tecla TAB ou ENTER para fazer o autocompletar instantâneo
 trelloLine?.addEventListener("keydown", (e) => {
   if ((e.key === "Tab" || e.key === "Enter") && primeiraOpcaoFiltrada) {
     if (trelloLine.value.toLowerCase() !== primeiraOpcaoFiltrada.toLowerCase()) {
@@ -67,14 +66,11 @@ trelloLine?.addEventListener("keydown", (e) => {
   }
 });
 
-// Fecha a lista se clicar em qualquer outra parte vazia da tela
 document.addEventListener("click", (e) => {
   if (e.target !== trelloLine && e.target !== trelloLineDropdown && e.target !== trelloLineArrow) {
     if (trelloLineDropdown) trelloLineDropdown.style.display = "none";
   }
 });
-
-// --- LÓGICA DE BUSCA DO PRODUTO ---
 
 manualSearchButton?.addEventListener("click", () => {
   const codigo = manualCode.value.trim();
@@ -102,6 +98,7 @@ manualCode?.addEventListener("input", () => {
   }, 300);
 });
 
+
 async function buscarProduto(codigo) {
   try {
     ultimaBusca = codigo;
@@ -121,10 +118,9 @@ async function buscarProduto(codigo) {
     }
 
     manualDescription.value = data.descricao;
-    
-    // FUNCIONA AGORA: Atribuição permitida pois alteramos para 'let' na linha 16
+
     opcoesCelulas = data.opcoes || [];
-    trelloLine.value = ""; // Limpa escolhas antigas
+    trelloLine.value = "";
     
     statusMessage.textContent = "";
     statusMessage.className = "login-status";
@@ -137,13 +133,20 @@ async function buscarProduto(codigo) {
 }
 
 async function enviar_para_trello(codigo, quantidade, op, linhaCelula) {
+  const prioridade = document.getElementById('prioridade').checked;
   const response = await fetch("/api/enviar-para-trello", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
     },
-    body: JSON.stringify({ codigo, quantidade, op, linhaCelula })
+    body: JSON.stringify({ 
+      codigo, 
+      quantidade, 
+      op, 
+      linhaCelula,
+      posicao: prioridade ? "top" : "bottom"})
   });
+
   const data = await response.json();
   if (!response.ok || data.erro) {
     throw new Error(data.erro || "Erro ao enviar para Trello.");
@@ -210,7 +213,6 @@ function renderizarDropdown(textoDigitado, forcarMostrarTudo = false) {
       li.classList.add("highlighted");
     }
 
-    // ALTERADO: Usar mousedown e impedir a propagação do clique
     li.addEventListener("mousedown", (e) => {
       e.preventDefault(); // Evita que o input perca o foco antes da hora
       e.stopPropagation(); // Evita que o clique feche/reabra o menu incorretamente
@@ -224,7 +226,6 @@ function renderizarDropdown(textoDigitado, forcarMostrarTudo = false) {
   trelloLineDropdown.style.display = "block";
 }
 
-// --- LÓGICA DE EXIBIÇÃO DA SIDEBAR (BOTÕES DIREOTOS) ---
 const botoesMenuConfig = document.querySelectorAll('.config-menu-btn');
 
 botoesMenuConfig.forEach(botao => {
@@ -232,14 +233,12 @@ botoesMenuConfig.forEach(botao => {
     e.stopPropagation();
     const grupoAtual = Math = botao.parentElement;
     
-    // Fecha as outras abas para manter a organização visual do painel
     document.querySelectorAll('.config-grupo').forEach(grupo => {
       if (grupo !== grupoAtual) {
         grupo.classList.remove('ativo');
       }
     });
 
-    // Abre os botões do grupo clicado
     grupoAtual.classList.toggle('ativo');
   });
 });
@@ -360,8 +359,6 @@ async function executarDownloadBase(tipoProduto) {
 document.addEventListener("DOMContentLoaded", () => {
     const btnMenuLinhas = document.getElementById("btnMenuLinhas");
     const containerListaLinhas = document.getElementById("containerListaLinhas");
-
-    // 1. Controla o abrir/fechar do menu de linhas e busca os dados da API
     btnMenuLinhas.addEventListener("click", () => {
         if (containerListaLinhas.style.display === "none" || containerListaLinhas.style.display === "") {
             containerListaLinhas.style.display = "flex";
@@ -435,8 +432,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 containerListaLinhas.innerHTML = "<p style='color: red;'>Erro de conexão.</p>";
             });
     }
-
-    // 3. Envia o comando de alteração para o seu FastAPI
     function salvarNovoNomeLinha(nomeAtual, nomeNovo) {
         const url = `/api/config/alterar-nome-celula?atual=${encodeURIComponent(nomeAtual)}&novo=${encodeURIComponent(nomeNovo)}`;
 
@@ -445,7 +440,7 @@ document.addEventListener("DOMContentLoaded", () => {
             .then(dados => {
                 if (dados.status === 200) {
                     alert(`Sucesso! ${dados.mensagem}`);
-                    renderizarLinhasDoCSV(); // Recarrega a lista com os novos nomes atualizados
+                    renderizarLinhasDoCSV();
                 } else {
                     alert(`Erro: ${dados.mensagem}`);
                 }
@@ -458,7 +453,6 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
-    // Captura todas as seções retráteis da sidebar
     const titulosGatilho = document.querySelectorAll(".titulo-gatilho");
 
     titulosGatilho.forEach(titulo => {
@@ -470,13 +464,12 @@ document.addEventListener("DOMContentLoaded", () => {
             // Alterna a exibição entre bloco e oculto
             if (conteudo.style.display === "none") {
                 conteudo.style.display = "block";
-                seta.innerText = "▼"; // Seta para baixo se aberto
+                seta.innerText = "▼";
             } else {
                 conteudo.style.display = "none";
-                seta.innerText = "►"; // Seta para o lado se fechado
+                seta.innerText = "►";
             }
         });
     });
-
-    // ... Mantenha o restante das suas funções de renderizarLinhasDoCSV() e salvarNovoNomeLinha() abaixo ...
 });
+

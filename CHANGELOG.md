@@ -2,6 +2,17 @@
 
 Documentação principal: [README.md](README.md)
 
+## [1.2.4] - 27/06/2026
+
+### Adicionado
+- Agora ao sequenciar, os dados de sequenciamento são salvos em uma tabela, já preparando para possível sequenciamento centralizado.
+- Verificação de cartões movidos para Feito ou Arquivados, ao retornar resposta positiva, altera o status do cartão para concluído e salva a hora da finalização.
+
+### Alterado
+- Refatoração do código
+
+---
+
 ## [1.2.3] - 24/06/2026
 
 ### Adicionado

@@ -5,3 +5,4 @@ class DadosCartao(BaseModel):
     quantidade: str
     op: str
     linhaCelula: str
+    posicao: str

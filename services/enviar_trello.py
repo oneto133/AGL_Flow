@@ -1,23 +1,18 @@
-import os
 import requests
-from dotenv import load_dotenv
 from .cartao import ler_base_de_dados
 import pandas as pd
 from .criar_sequenciamento import sequenciar
 from datetime import datetime
 from schemas import SequenciarLinha
-
-load_dotenv()
-
-TRELLO_KEY = os.getenv("TRELLO_API_KEY")
-TRELLO_TOKEN = os.getenv("TRELLO_TOKEN")
+from config.paths import TRELLO_KEY, TRELLO_TOKEN
 
 config_linhas = r"dados\csv\config_linhas.csv"
 
 def criar_cartao_trello(
         titulo: str,
         descricao: str,
-        id_lista: str
+        id_lista: str,
+        pos: str
 ):
     if not id_lista:
         print("⚠️ ERRO: O ID da lista do Trello está vazio.")
@@ -34,7 +29,8 @@ def criar_cartao_trello(
         "token": TRELLO_TOKEN,
         "idList": id_lista,
         "name": titulo,
-        "desc": descricao
+        "desc": descricao,
+        "pos": pos
     }
 
     resposta = requests.post(url, params=parametros)
@@ -54,7 +50,7 @@ def criar_cartao_trello(
         "dados": resposta.json()
     }
 
-def executar(codigo, op, qtd, linha_celula):
+def executar(codigo, op, qtd, linha_celula, pos="bottom"):
     """
     executa o envio do cartão para o trello
 
@@ -82,13 +78,12 @@ def executar(codigo, op, qtd, linha_celula):
         print(f"Erro: Verifique a sua base de linhas: {linha_celula}")
         return False
 
-    resultado = criar_cartao_trello(titulo_cartao, conteudo_cartao["conteudo"], id_lista)
+    resultado = criar_cartao_trello(titulo_cartao, conteudo_cartao["conteudo"], id_lista, pos)
 
     if resultado.get('sucesso', False):
         id_cartao_criado = resultado['dados'].get('id')
 
         atualizar_cor(id_cartao= id_cartao_criado, cor=color)
-
         linha = SequenciarLinha(
             op = op,
             codigo_produto = codigo,
@@ -96,7 +91,7 @@ def executar(codigo, op, qtd, linha_celula):
             quantidade = qtd,
             linha = linha_celula,
             id_cartao = id_cartao_criado,
-            data_hora_sequenciamento = datetime.now()
+            data_hora_sequenciamento = datetime.now().isoformat()
         )        
 
         sequenciar(linha)
@@ -104,9 +99,6 @@ def executar(codigo, op, qtd, linha_celula):
         return resultado.get('sucesso', False)
     
 def atualizar_cor(id_cartao, cor):
-
-    #aplicar cor ao cartão criado do trello
-
     url = f"https://api.trello.com/1/cards/{id_cartao}"
 
     payload_cor = {
