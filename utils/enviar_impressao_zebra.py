@@ -1,4 +1,7 @@
 import ctypes, re
+from pathlib import Path
+from datetime import datetime
+from .normalizar import *
 
 def send_raw_to_printer(printer_name, data, job_name):
     """
@@ -99,3 +102,97 @@ def ensure_parent_dirs(paths):
     paths["labels_dir"].mkdir(parents=True, exist_ok=True)
     paths["reposicao_csv"].parent.mkdir(parents=True, exist_ok=True)
     paths["base_file"].parent.mkdir(parents=True, exist_ok=True)
+
+
+def _find_matching_code(values, labels_dir):
+    label_codes = {path.stem for path in labels_dir.glob("*") if path.is_file()}
+    for value in values:
+        cleaned = Path(str(value).strip()).stem
+        if cleaned in label_codes:
+            return cleaned
+    return ""
+
+def build_label_column(item, position, config):
+    x_offset = int(position.get("x", 0))
+    y_offset = int(position.get("y", 0))
+
+    description, description_font, description_width = _build_description_layout(item.get("nome") or "")
+    code = zpl_text(item.get("codigo") or "")
+    barcode = only_digits(item.get("codigo_barras") or "")
+    current_date = datetime.now().strftime("%d/%m/%Y %H:%M")
+
+    commands = [
+
+        f"""
+            ^FO{x_offset + 22},{y_offset + 28}
+            ^A0N,{description_font},{description_font}
+            ^FB{description_width},3,1,L,0
+            ^FD{description}^FS
+            """.strip(),
+
+        # =========================
+        # CÓDIGO
+        # =========================
+        f"""
+            ^FO{x_offset + 22},{y_offset + 96}
+            ^A0N,22,22
+            ^FD{code}^FS
+            """.strip(),
+
+        # =========================
+        # DATA
+        # =========================
+        f"""
+            ^FO{x_offset + 165},{y_offset + 96}
+            ^A0N,16,16
+            ^FD{current_date}^FS
+            """.strip(),
+                ]
+
+    if barcode:
+
+        commands.extend([
+
+            # =========================
+            # CÓDIGO DE BARRAS
+            # =========================
+            f"""
+            ^BY2,2,52
+            ^FT{x_offset + 58},{y_offset + 178}
+            ^BEN,52,Y,N
+            ^FD{barcode}^FS
+            """.strip()
+
+                    ])
+
+    else:
+
+        commands.append(
+
+            f"""
+                ^FO{x_offset + 22},{y_offset + 145}
+                ^A0N,20,20
+                ^FDEAN NAO ENCONTRADO^FS
+                """.strip()
+
+                        )
+
+    return commands
+
+
+def _build_description_layout(value):
+    description = re.sub(r"\s+", " ", zpl_text(value or "")).strip()
+    length = len(description)
+    estimated_lines = min(3, max(1, (length + 27) // 28))
+
+    if estimated_lines >= 3:
+        font_size = 18
+        box_width = 232
+    elif estimated_lines == 2:
+        font_size = 20
+        box_width = 242
+    else:
+        font_size = 22
+        box_width = 250
+
+    return description, font_size, box_width

@@ -18,7 +18,8 @@ from contextlib import asynccontextmanager
 
 from utils import (
     send_raw_to_printer, get_default_printer_name, _find_draw_start, value_to_text, _alterar_nome_linha, _consultar_nome_linhas,
-    _last_pq_match, _last_zpl_label_match, _shift_zpl_position, prepare_raw_label, only_digits, ensure_parent_dirs
+    _last_pq_match, _last_zpl_label_match, _shift_zpl_position, prepare_raw_label, only_digits, ensure_parent_dirs, _find_matching_code
+    , build_label_column
     )
 
 from services import verificar_cartoes
@@ -483,15 +484,6 @@ def _normalize_key(value):
     plain = "".join(char for char in normalized if not unicodedata.combining(char)).lower()
     return re.sub(r"[^a-z0-9]", "", plain)
 
-def strip_accents(value):
-    normalized = unicodedata.normalize("NFKD", value or "")
-    return "".join(char for char in normalized if not unicodedata.combining(char))
-
-
-def zpl_text(value):
-    text = strip_accents(value).upper()
-    return text.replace("\\", " ").replace("^", " ").replace("~", " ")
-
 
 def numeric_quantity(value):
     if isinstance(value, (int, float)):
@@ -682,15 +674,6 @@ def _row_from_source_list(index, row, paths):
         "quantidade_vendida": numeric_quantity(quantidade_vendida),
         "dados": {"linha": index, "valores": values},
     }
-
-
-def _find_matching_code(values, labels_dir):
-    label_codes = {path.stem for path in labels_dir.glob("*") if path.is_file()}
-    for value in values:
-        cleaned = Path(str(value).strip()).stem
-        if cleaned in label_codes:
-            return cleaned
-    return ""
 
 
 def find_label_file(nome, labels_dir=None):
@@ -1014,95 +997,6 @@ def build_dynamic_zpl_block(item, rows, columns, config):
     return ("\r\n".join(commands) + "\r\n").encode("utf-8")
 
 
-def _build_description_layout(value):
-    description = re.sub(r"\s+", " ", zpl_text(value or "")).strip()
-    length = len(description)
-    estimated_lines = min(3, max(1, (length + 27) // 28))
-
-    if estimated_lines >= 3:
-        font_size = 18
-        box_width = 232
-    elif estimated_lines == 2:
-        font_size = 20
-        box_width = 242
-    else:
-        font_size = 22
-        box_width = 250
-
-    return description, font_size, box_width
-
-
-def build_label_column(item, position, config):
-    x_offset = int(position.get("x", 0))
-    y_offset = int(position.get("y", 0))
-
-    description, description_font, description_width = _build_description_layout(item.get("nome") or "")
-    code = zpl_text(item.get("codigo") or "")
-    barcode = only_digits(item.get("codigo_barras") or "")
-    current_date = datetime.now().strftime("%d/%m/%Y %H:%M")
-
-    commands = [
-
-        # =========================
-        # DESCRIÇÃO
-        # =========================
-        f"""
-            ^FO{x_offset + 22},{y_offset + 28}
-            ^A0N,{description_font},{description_font}
-            ^FB{description_width},3,1,L,0
-            ^FD{description}^FS
-            """.strip(),
-
-        # =========================
-        # CÓDIGO
-        # =========================
-        f"""
-            ^FO{x_offset + 22},{y_offset + 96}
-            ^A0N,22,22
-            ^FD{code}^FS
-            """.strip(),
-
-        # =========================
-        # DATA
-        # =========================
-        f"""
-            ^FO{x_offset + 165},{y_offset + 96}
-            ^A0N,16,16
-            ^FD{current_date}^FS
-            """.strip(),
-                ]
-
-    if barcode:
-
-        commands.extend([
-
-            # =========================
-            # CÓDIGO DE BARRAS
-            # =========================
-            f"""
-            ^BY2,2,52
-            ^FT{x_offset + 58},{y_offset + 178}
-            ^BEN,52,Y,N
-            ^FD{barcode}^FS
-            """.strip()
-
-                    ])
-
-    else:
-
-        commands.append(
-
-            f"""
-                ^FO{x_offset + 22},{y_offset + 145}
-                ^A0N,20,20
-                ^FDEAN NAO ENCONTRADO^FS
-                """.strip()
-
-                        )
-
-    return commands
-
-
 def print_raw_label(label_path, quantidade, printer_name=None):
     config = get_paths()
     printer_name = printer_name or config["printer_name"] or get_default_printer_name()
@@ -1375,7 +1269,6 @@ def api_reset_label_config():
         "message": "Configuracao de etiquetas restaurada.",
         "config": serialize_label_config(get_config()),
     }
-
 
 @app.get("/api/config")
 def api_get_config():
