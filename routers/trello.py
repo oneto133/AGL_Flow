@@ -16,7 +16,7 @@ def cartao_trello(request: Request):
 @router.post("/api/enviar-para-trello")
 def enviar_cartao_trello(dados: DadosCartao):
 
-    enviar_trello = executar(dados.codigo, dados.op, dados.quantidade, dados.linhaCelula)
+    enviar_trello = executar(dados.codigo, dados.op, dados.quantidade, dados.linhaCelula, dados.posicao)
 
     if enviar_trello:
         return {"mensagem": "Cartão enviado para o Trello com sucesso."}

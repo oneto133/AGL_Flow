@@ -93,3 +93,9 @@ def prepare_raw_label(data, quantidade):
         return data[:last_xz] + f"^PQ{quantidade},0,1,Y\r\n".encode("ascii") + data[last_xz:]
 
     return data
+
+def ensure_parent_dirs(paths):
+    paths["report_dir"].mkdir(parents=True, exist_ok=True)
+    paths["labels_dir"].mkdir(parents=True, exist_ok=True)
+    paths["reposicao_csv"].parent.mkdir(parents=True, exist_ok=True)
+    paths["base_file"].parent.mkdir(parents=True, exist_ok=True)

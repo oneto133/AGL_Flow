@@ -1,8 +1,6 @@
-﻿import csv, ctypes, ipaddress
-import ctypes.wintypes, os, json
-import re
-import sys
-import socket
+﻿import csv, ctypes, ipaddress, asyncio
+import ctypes.wintypes, os, json, re
+import sys, socket
 import unicodedata
 import threading
 from datetime import datetime
@@ -16,12 +14,14 @@ from openpyxl import load_workbook
 from pydantic import BaseModel, Field
 from services import atualizar_base_de_dados
 from schemas import ConfigRequest
+from contextlib import asynccontextmanager
 
 from utils import (
-    send_raw_to_printer, get_default_printer_name, _find_draw_start, value_to_text,
-    _alterar_nome_linha, _consultar_nome_linhas, _last_pq_match, _last_zpl_label_match,
-    _shift_zpl_position, prepare_raw_label
+    send_raw_to_printer, get_default_printer_name, _find_draw_start, value_to_text, _alterar_nome_linha, _consultar_nome_linhas,
+    _last_pq_match, _last_zpl_label_match, _shift_zpl_position, prepare_raw_label, only_digits, ensure_parent_dirs
     )
+
+from services import verificar_cartoes
 
 from routers.trello import router as trello_router
 
@@ -147,7 +147,21 @@ LABEL_STORAGE_KEYS = (
     "printer_name",
 )
 
-app = FastAPI(title="PCP - AGL Brasil")
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    task = asyncio.create_task(verificar_cartoes())
+
+    yield
+
+    task.cancel()
+    try:
+        await task
+    except asyncio.CancelledError:
+        pass
+
+
+app = FastAPI(title="PCP - AGL Brasil",
+              lifespan=lifespan)
 
 app.include_router(trello_router)
 
@@ -439,13 +453,6 @@ def get_paths(config=None):
     }
 
 
-def ensure_parent_dirs(paths):
-    paths["report_dir"].mkdir(parents=True, exist_ok=True)
-    paths["labels_dir"].mkdir(parents=True, exist_ok=True)
-    paths["reposicao_csv"].parent.mkdir(parents=True, exist_ok=True)
-    paths["base_file"].parent.mkdir(parents=True, exist_ok=True)
-
-
 def get_reposicao_metadata(config=None):
     paths = get_paths(config)
     csv_path = paths["reposicao_csv"]
@@ -475,11 +482,6 @@ def _normalize_key(value):
     normalized = unicodedata.normalize("NFKD", value)
     plain = "".join(char for char in normalized if not unicodedata.combining(char)).lower()
     return re.sub(r"[^a-z0-9]", "", plain)
-
-
-def only_digits(value):
-    return re.sub(r"\D", "", value or "")
-
 
 def strip_accents(value):
     normalized = unicodedata.normalize("NFKD", value or "")

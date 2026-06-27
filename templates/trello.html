@@ -14,17 +14,13 @@
         <a href="/tela_inicial" class="primary-button" id="back-button" style="text-decoration: none;">
           Voltar
         </a>
-
-        <!-- URL do xmlns corrigida para o padrão oficial estrutural -->
         <a class="config" id="config-button" 
         style="display: inline-flex !important; align-items: center !important; justify-content: center !important; width: 36px !important; height: 36px !important; cursor: pointer !important; text-decoration: none !important; margin-right: 20px;">
           <svg xmlns="http://w3.org" viewBox="0 0 24 24" fill="currentColor" style="width: 24px !important; height: 24px !important; display: block !important;">
             <path d="M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l-.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zM12 15.5c-1.93 0-3-1.07-3-3s1.07-3 3-3s3 1.07 3 3s-1.07 3-3 3z"/>
           </svg>
         </a>
-
       </header>
-
 
       <img src="imagens/logo_agl.png" alt="Logo AGL" class="logo">
       
@@ -68,8 +64,13 @@
               <ul id="trelloLineDropdown" class="custom-dropdown" style="display: none;"></ul>
             </div>
           </label>
-
-          <button class="primary-button" type="submit">Enviar para o Trello</button>
+          <div class="container-enviar-trello">
+            <button class="primary-button" type="submit" style="width: 85%; height: auto;">Enviar para o Trello</button>
+            <label class="prioridade">
+              <input class="prioridade-check" id="prioridade" type="checkbox" title="Adiciona o cartão ao topo da lista no Kanban">
+              Prioridade
+            </label>
+          </div>
         </form>
 
         <p id="statusMessage" class="login-status" role="status"></p>
@@ -100,7 +101,6 @@
               </div>
             </div>
 
-            <!-- Grupo New BV -->
             <div class="config-grupo">
               <button type="button" class="config-menu-btn">New BV</button>
               <div class="config-sub-opcoes">
