@@ -1,0 +1,1 @@
+from .templates import TEMPLATES_DIR as templates
