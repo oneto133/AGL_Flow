@@ -18,18 +18,10 @@ caminho_destino = {
 }
 
 def cartao_dz(
-        codigo,
-        descricao,
-        qtd,
-        op,
-        central,
-        base,
-        engrenagem,
-        estator_e_sem_fim,
-        capacitor,
-        tampa,
-        cilindro,
-        controle
+        codigo, descricao, qtd, op,
+        central, base, engrenagem, 
+        estator_e_sem_fim, capacitor, tampa,
+        cilindro, controle
 ) -> dict:
     
     conteudo_cartao_dz = {
@@ -55,20 +47,16 @@ TAMPA: {tampa}
 CILINDRO: {cilindro}
 CONTROLE: {controle}
 """
-        )
+        ),
+        "descricao": descricao
     }
     return conteudo_cartao_dz
 
 def cartao_newbv(
-        codigo,
-        descricao,
-        qtd,
-        op,
-        central,
-        engrenagem,
-        estator_e_sem_fim,
-        capacitor,
-        rolamento) -> dict:
+        codigo, descricao, qtd,
+        op, central, engrenagem,
+        estator_e_sem_fim, capacitor, rolamento) -> dict:
+    
     conteudo_cartao_newbv = {
         "titulo": f"{descricao} - {qtd} UND - (OP{op})",
         "conteudo": (
@@ -87,19 +75,16 @@ ESTATOR E SEM FIM: {estator_e_sem_fim}
 CAPACITOR: {capacitor}
 ROLAMENTO: {rolamento}
 """
-        )
+        ),
+        "descricao": descricao
     }
     return conteudo_cartao_newbv
 
 def cartao_basculante(
-        codigo,
-        descricao,
-        qtd,
-        op,
-        central,
-        carenagem,
-        estator_e_sem_fim,
-        capacitor) -> dict:
+        codigo, descricao, qtd,
+        op, central, carenagem,
+        estator_e_sem_fim, capacitor) -> dict:
+    
     conteudo_cartao_basculante = {
         "titulo": f"{descricao} - {qtd} UND - (OP{op})",
         "conteudo": (
@@ -117,20 +102,15 @@ CARENAGEM: {carenagem}
 ESTATOR E SEM FIM: {estator_e_sem_fim}
 CAPACITOR: {capacitor}
 """
-        )
+        ),
+        "descricao": descricao
     }
     return conteudo_cartao_basculante
 
 def cartao_pivotante(
-        codigo,
-        descricao,
-        qtd,
-        op,
-        central,
-        carenagem,
-        estator_e_sem_fim,
-        capacitor,
-        kit_de_instalação) -> dict:
+        codigo, descricao, qtd,
+        op, central, carenagem,
+        estator_e_sem_fim, capacitor, kit_de_instalação) -> dict:
 
     conteudo_cartao_pivotante = {
         "titulo": f"{descricao} - {qtd} UND - (OP{op})",
@@ -152,7 +132,8 @@ ESTATOR E SEM FIM: {estator_e_sem_fim}
 CAPACITOR: {capacitor}
 KIT DE INSTALAÇÃO: {kit_de_instalação}
 """
-        )
+        ),
+        "descricao": descricao
     }
     return conteudo_cartao_pivotante
 
