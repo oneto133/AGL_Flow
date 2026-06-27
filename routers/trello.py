@@ -3,7 +3,7 @@ from fastapi.requests import Request
 from config.templates import templates
 
 from schemas import DadosCartao
-from trello import executar
+from services import executar
 
 router = APIRouter(
     tags=["Trello"]

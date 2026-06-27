@@ -1,7 +1,5 @@
 ﻿import csv, ctypes, ipaddress
-import ctypes.wintypes
-import json
-import os
+import ctypes.wintypes, os, json
 import re
 import sys
 import socket
@@ -16,8 +14,8 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from openpyxl import load_workbook
 from pydantic import BaseModel, Field
-from trello import ler_base_de_dados, enviar_trello, atualizar_base_de_dados
-from schemas import ConfigRequest, DadosCartao
+from services import atualizar_base_de_dados
+from schemas import ConfigRequest
 
 from utils import (
     send_raw_to_printer, get_default_printer_name, _find_draw_start, value_to_text,
@@ -1255,7 +1253,7 @@ def tela_inicial(request: Request):
 
 @app.get("/api/produto")
 def buscar_produto(codigo: str):
-    from trello import produto as descricao_do_Produto
+    from services import produto as descricao_do_Produto
 
     descricao = descricao_do_Produto(codigo)
 

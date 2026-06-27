@@ -3,6 +3,9 @@ import requests
 from dotenv import load_dotenv
 from .cartao import ler_base_de_dados
 import pandas as pd
+from .criar_sequenciamento import sequenciar
+from datetime import datetime
+from schemas import SequenciarLinha
 
 load_dotenv()
 
@@ -86,9 +89,20 @@ def executar(codigo, op, qtd, linha_celula):
 
         atualizar_cor(id_cartao= id_cartao_criado, cor=color)
 
+        linha = SequenciarLinha(
+            op = op,
+            codigo_produto = codigo,
+            descricao_produto = conteudo_cartao['descricao'],
+            quantidade = qtd,
+            linha = linha_celula,
+            id_cartao = id_cartao_criado,
+            data_hora_sequenciamento = datetime.now()
+        )        
+
+        sequenciar(linha)
+
         return resultado.get('sucesso', False)
-
-
+    
 def atualizar_cor(id_cartao, cor):
 
     #aplicar cor ao cartão criado do trello
@@ -112,7 +126,8 @@ def atualizar_cor(id_cartao, cor):
     if resposta.status_code == 200:
         print(f"Cor aplicada com sucesso")
 
-        return False
+        return True
 
     print("erro ao aplicar cor " + resposta.text)
     return False
+
