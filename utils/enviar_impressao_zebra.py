@@ -1,4 +1,4 @@
-import ctypes
+import ctypes, re
 
 def send_raw_to_printer(printer_name, data, job_name):
     """
@@ -59,3 +59,37 @@ def _find_draw_start(data):
 
     positions = [position for position in (data.find(b"^FO"), data.find(b"^FT"), data.find(b"^BY")) if position >= 0]
     return min(positions) if positions else None
+
+def _last_pq_match(data):
+    matches = list(re.finditer(rb"\^PQ\d+(,\d+,\d+,[YN])?", data))
+    return matches[-1] if matches else None
+
+def _last_zpl_label_match(data):
+    matches = list(re.finditer(rb"\^XA.*?\^XZ", data, flags=re.DOTALL))
+    return matches[-1] if matches else None
+
+def _shift_zpl_position(data, x_offset=0, y_offset=0):
+    data = re.sub(
+        rb"\^FO(\d+),(\d+)",
+        lambda match: f"^FO{int(match.group(1)) + x_offset},{int(match.group(2)) + y_offset}".encode("ascii"),
+        data,
+    )
+    data = re.sub(
+        rb"\^FT(\d+),(\d+)",
+        lambda match: f"^FT{int(match.group(1)) + x_offset},{int(match.group(2)) + y_offset}".encode("ascii"),
+        data,
+    )
+    return data
+
+def prepare_raw_label(data, quantidade):
+    if b"^PQ" in data:
+        match = _last_pq_match(data)
+        if match:
+            replacement = f"^PQ{quantidade},0,1,Y".encode("ascii")
+            return data[: match.start()] + replacement + data[match.end() :]
+
+    if b"^XZ" in data:
+        last_xz = data.rfind(b"^XZ")
+        return data[:last_xz] + f"^PQ{quantidade},0,1,Y\r\n".encode("ascii") + data[last_xz:]
+
+    return data

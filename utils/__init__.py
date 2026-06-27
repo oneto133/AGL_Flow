@@ -1,5 +1,6 @@
 from .enviar_impressao_zebra import (send_raw_to_printer,
-get_default_printer_name, _find_draw_start)
+get_default_printer_name, _find_draw_start, _last_pq_match, _last_zpl_label_match, _shift_zpl_position,
+prepare_raw_label)
 
 from .normalizar import value_to_text
 

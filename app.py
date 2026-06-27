@@ -20,13 +20,12 @@ from trello import ler_base_de_dados, enviar_trello, atualizar_base_de_dados
 from schemas import ConfigRequest, DadosCartao
 
 from utils import (
-    send_raw_to_printer,
-    get_default_printer_name,
-    _find_draw_start,
-    value_to_text,
-    _alterar_nome_linha,
-    _consultar_nome_linhas
+    send_raw_to_printer, get_default_printer_name, _find_draw_start, value_to_text,
+    _alterar_nome_linha, _consultar_nome_linhas, _last_pq_match, _last_zpl_label_match,
+    _shift_zpl_position, prepare_raw_label
     )
+
+from routers.trello import router as trello_router
 
 try:
     from utils.config_store import APP_HOME, CONFIG_PATH, DEFAULT_CONFIG, load_config, resolve_path, save_config
@@ -151,6 +150,10 @@ LABEL_STORAGE_KEYS = (
 )
 
 app = FastAPI(title="PCP - AGL Brasil")
+
+app.include_router(trello_router)
+
+
 style_dir = RESOURCE_DIR / "style"
 images_dir = RESOURCE_DIR / "imagens"
 if style_dir.is_dir():
@@ -1155,44 +1158,6 @@ def prepare_two_column_label(data, rows, config):
     return data[: label_match.start()] + label_with_two_columns + data[label_match.end() :]
 
 
-def prepare_raw_label(data, quantidade):
-    if b"^PQ" in data:
-        match = _last_pq_match(data)
-        if match:
-            replacement = f"^PQ{quantidade},0,1,Y".encode("ascii")
-            return data[: match.start()] + replacement + data[match.end() :]
-
-    if b"^XZ" in data:
-        last_xz = data.rfind(b"^XZ")
-        return data[:last_xz] + f"^PQ{quantidade},0,1,Y\r\n".encode("ascii") + data[last_xz:]
-
-    return data
-
-
-def _last_pq_match(data):
-    matches = list(re.finditer(rb"\^PQ\d+(,\d+,\d+,[YN])?", data))
-    return matches[-1] if matches else None
-
-
-def _last_zpl_label_match(data):
-    matches = list(re.finditer(rb"\^XA.*?\^XZ", data, flags=re.DOTALL))
-    return matches[-1] if matches else None
-
-
-def _shift_zpl_position(data, x_offset=0, y_offset=0):
-    data = re.sub(
-        rb"\^FO(\d+),(\d+)",
-        lambda match: f"^FO{int(match.group(1)) + x_offset},{int(match.group(2)) + y_offset}".encode("ascii"),
-        data,
-    )
-    data = re.sub(
-        rb"\^FT(\d+),(\d+)",
-        lambda match: f"^FT{int(match.group(1)) + x_offset},{int(match.group(2)) + y_offset}".encode("ascii"),
-        data,
-    )
-    return data
-
-
 def serialize_settings(config, paths):
     layout = get_label_layout(config)
     return {
@@ -1288,10 +1253,6 @@ def index(request: Request):
 def tela_inicial(request: Request):
     return templates.TemplateResponse(request, "tela_inicial.html")
 
-@app.get("/cartao-trello", response_class=HTMLResponse)
-def cartao_trello(request: Request):
-    return templates.TemplateResponse(request, "trello.html")
-
 @app.get("/api/produto")
 def buscar_produto(codigo: str):
     from trello import produto as descricao_do_Produto
@@ -1305,18 +1266,6 @@ def buscar_produto(codigo: str):
         "descricao": str(descricao["descricao"]),
         "opcoes": descricao['opcoes']
     }
-
-@app.post("/api/enviar-para-trello")
-def enviar_cartao_trello(dados: DadosCartao):
-
-    from trello import executar
-    
-    enviar_trello = executar(dados.codigo, dados.op, dados.quantidade, dados.linhaCelula)
-
-    if enviar_trello:
-        return {"messagem": "Cartão enviado para o Trello com sucesso."}
-
-    return {'erro': 'Não foi possível enviar o cartão parao Trello'}
 
 
 @app.get("/reposicao", response_class=HTMLResponse)
