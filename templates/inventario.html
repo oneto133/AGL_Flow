@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Inventário</title>
+
+    <link rel="stylesheet" href="/style/estoque.css">
+</head>
+<body class="login-page">
+<main class="login-shell">
+    <header class="login-header"
+        style="display:flex;justify-content:space-between;align-items:center;width:100%;margin-bottom:20px;">
+        
+        <a href="/tela_inicial"
+        class="primary-button"
+        style="text-decoration:none;">
+            Voltar
+        </a>
+        <a href="/contar-itens"
+        class="primary-button"
+        style="text-decoration:none;">
+            Sugestão de contagens
+        </a>
+    </header>
+    <img src="/imagens/logo_agl.png"
+         alt="Logo AGL"
+         class="logo">
+    <section class="login-card">
+        <p class="eyebrow">Controle de Estoque</p>
+        <h1>Registrar Contagem</h1>
+        <form id="inventarioForm" class="login-form">
+            <label>
+                <span>Código</span>
+                <input
+                    id="codigo"
+                    type="number"
+                    autocomplete="off"
+                    placeholder="Digite o código..."
+                    required>
+            </label>
+            <label>
+                <span>Descrição</span>
+                <input
+                    id="descricao"
+                    type="text"
+                    readonly
+                    disabled
+                    style="background:white;color:black;">
+            </label>
+            <label>
+                <span>Estoque Sistema</span>
+                <input
+                    id="sistema"
+                    type="number"
+                    readonly
+                    disabled
+                    style="background:white;color:black;">
+            </label>
+            <label>
+                <span>Média entre Contagens</span>
+                <input
+                    id="media"
+                    type="text"
+                    readonly
+                    disabled
+                    style="background:white;color:black;">
+            </label>
+
+            <label>
+                <span>Quantidade Contada</span>
+
+                <input
+                    id="galpao"
+                    type="number"
+                    min="0"
+                    required>
+            </label>
+
+            <label>
+                <span>Divergência</span>
+
+                <input
+                    id="divergencia"
+                    type="number"
+                    readonly
+                    disabled
+                    style="background:white;color:black;">
+            </label>
+
+            <label>
+                <span>Divergência (%)</span>
+
+                <input
+                    id="porcentagem"
+                    type="text"
+                    readonly
+                    disabled
+                    style="background:white;color:black;">
+            </label>
+
+            <label>
+                <span>Tipo</span>
+
+                <select id="tipo" class="tipo">
+
+                    <option value="Inventário">
+                        Inventário
+                    </option>
+
+                    <option value="Contado">
+                        Contado
+                    </option>
+
+                    <option value="Movimentação">
+                        Movimentação
+                    </option>
+
+                    <option value="O.P">
+                      O.P
+                    </option>
+
+                </select>
+
+            </label>
+
+            <label>
+                <span>Observação</span>
+
+                <textarea
+                    id="observacao"
+                    rows="3"
+                    placeholder="Observações (opcional)"></textarea>
+            </label>
+            <button
+                class="primary-button"
+                id="btnRegistrar"
+                type="submit">
+                Registrar Contagem
+            </button>
+        </form>
+        <p
+            id="statusMessage"
+            class="login-status"
+            role="status">
+        </p>
+    </section>
+</main>
+
+<footer class=""><a href="https://github.com/oneto133/etiquetas/blob/feature/cartao-trello/CHANGELOG.md">Versão 1.4.0</a></footer>
+
+<script src="/style/inventario.js"></script>
+
+</body>
+</html>

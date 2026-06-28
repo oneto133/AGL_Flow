@@ -2,6 +2,13 @@
 
 Documentação principal: [README.md](README.md)
 
+## [1.4.0] - 28/06/2026
+
+### Adicionado
+- Adicionado seção de registro de contagens
+- Adicionado seção de sugestão de inventários
+
+
 ## [1.2.4] - 27/06/2026
 
 ### Adicionado

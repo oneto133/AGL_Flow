@@ -25,6 +25,7 @@ from utils import (
 from services import verificar_cartoes
 
 from routers.trello import router as trello_router
+from routers.estoque import router as estoque_router
 
 try:
     from utils.config_store import APP_HOME, CONFIG_PATH, DEFAULT_CONFIG, load_config, resolve_path, save_config
@@ -165,7 +166,7 @@ app = FastAPI(title="PCP - AGL Brasil",
               lifespan=lifespan)
 
 app.include_router(trello_router)
-
+app.include_router(estoque_router)
 
 style_dir = RESOURCE_DIR / "style"
 images_dir = RESOURCE_DIR / "imagens"

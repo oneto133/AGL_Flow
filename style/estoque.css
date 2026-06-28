@@ -1,0 +1,294 @@
+:root {
+  color-scheme: dark;
+  --bg: #0f1115;
+  --bg-soft: #151922;
+  --text: #f4f7fb;
+  --muted: #a9b2be;
+  --line: #2a3140;
+  --panel: #171c25;
+  --panel-soft: #1d2330;
+  --accent: #f1c232;
+  --accent-dark: #d7ab15;
+  --accent-text: #151515;
+  --danger: #f46b6b;
+  --success: #4cd4a4;
+}
+
+body[data-theme="day"] {
+  color-scheme: light;
+  --bg: #eef2f6;
+  --bg-soft: #ffffff;
+  --text: #1e2630;
+  --muted: #64707f;
+  --line: #d7dee8;
+  --panel: #ffffff;
+  --panel-soft: #f6f8fb;
+  --accent: #b58d00;
+  --accent-dark: #8f6f00;
+  --accent-text: #ffffff;
+  --danger: #b42318;
+  --success: #0f766e;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px;
+}
+
+/* ===================== */
+/* LOGIN / LAYOUT BASE   */
+/* ===================== */
+
+.login-page {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  background: radial-gradient(circle at top, rgba(241, 194, 50, 0.12), transparent 18%), var(--bg);
+}
+
+.login-shell {
+  width: min(100% - 24px, 980px);
+}
+
+.login-header {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  width: 100%;
+  z-index: 1000;
+}
+
+.login-card {
+  display: grid;
+  gap: 12px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: linear-gradient(180deg, var(--panel), var(--panel-soft));
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.18);
+  padding: 18px;
+}
+
+.logo {
+  display: block;
+  max-width: 200px;
+  margin: 0 auto 1px;
+}
+
+.eyebrow {
+  margin: 0 0 6px;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+/* ===================== */
+/* FORMULÁRIO            */
+/* ===================== */
+
+.login-form {
+  display: grid;
+  gap: 10px;
+}
+
+.login-form label {
+  display: grid;
+  gap: 6px;
+}
+
+input,
+button,
+select,
+textarea {
+  font: inherit;
+}
+
+input {
+  width: 100%;
+  height: 50px;
+  border: 1px solid var(--line);
+  background: var(--panel-soft);
+  color: var(--text);
+  padding: 0 12px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+/* ===================== */
+/* BOTÕES                */
+/* ===================== */
+
+.primary-button {
+  border: 0;
+  background: var(--accent);
+  color: var(--accent-text);
+  cursor: pointer;
+  font-weight: 700;
+  padding: 10px 14px;
+  border-radius: 6px;
+}
+
+.primary-button:hover {
+  background: var(--accent-dark);
+}
+
+/* ===================== */
+/* STATUS                */
+/* ===================== */
+
+.login-status {
+  min-height: 18px;
+  margin: 0;
+  font-weight: 700;
+}
+
+.login-status.error {
+  color: var(--danger);
+}
+
+.login-status.success {
+  color: var(--success);
+}
+
+/* ===================== */
+/* SELECT TIPO           */
+/* ===================== */
+
+.tipo {
+  width: 100%;
+  padding: 12px 16px;
+  padding-right: 42px;
+  font-size: 15px;
+  color: var(--text);
+  background: var(--panel-soft);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  cursor: pointer;
+  appearance: none;
+
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23666' viewBox='0 0 16 16'%3E%3Cpath d='M4.646 6.146a.5.5 0 0 1 .708 0L8 8.793l2.646-2.647a.5.5 0 1 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+}
+
+/* ===================== */
+/* TABELA INVENTÁRIO     */
+/* ===================== */
+
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+  margin-top: 20px;
+}
+
+.inventory-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  color: var(--text);
+}
+
+.inventory-table thead {
+  background: rgba(31, 41, 55, 0.95);
+}
+
+.inventory-table th,
+.inventory-table td {
+  padding: 12px 10px;
+  white-space: nowrap;
+}
+
+.inventory-table tbody tr {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  cursor: pointer;
+}
+
+/* estados */
+.inventory-table tbody tr.atrasado {
+  background: rgba(239, 68, 68, 0.15);
+  border-left: 4px solid #ef4444;
+}
+
+.inventory-table tbody tr.hoje {
+  background: rgba(245, 158, 11, 0.15);
+  border-left: 4px solid #f59e0b;
+}
+
+/* ===================== */
+/* MODAL                 */
+/* ===================== */
+
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  padding: 20px;
+}
+
+.modal.hidden {
+  display: none;
+}
+
+.modal-box {
+  background: #1f2937;
+  color: white;
+  padding: 20px;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 700px;
+  text-align: center;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+  gap: 10px;
+}
+
+.modal-info {
+  text-align: left;
+  margin: 15px 0;
+  padding: 10px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 8px;
+}
+
+.modal-info p {
+  margin: 6px 0;
+  font-size: 20px;
+  color: #e5e7eb;
+}
+
+.modal-info strong {
+  color: #fff;
+}
+
+/* ===================== */
+/* RESPONSIVO            */
+/* ===================== */
+
+@media (max-width: 768px) {
+
+  .inventory-table th:nth-child(n+3),
+  .inventory-table td:nth-child(n+3) {
+    display: none;
+  }
+
+  .modal-box {
+    width: 92%;
+    max-width: 92%;
+  }
+}

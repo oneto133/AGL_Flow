@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Itens a Contar</title>
+
+    <link rel="stylesheet" href="/style/estoque.css">
+</head>
+<body class="login-page">
+
+<main class="login-shell">
+
+    <header class="login-header"
+        style="display:flex;justify-content:space-between;align-items:center;width:100%;margin-bottom:20px;">
+
+        <a href="/tela_inicial"
+           class="primary-button"
+           style="text-decoration:none;">
+            Voltar
+        </a>
+    </header>
+
+    <img src="/imagens/logo_agl.png"
+         alt="Logo AGL"
+         class="logo">
+
+    <section class="login-card">
+
+        <p class="eyebrow">Controle de Estoque</p>
+        <h1>Fila de Inventário</h1>
+
+        <div class="table-container">
+
+            <table class="inventory-table">
+
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Descrição</th>
+                    </tr>
+                </thead>
+
+                <tbody id="tabelaItens">
+                    <!-- JS vai preencher aqui -->
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <button class="primary-button" id="btnAtualizar">
+            Atualizar Lista
+        </button>
+
+        <p id="statusMessage" class="login-status"></p>
+
+    </section>
+
+</main>
+
+<script src="/style/itens-contagem.js"></script>
+
+<div id="modalAcao" class="modal hidden">
+    <div class="modal-box">
+
+        <h3 style="margin-bottom:10px;">Detalhes do Item</h3>
+
+        <div class="modal-info">
+            <p><strong>Código:</strong> <span id="m_codigo"></span></p>
+
+            <p><strong>Descrição:</strong> <span id="m_descricao"></span></p>
+
+            <p><strong>Contagens:</strong> <span id="m_total"></span></p>
+
+            <p><strong>Última Contagem:</strong> <span id="m_ultima"></span></p>
+
+            <p><strong>Média (dias):</strong> <span id="m_media"></span></p>
+
+            <p><strong>Próxima Contagem:</strong> <span id="m_proxima"></span></p>
+        </div>
+
+        <div class="modal-actions">
+            <button id="btnContar" class="primary-button">Contar agora</button>
+            <button id="btnCancelar" class="primary-button" style="background:#6b7280;">Fechar</button>
+        </div>
+
+    </div>
+</div>
+
+<footer class=""><a href="https://github.com/oneto133/etiquetas/blob/feature/cartao-trello/CHANGELOG.md">Versão 1.4.0</a></footer>
+
+</body>
+</html>
