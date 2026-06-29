@@ -122,10 +122,6 @@ input {
   text-align: center;
 }
 
-/* ===================== */
-/* BOTÕES                */
-/* ===================== */
-
 .primary-button {
   border: 0;
   background: var(--accent);

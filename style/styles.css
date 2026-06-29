@@ -129,7 +129,6 @@ input {
   justify-content: center;
 }
 
-.primary-button,
 .icon-button {
   border: 0;
   border-bottom: 5%;
@@ -141,11 +140,19 @@ input {
 }
 
 .primary-button {
-  padding: 0 14px;
-  height: 15px;
-  width: auto;
-  
+  border: 0;
+  background: var(--accent);
+  color: var(--accent-text);
+  cursor: pointer;
+  font-weight: 700;
+  padding: 10px 14px;
+  border-radius: 6px;
 }
+
+.primary-button:hover {
+  background: var(--accent-dark);
+}
+
 
 .icon-button {
   display: flex;
@@ -176,7 +183,6 @@ input {
   padding: 0 12px;
 }
 
-.primary-button:hover,
 .icon-button:hover {
   background: var(--accent-dark);
   color: var(--accent-text);
@@ -1502,3 +1508,126 @@ body.modal-open {
   }
 }
 
+@keyframes girar {
+  from { transform: rotate(0deg);}
+  to { transform: rotate(360deg);}
+  }
+
+.girar-engrenagem svg {
+  display: inline-block !important;
+  transform-origin: center center !important; /* Força o ponto de giro bem no meio do desenho */
+  animation: girar 0.8s ease-in-out !important;
+}
+
+.sidebar-panel {
+  position: fixed;
+  top: 0;
+  right: -350px;
+  width: 320px;
+  max-width: calc(100vw - 40px);
+  height: 100vh;
+  overflow-y: auto;
+  background-color: var(--bg);
+  color: var(--text);
+  border-left: 1px solid var(--line);
+  box-shadow: -10px 0 40px rgba(0,0,0,0.35);
+  transition: right 0.35s ease;
+  z-index: 9999;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.sidebar-panel.aberto {
+  right: 0;
+}
+
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 14px;
+  margin-bottom: 18px;
+}
+
+.sidebar-fechar h2{
+  margin: 0;
+  font-size: 1.2rem;
+  color: var(--text);
+}
+
+.sidebar-fechar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: var(--panel-soft);
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 1.4rem;
+  line-height: 1;
+  transition: color 0.2s, background 0.2s;
+}
+
+.sidebar-fechar:hover {
+  background: var(--accent);
+  color: var(--accent-text);
+  border-color: var(--accent);
+}
+
+.sidebar-conteudo {
+  color: var(--text);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.sidebar-panel {
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: 320px;
+  height: 100%;
+  background: #111;
+  transition: right 0.25s ease;
+  z-index: 9999;
+}
+
+.sidebar-panel.open {
+  right: 0;
+}
+
+body.sidebar-open {
+  overflow: hidden;
+}
+.conteudo-gatilho {
+  display: none;              /* escondido por padrão */
+  flex-direction: column;     /* <<< aqui resolve coluna */
+  gap: 10px;
+  margin-top: 10px;
+  padding: 10px;
+}
+
+/* quando abrir */
+.secao-retratil.open .conteudo-gatilho {
+  display: flex;
+}
+
+/* botões ocupando linha inteira */
+.conteudo-gatilho a,
+.conteudo-gatilho button {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+
+  width: 100%;
+  padding: 10px 12px;
+
+  border-radius: 10px;
+  font-size: 13px;
+
+  text-decoration: none;
+}
