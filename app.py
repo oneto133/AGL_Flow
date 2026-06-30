@@ -23,6 +23,7 @@ from utils import (
     )
 
 from services import verificar_cartoes
+from auxiliar.check_relatorio import main as checar_relatorio
 
 from routers.trello import router as trello_router
 from routers.estoque import router as estoque_router
@@ -151,6 +152,9 @@ LABEL_STORAGE_KEYS = (
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    relatorio_thread = threading.Thread(target=checar_relatorio, daemon=True)
+    relatorio_thread.start()
+
     task = asyncio.create_task(verificar_cartoes())
 
     yield

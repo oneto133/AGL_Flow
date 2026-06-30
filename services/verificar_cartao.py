@@ -3,6 +3,7 @@ from datetime import datetime
 import pandas as pd
 import requests
 from config.paths import CSV_DIR, TRELLO_KEY, TRELLO_TOKEN
+from auxiliar.check_relatorio import main as checar_relatorio
 
 """
 Verifica se um cartão foi movido para a coluna feito, caso tenha sido,
@@ -94,6 +95,7 @@ async def verificar_cartoes():
             if pd.notna(id_cartao):
 
                 verificar_cartao(id_cartao)
+
 
         await asyncio.sleep(INTERVALO_VERIFICACAO)
 

@@ -2,6 +2,18 @@
 
 Documentação principal: [README.md](README.md)
 
+## [1.5.0] - 30/06/2026
+
+### Adicionado
+
+- Atualização automática de ficha técnica do setor de motores.
+- Atualização automática do relatório diário (Antes parte do projeto Scraping Explosão)
+- Atualização automática de peças de reposição e diversos.
+
+### Alterado
+
+- Suporte para computador/servidor que roda a aplicação, havia divergências de nomes de pastas, apesar de estar na mesma rede.
+
 ## [1.4.0] - 28/06/2026
 
 ### Adicionado
