@@ -5,7 +5,6 @@ if (!localStorage.getItem("etiquetas-auth")) {
   window.location.replace("/");
 }
 
-const themeButton = document.querySelector("#themeButton");
 const backButton = document.querySelector("#backButton");
 const saveButton = document.querySelector("#saveLabelConfigButton");
 const resetButton = document.querySelector("#resetLabelConfigButton");
@@ -46,18 +45,6 @@ const state = {
   profiles: {},
 };
 
-function getTheme() {
-  return localStorage.getItem(THEME_STORAGE_KEY) || "dark";
-}
-
-function applyTheme(theme) {
-  const activeTheme = theme === "day" ? "day" : "dark";
-  document.body.dataset.theme = activeTheme;
-  localStorage.setItem(THEME_STORAGE_KEY, activeTheme);
-  if (themeButton) {
-    themeButton.textContent = activeTheme === "day" ? "Dia" : "Noite";
-  }
-}
 
 function mmToDots(value) {
   return Math.round((Number(value) || 0) * state.dpi / 25.4);
@@ -492,18 +479,15 @@ function bindFormEvents() {
   }
 }
 
-themeButton.addEventListener("click", () => {
-  applyTheme(getTheme() === "day" ? "dark" : "day");
-});
 
 backButton.addEventListener("click", () => {
-  window.location.href = "/";
+  window.location.href = "/reposicao";
 });
 
 saveButton.addEventListener("click", openSaveConfirmation);
 resetButton.addEventListener("click", resetConfig);
 bindFormEvents();
-applyTheme(getTheme());
+
 loadConfig();
 
 if (cancelSaveButton) {

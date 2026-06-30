@@ -2,15 +2,9 @@ const statusMessage = document.querySelector("#statusMessage");
 const itemsList = document.querySelector("#itemsList");
 const refreshButton = document.querySelector("#refreshButton");
 const printAllButton = document.querySelector("#printAllButton");
-const menuButton = document.querySelector("#menuButton");
-const mobileMenu = document.querySelector("#mobileMenu");
-const themeButton = document.querySelector("#themeButton");
-const mobileThemeButton = document.querySelector("#mobileThemeButton");
 const labelConfigButton = document.querySelector("#labelConfigButton");
 const mobileLabelConfigButton = document.querySelector("#mobileLabelConfigButton");
-const mobileSettingsButton = document.querySelector("#mobileSettingsButton");
 const mobileRefreshButton = document.querySelector("#mobileRefreshButton");
-const settingsButton = document.querySelector("#settingsButton");
 const reposicaoUpdatedAt = document.querySelector("#reposicaoUpdatedAt");
 const serverAddress = document.querySelector("#serverAddress");
 const mobileReposicaoUpdatedAt = document.querySelector("#mobileReposicaoUpdatedAt");
@@ -23,13 +17,14 @@ const manualResult = document.querySelector("#manualResult");
 
 const settingsBackdrop = document.querySelector("#settingsBackdrop");
 const settingsModal = document.querySelector("#settingsModal");
-const closeSettingsButton = document.querySelector("#closeSettingsButton");
-const cancelSettingsButton = document.querySelector("#cancelSettingsButton");
-const resetSettingsButton = document.querySelector("#resetSettingsButton");
 const settingsForm = document.querySelector("#settingsForm");
 const settingsStatus = document.querySelector("#settingsStatus");
 const saveRemoteTargetButton = document.querySelector("#saveRemoteTargetButton");
 const remoteApiUrlInput = document.querySelector("#configRemoteApiUrl");
+
+const configButton = document.querySelector("#config-button");
+const configSidebar = document.querySelector("#configSidebar");
+const fecharSidebar = document.querySelector("#fecharSidebar");
 
 const configFields = {
   data_root: document.querySelector("#configDataRoot"),
@@ -57,66 +52,11 @@ function setSettingsStatus(message, type = "") {
   settingsStatus.className = `settings-status ${type}`.trim();
 }
 
-function formatPreviewDate() {
-  return new Date().toLocaleDateString("pt-BR");
-}
-
-function renderZebraPreviewSample(item) {
-  const description = String(item?.nome || item?.codigo || "Sem descrição")
-    .replace(/\s+/g, " ")
-    .trim()
-    .toUpperCase();
-  const code = String(item?.codigo || "-").trim().toUpperCase();
-  const barcode = String(item?.codigo_barras || "").replace(/\D/g, "");
-
-  return `
-    <div class="preview-zebra-sample" aria-label="Layout da etiqueta Zebra">
-      <span class="preview-zebra-chip">Zebra</span>
-      <div class="preview-zebra-description">${description || "SEM DESCRIÇÃO"}</div>
-      <div class="preview-zebra-grid">
-        <span class="preview-zebra-code">${code}</span>
-        <span class="preview-zebra-date">${formatPreviewDate()}</span>
-      </div>
-      ${barcode
-        ? `<div class="preview-zebra-barcode" aria-label="Código de barras">${barcode}</div>`
-        : `<div class="preview-zebra-barcode preview-zebra-barcode--missing">EAN NÃO ENCONTRADO</div>`}
-    </div>
-  `;
-}
-
-function toggleMobileMenu(forceState) {
-  if (!mobileMenu || !menuButton) {
-    return;
-  }
-
-  const shouldOpen = typeof forceState === "boolean" ? forceState : mobileMenu.hidden;
-  mobileMenu.hidden = !shouldOpen;
-  menuButton.setAttribute("aria-expanded", String(shouldOpen));
-}
-
 function isMobileLayout() {
   return window.matchMedia("(max-width: 720px)").matches;
 }
 
-function getTheme() {
-  return localStorage.getItem(THEME_STORAGE_KEY) || "dark";
-}
 
-function applyTheme(theme) {
-  document.body.dataset.theme = theme === "day" ? "day" : "dark";
-  localStorage.setItem(THEME_STORAGE_KEY, document.body.dataset.theme);
-  const isDay = document.body.dataset.theme === "day";
-  if (themeButton) {
-    themeButton.textContent = isDay ? "Dia" : "Noite";
-  }
-  if (mobileThemeButton) {
-        mobileThemeButton.textContent = isDay ? "Dia" : "Noite";
-  }
-}
-
-function toggleTheme() {
-  applyTheme(getTheme() === "day" ? "dark" : "day");
-}
 
 function openLabelConfigPage() {
   window.location.href = "/config-etiquetas";
@@ -209,10 +149,6 @@ async function loadItems() {
 
 async function voltar_login() {
   window.location.replace("/");
-}
-
-async function tela_inicial() {
-  window.location.href = "/tela_inicial";
 }
 
 async function printItem(codigo, quantityInput, button) {
@@ -503,83 +439,49 @@ manualForm.addEventListener("submit", async (event) => {
 manualSearchButton.addEventListener("click", searchManualCode);
 refreshButton.addEventListener("click", loadItems);
 printAllButton.addEventListener("click", printAllItems);
-menuButton.addEventListener("click", () => toggleMobileMenu());
-themeButton.addEventListener("click", toggleTheme);
 labelConfigButton.addEventListener("click", openLabelConfigPage);
 logoutButton.addEventListener("click",async () => await voltar_login())
-homeButton.addEventListener("click", async () => await tela_inicial())
-settingsButton.addEventListener("click", async () => {
-  openSettings();
-  if (!currentConfig) {
-    await loadConfig();
-  }
+
+function openSidebar() {
+  if (!configSidebar) return;
+  configSidebar.classList.add("open");
+  document.body.classList.add("sidebar-open");
+}
+
+function closeSidebar() {
+  if (!configSidebar) return;
+  configSidebar.classList.remove("open");
+  document.body.classList.remove("sidebar-open");
+}
+
+configButton.addEventListener("click", (e) => {
+  e.preventDefault();
+  openSidebar();
 });
 
+fecharSidebar.addEventListener("click", closeSidebar);
 
-mobileThemeButton.addEventListener("click", () => {
-  toggleTheme();
-  toggleMobileMenu(false);
-});
-mobileLabelConfigButton.addEventListener("click", () => {
-  toggleMobileMenu(false);
-  openLabelConfigPage();
-});
-mobileSettingsButton.addEventListener("click", async () => {
-  toggleMobileMenu(false);
-  openSettings();
-  if (!currentConfig) {
-    await loadConfig();
-  }
-});
+function toggleSecaoRetratil(header) {
+  const container = header.parentElement;
+  const content = container.querySelector(".conteudo-gatilho");
+  const seta = container.querySelector(".seta-icone");
 
-mobileRefreshButton.addEventListener("click", async () => {
-  toggleMobileMenu(false);
-  await loadItems();
+  const isOpen = content.style.display === "block";
+
+  content.style.display = isOpen ? "none" : "block";
+  if (seta) seta.textContent = isOpen ? "▼" : "▲";
+}
+
+document.querySelectorAll(".titulo-gatilho").forEach((el) => {
+  el.addEventListener("click", () => {
+    toggleSecaoRetratil(el);
+  });
 });
 
-mobileLogoutButton.addEventListener("click", async () => {
-  toggleMobileMenu(false);
-  await voltar_login();
-});
-
-mobileHomeButton.addEventListener("click", () => {
-  toggleMobileMenu(false);
-  window.location.href = "/tela_inicial";
-});
-
-closeSettingsButton.addEventListener("click", closeSettings);
-cancelSettingsButton.addEventListener("click", closeSettings);
 settingsBackdrop.addEventListener("click", closeSettings);
 settingsForm.addEventListener("submit", saveConfig);
 saveRemoteTargetButton?.addEventListener("click", applyRemoteTarget);
 resetSettingsButton.addEventListener("click", resetConfig);
-document.addEventListener("click", (event) => {
-  if (!mobileMenu || mobileMenu.hidden || !menuButton) {
-    return;
-  }
 
-  if (menuButton.contains(event.target) || mobileMenu.contains(event.target)) {
-    return;
-  }
 
-  toggleMobileMenu(false);
-});
-
-document.addEventListener("keydown", (event) => {
-  if (event.key === "Escape" && !settingsModal.hidden) {
-    closeSettings();
-  }
-  if (event.key === "Escape" && mobileMenu && !mobileMenu.hidden) {
-    toggleMobileMenu(false);
-  }
-});
-
-window.addEventListener("resize", () => {
-  if (!isMobileLayout()) {
-    toggleMobileMenu(false);
-  }
-});
-
-applyTheme(getTheme());
-toggleMobileMenu(false);
 loadConfig().finally(loadItems);

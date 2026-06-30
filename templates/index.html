@@ -6,177 +6,339 @@
     <title>Impressão de Etiquetas</title>
     <link rel="stylesheet" href="/style/styles.css">
   </head>
+
   <body>
+
+    <header style="display:flex;align-items:flex-start;justify-content:space-between;position:relative;">
+
+      <a class="primary-button"
+         href="tela_inicial"
+         style="text-decoration:none;margin-top:20px;margin-bottom:20px;">
+        Voltar
+      </a>
+
+      <a
+        class="config"
+        id="config-button"
+        style="display:inline-flex!important;
+               align-items:center!important;
+               justify-content:center!important;
+               width:36px!important;
+               height:36px!important;
+               cursor:pointer!important;
+               text-decoration:none!important;
+               margin-right:20px;
+               margin-top: 20px;">
+
+        <svg xmlns="http://w3.org/2000/svg"
+             viewBox="0 0 24 24"
+             fill="currentColor"
+             style="width:24px;height:24px;display:block;">
+
+          <path d="M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l-.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zM12 15.5c-1.93 0-3-1.07-3-3s1.07-3 3-3s3 1.07 3 3s-1.07 3-3 3z"/>
+        </svg>
+
+      </a>
+
+    </header>
+
     <main class="app-shell">
+
       <section class="panel">
+
         <div class="panel-header">
+
           <div>
             <p class="eyebrow"></p>
             <h1>Impressão de etiquetas</h1>
           </div>
+
           <div class="header-actions">
-            <button class="icon-button mobile-menu-button" id="menuButton" type="button" title="Menu" aria-label="Abrir menu">
-              &#9776;
-            </button>
-            <button class="secondary-button header-action-button" id="printAllButton" type="button">
+
+            <button
+              class="secondary-button header-action-button"
+              id="printAllButton"
+              type="button">
+
               Imprimir tudo
-            </button>
-            <button class="icon-button header-only-action" id="themeButton" type="button" title="Alternar tema" aria-label="Alternar tema">
-              &#9728;
-            </button>
-            <button class="icon-button header-only-action" id="labelConfigButton" type="button" title="Configurar etiquetas" aria-label="Abrir configuracao de etiquetas">
-              &#128451;
-            </button>
-            <button class="icon-button header-only-action" id="settingsButton" type="button" title="Configuracoes" aria-label="Abrir configuracoes">
-              &#9881;
-            </button>
-            <button class="icon-button header-only-action" id="refreshButton" type="button" title="Atualizar lista" aria-label="Atualizar lista">
-              &#8635;
+
             </button>
 
-            <button class="icon-button header-only-action" id="logoutButton" type="button" title="Fazer logout" aria-label="Voltar parra a tela de login">
-            Logout
-            </button>
-
-            <button class="icon-button header-only-action" id="homeButton" type="button" title="Tela inicial" aria-label="Voltar para a tela inicial">
-              Voltar
-            </button>
           </div>
+
         </div>
 
         <div id="mobileMenu" class="mobile-menu" hidden>
+
           <div class="mobile-menu__actions">
-            <button class="secondary-button mobile-menu-action" id="mobileThemeButton" type="button">
+
+            <button
+              class="secondary-button mobile-menu-action"
+              id="mobileThemeButton"
+              type="button">
+
               &#9728; Tema
-            </button>
-            <button class="secondary-button mobile-menu-action" id="mobileLabelConfigButton" type="button">
-              &#128451; Etiquetas
-            </button>
-            <button class="secondary-button mobile-menu-action" id="mobileSettingsButton" type="button">
-              &#9881; Configuracões
-            </button>
-            <button class="secondary-button mobile-menu-action" id="mobileRefreshButton" type="button">
-              &#8635; Atualizar
-            </button>
-            <button class="secondary-button mobile-menu-action" id="mobileLogoutButton" type="button" title="Fazer logout" aria-label="Voltar parra a tela de login">
-            Logout
+
             </button>
 
-            <button class="secondary-button mobile-menu-action" id="mobileHomeButton" type="button" title="Tela inicial" aria-label="Voltar para a tela inicial">
-              Voltar
+            <button
+              class="secondary-button mobile-menu-action"
+              id="mobileLabelConfigButton"
+              type="button">
+
+              &#128451; Etiquetas
+
+            </button>
+
+            <button
+              class="secondary-button mobile-menu-action"
+              id="mobileSettingsButton"
+              type="button">
+
+              &#9881; Configurações
+
+            </button>
+
+            <button
+              class="secondary-button mobile-menu-action"
+              id="mobileRefreshButton"
+              type="button">
+
+              &#8635; Atualizar
+
+            </button>
+
+            <button
+              class="secondary-button mobile-menu-action"
+              id="mobileLogoutButton"
+              type="button">
+
+              Logout
+
             </button>
           </div>
+
           <div class="mobile-menu__item">
             <span>Acesso na rede</span>
             <strong id="mobileServerAddress">-</strong>
           </div>
+
           <div class="mobile-menu__item">
             <span>Atualizado em</span>
             <strong id="mobileReposicaoUpdatedAt">-</strong>
           </div>
-        </div>
-        <div class="summary-strip">
-          <div class="summary-card summary-card--updated">
-            <span>Atualizado em</span>
-            <strong id="reposicaoUpdatedAt">-</strong>
-          </div>
-          <div class="summary-card summary-card--network">
-            <span>Acesso na rede</span>
-            <strong id="serverAddress">-</strong>
-          </div>
+
         </div>
 
         <form id="manualForm" class="manual-form">
-          <input id="manualCode" name="codigo" type="text" placeholder="Codigo interno" autocomplete="off" required>
-          <input id="manualQuantity" name="quantidade" type="number" min="1" max="500" value="1" required>
-          <button class="secondary-button" id="manualSearchButton" type="button">Buscar</button>
-          <button class="primary-button" type="submit">Imprimir</button>
+
+          <input
+            id="manualCode"
+            name="codigo"
+            type="text"
+            placeholder="Código interno"
+            autocomplete="off"
+            required>
+
+          <input
+            id="manualQuantity"
+            name="quantidade"
+            type="number"
+            min="1"
+            max="500"
+            value="1"
+            required>
+
+          <button
+            class="secondary-button"
+            id="manualSearchButton"
+            type="button">
+
+            Buscar
+
+          </button>
+
+          <button
+            class="primary-button"
+            type="submit">
+
+            Imprimir
+
+          </button>
+
         </form>
 
         <p id="manualResult" class="manual-result"></p>
-        <p id="statusMessage" class="status" role="status"></p>
-      </section>
+
+        <p id="statusMessage"
+           class="status"
+           role="status"></p>
+                 </section>
 
       <section class="list-wrap" aria-label="Etiquetas do CSV">
+
         <div id="itemsList" class="items-list">
-          <p class="empty-message">Carregando etiquetas...</p>
+
+          <p class="empty-message">
+            Carregando etiquetas...
+          </p>
+
         </div>
+
       </section>
+
     </main>
 
-    <div id="settingsBackdrop" class="settings-backdrop" hidden></div>
-    <section id="settingsModal" class="settings-modal" aria-hidden="true" hidden>
+    <div
+      id="settingsBackdrop"
+      class="settings-backdrop"
+      hidden>
+    </div>
+
+    <section
+      id="settingsModal"
+      class="settings-modal"
+      aria-hidden="true"
+      hidden>
+
       <div class="settings-modal__header">
+
         <div>
-          <p class="eyebrow">Configuracão</p>
-          <h2>Arquivos e impressão</h2>
+
+          <p class="eyebrow">
+            Configuração
+          </p>
+
+          <h2>
+            Arquivos e impressão
+          </h2>
+
         </div>
-        <button class="icon-button icon-button--close" id="closeSettingsButton" type="button" aria-label="Fechar configuracoes">
-          X
-        </button>
+
       </div>
 
-      <form id="settingsForm" class="settings-form">
+      <form
+        id="settingsForm"
+        class="settings-form">
+
+        <p class="label-config-help">
+          Esta configuração é salva localmente no computador que está usando esta interface.
+          Se você estiver utilizando uma API secundária, o servidor remoto continuará separado.
+        </p>
         <label>
-          <span>Diretório raiz</span>
-          <input id="configDataRoot" type="text" placeholder="C:\Etiquetas">
-        </label>
-        <label>
-          <span>CSV de reposicão</span>
-          <input id="configReposicaoCsv" type="text" placeholder="csv\Reposicao e Diversos.csv">
-        </label>
-        <label>
-          <span>Pasta de etiquetas</span>
-          <input id="configLabelsDir" type="text" placeholder="etiquetas">
-        </label>
-        <label>
-          <span>Pasta de relatorio</span>
-          <input id="configReportDir" type="text" placeholder="relatorio">
-        </label>
-        <label>
-          <span>Base XLSX</span>
-          <input id="configBaseFile" type="text" placeholder="relatorio\base.xlsx">
-        </label>
-        <label>
-          <span>Impressora</span>
-          <input id="configPrinterName" type="text" placeholder="Zebra">
-        </label>
-        <label>
-          <span>Servidor remoto (API principal)</span>
-          <input id="configRemoteApiUrl" type="text" placeholder="http://192.168.0.10:8000">
-        </label>
-        <p class="label-config-help">Esta configuração é salva localmente no computador que está usando esta interface. Se você estiver usando a API secundária, o servidor remoto continua separado.</p>
-        <label>
-          <span>Prefixo de secao</span>
-          <input id="configSectionPrefix" type="text" placeholder="reposicaoediversos">
+          <span>Prefixo de seção</span>
+          <input
+            id="configSectionPrefix"
+            type="text"
+            placeholder="reposicaoediversos">
         </label>
         <div class="settings-grid">
           <label>
             <span>Offset 2 colunas</span>
-            <input id="configTwoColumnOffsetDots" type="number" min="0" max="4000" step="1">
+            <input
+              id="configTwoColumnOffsetDots"
+              type="number"
+              min="0"
+              max="4000"
+              step="1">
           </label>
           <label>
             <span>Largura etiqueta</span>
-            <input id="configLabelWidthDots" type="number" min="1" max="4000" step="1">
+            <input
+              id="configLabelWidthDots"
+              type="number"
+              min="1"
+              max="4000"
+              step="1">
           </label>
           <label>
             <span>Altura etiqueta</span>
-            <input id="configLabelHeightDots" type="number" min="1" max="4000" step="1">
+            <input
+              id="configLabelHeightDots"
+              type="number"
+              min="1"
+              max="4000"
+              step="1">
           </label>
         </div>
-
         <div class="settings-actions">
-          <button class="secondary-button" id="saveRemoteTargetButton" type="button">Aplicar servidor remoto</button>
-          <button class="secondary-button" id="resetSettingsButton" type="button">Restaurar padrao</button>
+          <button
+            class="secondary-button"
+            id="resetSettingsButton"
+            type="button">
+            Restaurar padrão
+          </button>
           <div class="settings-actions__right">
-            <button class="secondary-button" id="cancelSettingsButton" type="button">Cancelar</button>
-            <button class="primary-button" type="submit">Salvar</button>
+            <button
+              class="secondary-button"
+              id="cancelSettingsButton"
+              type="button">
+              Cancelar
+            </button>
+            <button
+              class="primary-button"
+              type="submit">
+              Salvar
+            </button>
           </div>
         </div>
-        <p id="settingsStatus" class="settings-status" role="status"></p>
       </form>
     </section>
+        <div id="configSidebar" class="sidebar-panel">
+      <div class="sidebar-header">
+        <h2 class="atualizacao">
+          Configurações
+        </h2>
+        <button
+          id="fecharSidebar"
+          class="sidebar-fechar">
+          &times;
+        </button>
+      </div>
+      <div class="sidebar-conteudo">
+        <div class="secao-retratil">
+          <p class="atualizacao titulo-gatilho"
+             style="margin-bottom:10px;font-weight:bold;cursor:pointer;display:flex;justify-content:space-between;align-items:center;">
+            <span>Ações</span>
+            <span class="seta-icone">▼</span>
+          </p>
+          <div class="conteudo-gatilho">
 
+            <a id="labelConfigButton" class="secondary-button" href="/config-etiquetas">
+              Configurar etiquetas
+            </a>
+
+            <a id="refreshButton" class="secondary-button" href="#">
+              Atualizar lista
+            </a>
+
+            <a id="logoutButton" class="secondary-button" href="/logout">
+              Logout
+            </a>
+          </div>
+        </div>
+        <div class="secao-retratil" style="margin-top:20px;">
+          <p class="atualizacao titulo-gatilho"
+             style="margin-bottom:10px;font-weight:bold;cursor:pointer;display:flex;justify-content:space-between;align-items:center;">
+            <span>Informações</span>
+            <span class="seta-icone">▼</span>
+          </p>
+          <div class="conteudo-gatilho actions-grid" style="display:none;">
+            <div class="summary-card summary-card--updated">
+              <span>Atualizado em</span>
+              <strong id="reposicaoUpdatedAt">-</strong>
+            </div>
+            <div class="summary-card summary-card--network"
+                 style="margin-top:15px;">
+              <span>Acesso na rede</span>
+              <strong id="serverAddress">-</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <script src="/style/script.js"></script>
+
   </body>
+
 </html>
