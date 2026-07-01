@@ -1,4 +1,4 @@
-﻿import os
+import os
 import sys
 import pandas as pd
 
@@ -74,6 +74,7 @@ def limpar_relatorio_csv() -> None:
     cancelas = df[(df["Departamento"] == "CANCELAS") & (df["Unnamed: 11"] != 0)]
 
     novo = pd.concat([motores, cancelas])
+    novo = novo.replace({r"[\r\n]+": " "}, regex=True)
     novo.to_csv(r"csv/relatorio_diario.csv", index=False, encoding="latin1")
 
 
@@ -94,3 +95,4 @@ if __name__ == "__main__":
     except Exception as exc:
         print(f"Erro: {exc}")
         raise
+
