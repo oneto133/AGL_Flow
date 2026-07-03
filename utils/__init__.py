@@ -4,6 +4,6 @@ prepare_raw_label, ensure_parent_dirs, _find_matching_code, build_label_column)
 
 from .normalizar import value_to_text, only_digits, zpl_text
 
-from .funcoes import _alterar_nome_linha, _consultar_nome_linhas
+from .funcoes import _alterar_nome_linha, _consultar_nome_linhas, adicionar_horas_uteis, calcular_horas_uteis
 
 from .registrar_log import logger, JsonFormatter, arquivo_log
