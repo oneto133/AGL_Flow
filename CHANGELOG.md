@@ -1,6 +1,22 @@
-# Nota de ataualização
+# Nota de atualização
 
 Documentação principal: [README.md](README.md)
+
+## [1.5.1] - 02/07/2026
+
+### Adicionado
+
+- Cálculo automático da previsão de entrada das Ordens de Produção na linha de montagem.
+- Consideração do horário comercial da fábrica no cálculo das previsões.
+- Cálculo do tempo restante da OP atualmente em produção, tornando as previsões mais precisas.
+- Cálculo da previsão baseado na quantidade de peças das OPs que antecedem a fila.
+- Cálculo automático do tempo médio por peça para cada linha de produção utilizando o histórico de produção.
+
+### Alterado
+
+- Refatoração do algoritmo de previsão para reduzir leituras desnecessárias do histórico de sequenciamento.
+- Otimização do cálculo das médias, passando a calcular uma única média por linha de produção durante cada processamento.
+- Melhorias de desempenho e organização do código visando futura migração para banco de dados e processamento estatístico.
 
 ## [1.5.0] - 30/06/2026
 
