@@ -1,5 +1,6 @@
 import pandas as pd
 from datetime import timedelta
+import numpy as np
 
 CAMINHO_LINHAS = r"dados/csv/config_linhas.csv"
 
@@ -103,6 +104,6 @@ def calcular_horas_uteis(inicio, fim):
     sexta_util = (dias_semana == 4) & (horas >= 7) & (horas < 16)
     minutos_uteis = np.sum(seg_qui_util | sexta_util)
     return round(minutos_uteis / 60.0, 2)
-    
+
 if __name__ == "__main__":
     _alterar_nome_linha("teste", "teste1")
