@@ -2,6 +2,14 @@
 
 Documentação principal: [README.md](README.md)
 
+## [1.6.1] - 05/07/2026
+
+### Adicionado
+
+- Coleta de dados de refugo
+- Explosao de relatorio diario com base em vendidos
+
+
 ## [1.5.1] - 02/07/2026
 
 ### Adicionado
