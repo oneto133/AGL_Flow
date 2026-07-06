@@ -8,7 +8,9 @@ def _registrar_contagem(dados: RegistrarColeta):
 
     caminho = CSV_DIR / "registro_refugos.csv"
 
-    data_atual = datetime.now().isoformat()
+    data_atual = (
+        dados.data_hora or datetime.now()
+    ).strftime("%d/%m/%Y %H:%M:%S")
 
     descricao = consultar_descricao(dados.codigo)
 
@@ -88,7 +90,11 @@ def contados_hoje():
     if df.empty:
         return []
 
-    df["data_hora_dt"] = pd.to_datetime(df["data_hora"], errors="coerce")
+    df["data_hora_dt"] = pd.to_datetime(
+        df["data_hora"],
+        format="%d/%m/%Y %H:%M:%S",
+        errors="coerce"
+    )
 
     hoje = datetime.now().date()
 

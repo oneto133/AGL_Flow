@@ -15,7 +15,7 @@ LISTAS_FEITOS = [
 
 URL_CARTAO = "https://api.trello.com/1/cards/{id_cartao}"
 URL_BOARD_CARDS = "https://api.trello.com/1/boards/{id_board}/cards"
-INTERVALO_VERIFICACAO = 30
+INTERVALO_VERIFICACAO = 55
 
 def calcular_medias_por_linha(df):
     """

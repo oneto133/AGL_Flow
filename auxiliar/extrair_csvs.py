@@ -67,7 +67,7 @@ def export_sheet_to_csv(excel_path: str, sheet_name: str, csv_path: str) -> None
     df.to_csv(csv_path, index=False, encoding="utf-8-sig")
 
 
-def limpar_relatorio_csv() -> None:
+def motores_explosao() -> None:
     df = pd.read_csv(r"csv/Pendencias - Geral.csv", encoding="utf-8-sig", skiprows=1)
 
     motores = df[(df["Departamento"] == "MOTORES") & (df["Unnamed: 11"] != 0)]
@@ -75,7 +75,27 @@ def limpar_relatorio_csv() -> None:
 
     novo = pd.concat([motores, cancelas])
     novo = novo.replace({r"[\r\n]+": " "}, regex=True)
-    novo.to_csv(r"csv/relatorio_diario.csv", index=False, encoding="latin1")
+    
+    novo.to_csv(r"csv/relatorio_diario_motores.csv", index=False, encoding="latin1")
+
+
+def fechaduras_explosao() -> None:
+    df = pd.read_csv(r"csv/Pendencias - Geral.csv", encoding="utf-8-sig", skiprows=1)
+
+    fechaduras = df[(df["Departamento"] == "FECHADURAS") & (df["Unnamed: 11"] != 0)]
+
+    novo = fechaduras.replace({r"[\r\n]+": " "}, regex=True)
+    
+    novo.to_csv(r"csv/relatorio_diario_fechaduras.csv", index=False, encoding="latin1")
+
+def interfone_explosao() -> None:
+    df = pd.read_csv(r"csv/Pendencias - Geral.csv", encoding="utf-8-sig", skiprows=1)
+
+    interfonia = df[(df["Departamento"] == "INTERFONIA") & (df["Unnamed: 11"] != 0)]
+
+    novo = interfonia.replace({r"[\r\n]+": " "}, regex=True)
+    
+    novo.to_csv(r"csv/relatorio_diario_interfonia.csv", index=False, encoding="latin1")
 
 
 def main() -> int:
@@ -83,7 +103,13 @@ def main() -> int:
 
     export_sheet_to_csv(relatorio_path, "Pendências - Geral", os.path.join("csv", "Pendencias - Geral.csv"))
 
-    limpar_relatorio_csv()
+    try:
+        motores_explosao()
+        fechaduras_explosao()
+        interfone_explosao()
+    except Exception as e:
+        print(e)
+        
 
     print("CSV gerados com sucesso em ./csv")
     return 0

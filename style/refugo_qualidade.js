@@ -193,7 +193,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // SIDEBAR
     // =========================
     const sidebar = document.getElementById("configSidebar");
-    const btnConfig = document.getElementById("btnConfig");
+    const btnConfig = document.getElementById("config-button");
     const fecharSidebar = document.getElementById("fecharSidebar");
     const btnDownloadHistorico = document.getElementById("btnDownloadHistorico");
 
