@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel de Controle - Galpão</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f9;
+            display: flex;
+            gap: 20px;
+        }
+        .container-mapa {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        /* Estilo das Linhas de Produção no SVG */
+        .linha-producao {
+            cursor: pointer;
+            transition: fill 0.3s, stroke 0.3s;
+            stroke: #333;
+            stroke-width: 2;
+        }
+        .linha-producao:hover {
+            stroke: #000;
+            stroke-width: 4;
+        }
+        /* Estados das linhas */
+        .ociosa { fill: #b0bec5; }
+        .com-ordem { fill: #81c784; animation: pulsar 2s infinite; }
+        
+        @keyframes pulsar {
+            0% { fill: #81c784; }
+            50% { fill: #4caf50; }
+            100% { fill: #81c784; }
+        }
+
+        /* Painel Lateral de Detalhes */
+        .painel-detalhes {
+            flex: 1;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            min-width: 300px;
+        }
+        .item-sequencia {
+            background: #f1f8e9;
+            border-left: 5px solid #4caf50;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 1. O MAPA DO GALPÃO EM SVG -->
+    <div class="container-mapa">
+        <h2>Planta Baixa do Galpão</h2>
+        <!-- viewBox define o espaço de desenho interno (largura 600 x altura 400) -->
+        <svg width="600" height="400" viewBox="0 0 600 400">
+            <!-- Paredes externas do Galpão -->
+            <rect x="10" y="10" width="580" height="380" fill="none" stroke="#333" stroke-width="4" stroke-dasharray="10,5" />
+            <text x="25" y="35" font-size="14" fill="#666" font-weight="bold">ÁREA RESTRITA - PRODUÇÃO</text>
+
+            <!-- Linha 1 (Ativa) -->
+            <g id="linha-01" class="linha-producao com-ordem" onclick="mostrarSequenciamento('linha-01')">
+                <rect x="50" y="80" width="220" height="60" rx="10" />
+                <text x="70" y="115" font-size="16" fill="black" font-weight="bold">Linha de Montagem A</text>
+            </g>
+
+            <!-- Linha 2 (Ociosa) -->
+            <g id="linha-02" class="linha-producao ociosa" onclick="mostrarSequenciamento('linha-02')">
+                <rect x="50" y="200" width="220" height="60" rx="10" />
+                <text x="70" y="235" font-size="16" fill="black" font-weight="bold">Linha de Pintura B</text>
+            </g>
+
+            <!-- Linha 3 (Ativa) -->
+            <g id="linha-03" class="linha-producao com-ordem" onclick="mostrarSequenciamento('linha-03')">
+                <rect x="330" y="80" width="220" height="180" rx="10" />
+                <text x="350" y="175" font-size="16" fill="black" font-weight="bold">Linha de Embalagem C</text>
+            </g>
+        </svg>
+    </div>
+
+    <!-- 2. PAINEL DE DETALHES -->
+    <div class="painel-detalhes" id="painel">
+        <h3>Detalhes da Linha</h3>
+        <p id="instrucao">Clique em uma linha de produção no mapa para ver o sequenciamento de ordens.</p>
+        <div id="conteudo-linha" style="display: none;">
+            <h4 id="nome-linha">Nome da Linha</h4>
+            <div id="lista-ordens"></div>
+        </div>
+    </div>
+
+    <!-- 3. INTELIGÊNCIA EM JAVASCRIPT -->
+    <script>
+        // Simulando dados que viriam de um banco de dados ou ERP
+        const dadosProducao = {
+            "linha-01": {
+                nome: "Linha de Montagem A",
+                status: "Em Produção",
+                sequencia: [
+                    { op: "OP-2026-001", produto: "Motor Elétrico X", qtd: 150 },
+                    { op: "OP-2026-002", produto: "Motor Elétrico Y", qtd: 80 }
+                ]
+            },
+            "linha-02": {
+                nome: "Linha de Pintura B",
+                status: "Ociosa",
+                sequencia: [] // Nenhuma ordem ativa
+            },
+            "linha-03": {
+                nome: "Linha de Embalagem C",
+                status: "Em Produção",
+                sequencia: [
+                    { op: "OP-2026-089", produto: "Caixas Protetoras G", qtd: 500 },
+                    { op: "OP-2026-090", produto: "Paletes Reforçados", qtd: 200 },
+                    { op: "OP-2026-091", produto: "Filme Stretch M", qtd: 1000 }
+                ]
+            }
+        };
+
+        function mostrarSequenciamento(idLinha) {
+            const info = dadosProducao[idLinha];
+            
+            // Oculta o texto inicial de instrução e exibe a estrutura de dados
+            document.getElementById("instrucao").style.display = "none";
+            document.getElementById("conteudo-linha").style.display = "block";
+            
+            // Atualiza o título do painel
+            document.getElementById("nome-linha").innerText = `${info.nome} (${info.status})`;
+
+            // Limpa a lista anterior
+            const containerOrdens = document.getElementById("lista-ordens");
+            containerOrdens.innerHTML = "";
+
+            // Verifica se há ordens e preenche a tela
+            if (info.sequencia.length === 0) {
+                containerOrdens.innerHTML = "<p>Nenhuma ordem agendada para esta linha no momento.</p>";
+            } else {
+                info.sequencia.forEach((ordem, index) => {
+                    containerOrdens.innerHTML += `
+                        <div class="item-sequencia">
+                            <strong>${index + 1}º - ${ordem.op}</strong><br>
+                            Item: ${ordem.produto}<br>
+                            Meta: ${ordem.qtd} unidades
+                        </div>
+                    `;
+                });
+            }
+        }
+    </script>
+</body>
+</html>
