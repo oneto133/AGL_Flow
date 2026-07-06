@@ -21,7 +21,7 @@ router = APIRouter(tags=["Qualidade"])
 
 @router.get("/qualidade")
 def qualidade(request: Request):
-    return templates.TemplateResponse("qualidade.html", {"request": request})
+    return templates.TemplateResponse(request, "qualidade.html")
 
 
 @router.post("/api/registrar-coleta")
