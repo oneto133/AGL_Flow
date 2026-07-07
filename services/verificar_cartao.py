@@ -42,29 +42,61 @@ def calcular_medias_por_linha(df):
 
     return medias
 
-def calcular_previsao_em_lote(df):
-    agora = datetime.now()
-    df["quantidade"] = pd.to_numeric(df["quantidade"], errors="coerce").fillna(0)
+def calcular_ultima_finalizada(df):
+    ultima = (df[(df["status"] == "Concluído")][["linha", "data_hora_finalizacao"]].dropna())
+    
+    #pega ultima data
+    dic = ultima.groupby("linha")["data_hora_finalizacao"].max()
+    return dic
 
+
+def inserir_data_inicio(df):
+    dicionario = calcular_ultima_finalizada(df)
+
+
+    condicao = (df["status"] != "Concluído") & (df["fila"] == 1)
+
+    fila_1 = (df[(df["status"] != "Concluído") & (df["fila"] == 1)][["linha", "hora_inicio_fila"]])
+    
+    df.loc[condicao, "hora_inicio_fila"] = df.loc[condicao, "linha"].map(dicionario)
+
+    caminho = CSV_DIR / "sequenciamento.csv"
+    df.to_csv(caminho, index=False, encoding="utf-8", sep=",", quotechar='"', quoting=csv.QUOTE_MINIMAL)
+
+
+
+def calcular_previsao_em_lote(df):
+    # Removido o 'agora = datetime.now()' do topo, pois não iniciaremos os cálculos por ele
+    df["quantidade"] = pd.to_numeric(df["quantidade"], errors="coerce").fillna(0)
     df["fila"] = pd.to_numeric(df["fila"], errors="coerce")
 
     medias_por_linha = calcular_medias_por_linha(df)
-
     linhas_ativas = df[(df["status"] != "Concluído") & (df["fila"].notna())]
 
     for idx, row in linhas_ativas.iterrows():
         linha_producao = row["linha"]
         rank_atual = row["fila"]
-
         media_item_linha = medias_por_linha.get(linha_producao, 0.0833)
 
+        # CENÁRIO 1: Se o item é o número 1 da fila, a previsão de entrada dele NÃO MUDA.
+        # Ela é exatamente a hora em que ele entrou na fila.
+        if rank_atual == 1:
+            hora_inicio_f1 = pd.to_datetime(row["hora_inicio_fila"], errors="coerce")
+            if pd.notna(hora_inicio_f1):
+                df.at[idx, "previsao_entrada"] = hora_inicio_f1.isoformat()
+            else:
+                # Caso o Fila 1 ainda não tenha hora de início por algum motivo, usa o momento atual
+                df.at[idx, "previsao_entrada"] = datetime.now().isoformat()
+            continue  # Pula para o próximo item da fila
+
+        # CENÁRIO 2: Se o item está na posição 2, 3, etc., calculamos com base no Fila 1 fixo
         ops_na_frente = df[
-            (df["linha"] == linha_producao) &
-            (df["status"] != "Concluído") &
-            (df["fila"] < rank_atual)
+            (df["linha"] == 1) | # Ajuste conceitual: buscamos quem está na frente nesta linha de produção
+            ((df["linha"] == linha_producao) & (df["status"] != "Concluído") & (df["fila"] < rank_atual))
         ]
 
         tempo_acumulado_espera = 0.0
+        ponto_de_partida_tempo = None
 
         for _, op_frente in ops_na_frente.iterrows():
             qtd_frente = op_frente["quantidade"] if pd.notna(op_frente["quantidade"]) else 0
@@ -72,22 +104,24 @@ def calcular_previsao_em_lote(df):
 
             if op_frente["fila"] == 1:
                 hora_inicio = pd.to_datetime(op_frente["hora_inicio_fila"], errors="coerce")
-
+                
                 if pd.notna(hora_inicio):
-                    tempo_decorrido = calcular_horas_uteis(hora_inicio, agora)
-                    tempo_restante = max(0, tempo_previsto - tempo_decorrido)
-
+                    # O tempo acumulado começa a contar a partir da hora de início real do Fila 1
+                    ponto_de_partida_tempo = hora_inicio
+                    tempo_acumulado_espera += tempo_previsto
                 else:
-                    tempo_restante = tempo_previsto
-
-                tempo_acumulado_espera += tempo_restante
-
+                    ponto_de_partida_tempo = datetime.now()
+                    tempo_acumulado_espera += tempo_previsto
             else:
                 tempo_acumulado_espera += tempo_previsto
 
-        data_previsao = adicionar_horas_uteis(agora, tempo_acumulado_espera)
-        df.at[idx, "previsao_entrada"] = data_previsao.isoformat()
+        # Se não encontrou nenhum Fila 1 para usar de base, usa o horário de agora
+        if ponto_de_partida_tempo is None:
+            ponto_de_partida_tempo = datetime.now()
 
+        # Calcula a previsão somando o tempo acumulado a partir da hora estável de início do Fila 1
+        data_previsao = adicionar_horas_uteis(ponto_de_partida_tempo, tempo_acumulado_espera)
+        df.at[idx, "previsao_entrada"] = data_previsao.isoformat()
 
 def consultar_cartao(id_cartao: str):
 
@@ -165,7 +199,6 @@ def atualizar_e_calcular_csv(id_cartao: str, df: pd.DataFrame, caminho: str = No
 
         datas_finalizacao_dt = pd.to_datetime(df["data_hora_finalizacao"], errors="coerce")
         datas_sequenciamento_dt = pd.to_datetime(df["data_hora_sequenciamento"], errors="coerce")
-
         linha_atual = df.loc[indice_cartao, "linha"].values[0]
         
         fim_op_atual = datas_finalizacao_dt[indice_cartao].values[0]
@@ -184,7 +217,6 @@ def atualizar_e_calcular_csv(id_cartao: str, df: pd.DataFrame, caminho: str = No
             hora_inicio_fila = None
             df.loc[indice_cartao, "hora_inicio_fila"] = None
 
-        # 3. Calcula as horas úteis com os carimbos gerados
         inicio_ts = pd.to_datetime(hora_inicio_fila)
         fim_ts = pd.to_datetime(referencia_tempo)
         tempo_total_uteis = calcular_horas_uteis(inicio_ts, fim_ts)
@@ -235,6 +267,8 @@ async def verificar_cartoes():
                 if pd.notna(id_cartao):
                     verificar_cartao(id_cartao, df, boards_cache)
 
+            inserir_data_inicio(df)
+
             calcular_previsao_em_lote(df)
 
             df.to_csv(caminho, index=False, encoding="utf-8", sep=",", quotechar='"', quoting=csv.QUOTE_MINIMAL)
@@ -246,4 +280,8 @@ async def verificar_cartoes():
 
 
 if __name__ == "__main__":
+    """caminho = CSV_DIR / "sequenciamento.csv"
+    df = pd.read_csv(caminho, encoding="utf-8", engine="python", quotechar='"')
+    #calcular_ultima_finalizada(df)
+    inserir_data_inicio(df)"""
     asyncio.run(verificar_cartoes())
