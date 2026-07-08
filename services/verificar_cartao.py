@@ -1,4 +1,4 @@
-import asyncio
+﻿import asyncio
 from datetime import datetime
 import pandas as pd
 import requests
@@ -16,6 +16,31 @@ LISTAS_FEITOS = [
 URL_CARTAO = "https://api.trello.com/1/cards/{id_cartao}"
 URL_BOARD_CARDS = "https://api.trello.com/1/boards/{id_board}/cards"
 INTERVALO_VERIFICACAO = 55
+COLUNAS_TEXTO = [
+    "id",
+    "status",
+    "origem",
+    "id_cartao",
+    "data_hora_sequenciamento",
+    "data_hora_finalizacao",
+    "observacao",
+    "hora_inicio_fila",
+    "previsao_entrada",
+    "descricao_produto",
+    "linha",
+    "operador",
+    "prioridade",
+]
+
+
+def carregar_sequenciamento():
+    caminho = CSV_DIR / "sequenciamento.csv"
+    return pd.read_csv(
+        caminho,
+        encoding="utf-8",
+        engine="python",
+        dtype={coluna: "string" for coluna in COLUNAS_TEXTO},
+    )
 
 def calcular_medias_por_linha(df):
     """
@@ -43,7 +68,7 @@ def calcular_medias_por_linha(df):
     return medias
 
 def calcular_ultima_finalizada(df):
-    ultima = (df[(df["status"] == "Concluído")][["linha", "data_hora_finalizacao"]].dropna())
+    ultima = (df[(df["status"].fillna("") == "Concluído")][["linha", "data_hora_finalizacao"]].dropna())
     
     #pega ultima data
     dic = ultima.groupby("linha")["data_hora_finalizacao"].max()
@@ -53,12 +78,14 @@ def calcular_ultima_finalizada(df):
 def inserir_data_inicio(df):
     dicionario = calcular_ultima_finalizada(df)
 
+    if "hora_inicio_fila" in df.columns:
+        df["hora_inicio_fila"] = df["hora_inicio_fila"].astype("string")
 
-    condicao = (df["status"] != "Concluído") & (df["fila"] == 1)
+    condicao = (df["status"].fillna("") != "Concluído") & (df["fila"] == 1)
 
     fila_1 = (df[(df["status"] != "Concluído") & (df["fila"] == 1)][["linha", "hora_inicio_fila"]])
     
-    df.loc[condicao, "hora_inicio_fila"] = df.loc[condicao, "linha"].map(dicionario)
+    df.loc[condicao, "hora_inicio_fila"] = df.loc[condicao, "linha"].map(dicionario).astype("string")
 
     caminho = CSV_DIR / "sequenciamento.csv"
     df.to_csv(caminho, index=False, encoding="utf-8", sep=",", quotechar='"', quoting=csv.QUOTE_MINIMAL)
@@ -66,33 +93,33 @@ def inserir_data_inicio(df):
 
 
 def calcular_previsao_em_lote(df):
-    # Removido o 'agora = datetime.now()' do topo, pois não iniciaremos os cálculos por ele
+    # Removido o 'agora = datetime.now()' do topo, pois nÃ£o iniciaremos os cÃ¡lculos por ele
     df["quantidade"] = pd.to_numeric(df["quantidade"], errors="coerce").fillna(0)
     df["fila"] = pd.to_numeric(df["fila"], errors="coerce")
 
     medias_por_linha = calcular_medias_por_linha(df)
-    linhas_ativas = df[(df["status"] != "Concluído") & (df["fila"].notna())]
+    linhas_ativas = df[(df["status"].fillna("") != "Concluído") & (df["fila"].notna())]
 
     for idx, row in linhas_ativas.iterrows():
         linha_producao = row["linha"]
         rank_atual = row["fila"]
         media_item_linha = medias_por_linha.get(linha_producao, 0.0833)
 
-        # CENÁRIO 1: Se o item é o número 1 da fila, a previsão de entrada dele NÃO MUDA.
-        # Ela é exatamente a hora em que ele entrou na fila.
+        # CENÃRIO 1: Se o item Ã© o nÃºmero 1 da fila, a previsÃ£o de entrada dele NÃƒO MUDA.
+        # Ela Ã© exatamente a hora em que ele entrou na fila.
         if rank_atual == 1:
-            hora_inicio_f1 = pd.to_datetime(row["hora_inicio_fila"], errors="coerce")
+            hora_inicio_f1 = row["hora_inicio_fila"]
             if pd.notna(hora_inicio_f1):
-                df.at[idx, "previsao_entrada"] = hora_inicio_f1.isoformat()
+                df.at[idx, "previsao_entrada"] = hora_inicio_f1
             else:
-                # Caso o Fila 1 ainda não tenha hora de início por algum motivo, usa o momento atual
-                df.at[idx, "previsao_entrada"] = datetime.now().isoformat()
+                df.at[idx, "previsao_entrada"] = pd.NA
             continue  # Pula para o próximo item da fila
+            continue  # Pula para o prÃ³ximo item da fila
 
-        # CENÁRIO 2: Se o item está na posição 2, 3, etc., calculamos com base no Fila 1 fixo
+        # CENÃRIO 2: Se o item estÃ¡ na posiÃ§Ã£o 2, 3, etc., calculamos com base no Fila 1 fixo
         ops_na_frente = df[
-            (df["linha"] == 1) | # Ajuste conceitual: buscamos quem está na frente nesta linha de produção
-            ((df["linha"] == linha_producao) & (df["status"] != "Concluído") & (df["fila"] < rank_atual))
+            (df["linha"] == 1) | # Ajuste conceitual: buscamos quem estÃ¡ na frente nesta linha de produÃ§Ã£o
+            ((df["linha"] == linha_producao) & (df["status"].fillna("") != "Concluído") & (df["fila"] < rank_atual))
         ]
 
         tempo_acumulado_espera = 0.0
@@ -106,7 +133,7 @@ def calcular_previsao_em_lote(df):
                 hora_inicio = pd.to_datetime(op_frente["hora_inicio_fila"], errors="coerce")
                 
                 if pd.notna(hora_inicio):
-                    # O tempo acumulado começa a contar a partir da hora de início real do Fila 1
+                    # O tempo acumulado comeÃ§a a contar a partir da hora de inÃ­cio real do Fila 1
                     ponto_de_partida_tempo = hora_inicio
                     tempo_acumulado_espera += tempo_previsto
                 else:
@@ -115,11 +142,11 @@ def calcular_previsao_em_lote(df):
             else:
                 tempo_acumulado_espera += tempo_previsto
 
-        # Se não encontrou nenhum Fila 1 para usar de base, usa o horário de agora
+        # Se nÃ£o encontrou nenhum Fila 1 para usar de base, usa o horÃ¡rio de agora
         if ponto_de_partida_tempo is None:
             ponto_de_partida_tempo = datetime.now()
 
-        # Calcula a previsão somando o tempo acumulado a partir da hora estável de início do Fila 1
+        # Calcula a previsÃ£o somando o tempo acumulado a partir da hora estÃ¡vel de inÃ­cio do Fila 1
         data_previsao = adicionar_horas_uteis(ponto_de_partida_tempo, tempo_acumulado_espera)
         df.at[idx, "previsao_entrada"] = data_previsao.isoformat()
 
@@ -206,7 +233,7 @@ def atualizar_e_calcular_csv(id_cartao: str, df: pd.DataFrame, caminho: str = No
 
         referencia_tempo = fim_op_atual if not pd.isna(fim_op_atual) else sequenciamento_atual
 
-        historico_indices = (df["linha"] == linha_atual) & (df["status"] == "Concluído") & (datas_finalizacao_dt.notna())
+        historico_indices = (df["linha"] == linha_atual) & (df["status"].fillna("") == "Concluído") & (datas_finalizacao_dt.notna())
         historico_anterior = datas_finalizacao_dt[historico_indices & (datas_finalizacao_dt < referencia_tempo)]
 
         if not historico_anterior.empty:
@@ -224,9 +251,8 @@ def atualizar_e_calcular_csv(id_cartao: str, df: pd.DataFrame, caminho: str = No
         df.loc[indice_cartao, "tempo_total_fila"] = tempo_total_uteis
         df.loc[indice_cartao, "fila"] = None
 
-        print(f"Cartão {id_cartao} atualizado e tempo de fila calculado: {tempo_total_uteis} h.")
     else:
-        print(f"Aviso: Cartão {id_cartao} não localizado na planilha.")
+        pass
 
 def verificar_cartao(id_cartao: str, df: pd.DataFrame, boards_cache: dict):
     dados = consultar_cartao(id_cartao)
@@ -234,7 +260,7 @@ def verificar_cartao(id_cartao: str, df: pd.DataFrame, boards_cache: dict):
     if dados is None:
         return
 
-    # Cartão concluído
+    # CartÃ£o concluÃ­do
     if dados["closed"] or dados["idList"] in LISTAS_FEITOS:
         atualizar_e_calcular_csv(id_cartao, df)
         return
@@ -258,9 +284,9 @@ async def verificar_cartoes():
         try:
             boards_cache = {}
             caminho = CSV_DIR / "sequenciamento.csv"
-            df = pd.read_csv(caminho, encoding="utf-8", engine="python", quotechar='"')
+            df = carregar_sequenciamento()
             
-            pendentes = df[df["status"] != "Concluído"]
+            pendentes = df[df["status"].fillna("") != "Concluído"]
 
             for _, linha in pendentes.iterrows():
                 id_cartao = linha["id_cartao"]
@@ -285,3 +311,6 @@ if __name__ == "__main__":
     #calcular_ultima_finalizada(df)
     inserir_data_inicio(df)"""
     asyncio.run(verificar_cartoes())
+
+
+
