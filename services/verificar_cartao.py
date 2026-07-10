@@ -169,6 +169,9 @@ def consultar_cartao(id_cartao: str):
         print(f"Erro ao consultar trello: {e}")
         return None
 
+async def consultar_cartao_async(id_cartao: str):
+    return await asyncio.to_thread(consultar_cartao, id_cartao)
+
 def obter_rank_cartao(
     id_cartao: str,
     id_lista: str,
@@ -208,6 +211,8 @@ def baixar_cartoes_board(id_board: str):
         print(f"Erro ao consultar Trello: {e}")
         return []
 
+async def baixar_cartoes_board_async(id_board: str):
+    return await asyncio.to_thread(baixar_cartoes_board, id_board)
 def atualizar_prioridade(id_cartao: str, ranking: int, df: pd.DataFrame):
 
     indice_cartao = df["id_cartao"] == id_cartao
@@ -254,8 +259,13 @@ def atualizar_e_calcular_csv(id_cartao: str, df: pd.DataFrame, caminho: str = No
     else:
         pass
 
-def verificar_cartao(id_cartao: str, df: pd.DataFrame, boards_cache: dict):
-    dados = consultar_cartao(id_cartao)
+async def verificar_cartao(
+    id_cartao: str,
+    df: pd.DataFrame,
+    boards_cache: dict,
+    cache_lock: asyncio.Lock,
+):
+    dados = await consultar_cartao_async(id_cartao)
 
     if dados is None:
         return
@@ -268,7 +278,9 @@ def verificar_cartao(id_cartao: str, df: pd.DataFrame, boards_cache: dict):
     id_board = dados["idBoard"]
 
     if id_board not in boards_cache:
-        boards_cache[id_board] = baixar_cartoes_board(id_board)
+        async with cache_lock:
+            if id_board not in boards_cache:
+                boards_cache[id_board] = await baixar_cartoes_board_async(id_board)
 
     ranking = obter_rank_cartao(
         id_cartao=id_cartao,
@@ -283,18 +295,24 @@ async def verificar_cartoes():
     while True:
         try:
             boards_cache = {}
+            cache_lock = asyncio.Lock()
             caminho = CSV_DIR / "sequenciamento.csv"
             df = carregar_sequenciamento()
             
             pendentes = df[df["status"].fillna("") != "Concluído"]
 
+            tarefas = []
             for _, linha in pendentes.iterrows():
                 id_cartao = linha["id_cartao"]
                 if pd.notna(id_cartao):
-                    verificar_cartao(id_cartao, df, boards_cache)
+                    tarefas.append(
+                        verificar_cartao(id_cartao, df, boards_cache, cache_lock)
+                    )
+
+            if tarefas:
+                await asyncio.gather(*tarefas)
 
             inserir_data_inicio(df)
-
             calcular_previsao_em_lote(df)
 
             df.to_csv(caminho, index=False, encoding="utf-8", sep=",", quotechar='"', quoting=csv.QUOTE_MINIMAL)
@@ -311,6 +329,11 @@ if __name__ == "__main__":
     #calcular_ultima_finalizada(df)
     inserir_data_inicio(df)"""
     asyncio.run(verificar_cartoes())
+
+
+
+
+
 
 
 
