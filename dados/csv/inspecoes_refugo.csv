@@ -8,3 +8,5 @@ id,id_inspecao,codigo,descricao,quantidade,codigo_nc,observacao
 14,14,2001031,Engrenagem,engrenagem,5,A,
 15,15,2001031,Manual,manual,0,,Manual trocado
 16,32,2001161,Estator,estator,3,F,Item com fio ruim
+33,36,2001035,Estator,2,A,Item com aranha suja
+34,36,2001035,Etiqueta Tampa,100,T,Etiqueta trocada

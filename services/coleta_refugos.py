@@ -117,44 +117,58 @@ def csv_para_xlsx(caminho_csv: str, caminho_xlsx: str):
     return caminho_xlsx
 
 def xlsx_para_csv(caminho_xlsx: str, caminho_csv: str):
-
-    df = pd.read_excel(caminho_xlsx, dtype={"codigo": str})
-
-    if "codigo" not in df.columns or "descricao" not in df.columns:
-        raise ValueError("Arquivo inválido. Precisa de codigo e descricao")
-
-    df = df[["codigo", "descricao"]]
-
+    destino = Path(caminho_csv).name.lower()
+    df = pd.read_excel(caminho_xlsx, dtype=str)
     df = df.fillna("")
 
-    df.to_csv(caminho_csv, index=False, encoding="utf-8")
+    if destino == "base_qualidade.csv":
+        df.columns = [str(coluna).strip() for coluna in df.columns]
+        df = df.loc[:, [coluna for coluna in df.columns if coluna and not str(coluna).startswith("Unnamed")]]
+    else:
+        if "codigo" not in df.columns or "descricao" not in df.columns:
+            raise ValueError("Arquivo inválido. Precisa de codigo e descricao")
 
+        df = df[["codigo", "descricao"]]
+
+    df.to_csv(caminho_csv, index=False, encoding="utf-8")
     return caminho_csv
 
 def exportar_contagens_para_xlsx(caminho_csv: str, caminho_saida_xlsx: str):
-
-    df = pd.read_csv(caminho_csv, dtype={"codigo": str})
-
+    nome_arquivo = Path(caminho_csv).name.lower()
+    df = pd.read_csv(caminho_csv, dtype=str, engine="python", on_bad_lines="skip")
     df = df.fillna("")
 
-    colunas = [
-        "codigo",
-        "descricao",
-        "quantidade",
-        "local",
-        "data_hora",
-        "responsavel",
-        "observacao"
-    ]
+    if nome_arquivo == "base_qualidade.csv":
+        if "codigo" not in df.columns and "código" in df.columns:
+            df = df.rename(columns={"código": "codigo"})
 
-    for col in colunas:
-        if col not in df.columns:
-            df[col] = ""
+        colunas = [col for col in df.columns if col not in {"", ".2"}]
+        if "codigo" in colunas:
+            colunas.remove("codigo")
+            colunas.insert(0, "codigo")
+        if "descricao" in colunas:
+            colunas.remove("descricao")
+            colunas.insert(1 if "codigo" in colunas else 0, "descricao")
 
-    df = df[colunas]
+        df = df[colunas]
+    else:
+        colunas = [
+            "codigo",
+            "descricao",
+            "quantidade",
+            "local",
+            "data_hora",
+            "responsavel",
+            "observacao",
+        ]
+
+        for col in colunas:
+            if col not in df.columns:
+                df[col] = ""
+
+        df = df[colunas]
 
     df.to_excel(caminho_saida_xlsx, index=False, engine="openpyxl")
-
     return caminho_saida_xlsx
 
 def importar_base_xlsx(caminho_xlsx: str, caminho_csv: str):

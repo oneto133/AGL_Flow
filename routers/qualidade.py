@@ -103,6 +103,26 @@ async def upload_base(file: UploadFile = File(...)):
     }
 
 
+@router.post("/base/qualidade/upload")
+async def upload_base_qualidade(file: UploadFile = File(...)):
+
+    caminho_base = CSV_DIR / "base_qualidade.csv"
+    caminho_temp = CSV_DIR / f"upload_{file.filename}"
+
+    with open(caminho_temp, "wb") as f:
+        f.write(await file.read())
+
+    xlsx_para_csv(
+        str(caminho_temp),
+        str(caminho_base)
+    )
+
+    return {
+        "status": "ok",
+        "message": "Base de qualidade atualizada com sucesso"
+    }
+
+
 # =========================
 # HISTÓRICO
 # =========================
@@ -124,6 +144,21 @@ def download_historico():
         media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     )
 
+@router.get("/base/inspecoes-deslizantes")
+def donwload_base_deslizante():
+    caminho = CSV_DIR / "base_qualidade.csv"
+    caminho_saida = CSV_DIR / "base_qualidade.xlsx"
+
+    exportar_contagens_para_xlsx(
+        str(caminho),
+        str(caminho_saida)
+    )
+
+    return FileResponse(
+        path=caminho_saida,
+        filename="base_qualidade.xlsx",
+        media_type="application/vnd.openxmlformats-officedocument.spreadsheettml.sheet"
+    )
 
 @router.get("/qualidade/inspecoes")
 def qualidade_inspecoes(request: Request):

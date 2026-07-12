@@ -504,6 +504,10 @@ def _proximo_id(df: pd.DataFrame) -> int:
 
 
 def _append_csv(caminho: Path, linha: dict[str, Any]) -> None:
+
+    """
+    salva os dados nas suas respectivas colunas
+    """
     df_linha = pd.DataFrame([linha])
 
     if not caminho.exists() or caminho.stat().st_size == 0:
@@ -671,18 +675,25 @@ def itens_inspecionados_da_inspecao(id_inspecao: int | str) -> list[dict[str, An
     return retorno.fillna("").to_dict(orient="records")
 
 
-def refugos_da_inspecao(id_inspecao: int | str) -> list[dict[str, Any]]:
+def refugos_da_inspecao(id_inspecao: int | str) -> int:
     """
     Consulta os refugos já gravados para uma inspeção específica.
     """
 
     df_refugos = _ler_csv(INSPECOES_REFUGO)
+
     if df_refugos.empty or "id_inspecao" not in df_refugos.columns:
-        return []
+        return 0
 
     alvo = str(id_inspecao).strip()
-    retorno = df_refugos.loc[df_refugos["id_inspecao"].astype(str) == alvo]
-    return retorno.fillna("").to_dict(orient="records")
+
+    df_refugos["id_inspecao"] = df_refugos["id_inspecao"].astype(str).str.strip()
+    filtro = df_refugos[df_refugos["id_inspecao"] == alvo]
+
+    if filtro.empty:
+        return 0
+
+    return int(pd.to_numeric(filtro["quantidade"], errors="coerce").sum())
 
 
 def _coletar_refugos(
@@ -800,7 +811,6 @@ def _salvar_refugos(refugos: list[RefugoInspecao], id_inspecao: int) -> None:
                 "id_inspecao": id_inspecao,
                 "codigo": refugo.codigo,
                 "descricao": refugo.descricao,
-                "campo": refugo.campo or "",
                 "quantidade": refugo.quantidade,
                 "codigo_nc": refugo.codigo_nc,
                 "observacao": refugo.observacao,
@@ -892,79 +902,6 @@ def _salvar_inspecao_dados(
     )
 
 
-def listar_inspecoes_do_dia() -> list[dict[str, Any]]:
-    df_inspecoes = _ler_csv(INSPECOES)
-    df_dados = _ler_csv(INSPECOES_DADOS)
-
-    if df_inspecoes.empty:
-        return []
-
-    if df_dados.empty:
-        df_dados = pd.DataFrame()
-
-    if "id" not in df_inspecoes.columns or "id_inspecao" not in df_dados.columns:
-        return []
-
-    df_inspecoes = df_inspecoes.copy()
-    df_inspecoes["id_inspecao_base"] = df_inspecoes["id"]
-    df_inspecoes["data_hora_inicio_dt"] = pd.to_datetime(
-        df_inspecoes.get("data_hora_inicio_inspecao", ""),
-        errors="coerce",
-    )
-    hoje = datetime.now().date()
-    df_inspecoes = df_inspecoes.loc[df_inspecoes["data_hora_inicio_dt"].dt.date == hoje]
-
-    if df_inspecoes.empty:
-        return []
-
-    df_join = df_inspecoes.merge(
-        df_dados,
-        left_on="id",
-        right_on="id_inspecao",
-        how="left",
-        suffixes=("_inspecao", "_dados"),
-    )
-
-    df_join = df_join.fillna("")
-    df_join = df_join.sort_values(by=["data_hora_inicio_dt", "id_inspecao_base"], ascending=False)
-
-    retorno: list[dict[str, Any]] = []
-    for _, row in df_join.iterrows():
-        id_inspecao = row.get("id_inspecao_base", row.get("id", 0))
-        op = _to_int(row.get("op_inspecao", row.get("op", 0)))
-        codigo = _to_int(row.get("codigo_inspecao", row.get("codigo", 0)))
-        descricao = str(row.get("descricao_inspecao", row.get("descricao", ""))).strip()
-        quantidade = _to_int(row.get("quantidade", row.get("quantidade_programada", 0)))
-        linha = str(row.get("linha", "")).strip()
-        url_reinspecao = (
-            f"/qualidade/inspecoes/linha/{linha}/manual?id_inspecao={_to_int(id_inspecao)}"
-            if linha
-            else f"/qualidade/inspecoes/op/{op}"
-        )
-
-        retorno.append(
-            {
-                "id_inspecao": _to_int(id_inspecao),
-                "op": op,
-                "linha": linha,
-                "hora": row.get("data_hora_inicio_dt").to_pydatetime().strftime("%H:%M")
-                if pd.notna(row.get("data_hora_inicio_dt"))
-                else "",
-                "codigo": codigo,
-                "descricao": descricao,
-                "quantidade_programada": quantidade,
-                "status": "Completa" if bool(row.get("inspecao_completa")) else "Em andamento",
-                "codigo_item": _to_int(row.get("codigo_item")),
-                "descricao_item": str(row.get("descricao_item", "")).strip(),
-                "destino": str(row.get("destino", "")).strip(),
-                "url_reinspecao": url_reinspecao,
-                "itens_inspecionados": itens_inspecionados_da_inspecao(_to_int(id_inspecao)),
-                "refugos": refugos_da_inspecao(_to_int(id_inspecao)),
-            }
-        )
-
-    return retorno
-
 
 def buscar_inspecao_dados_por_id(id_inspecao: int | str) -> dict[str, Any]:
     df_inspecoes = _ler_csv(INSPECOES)
@@ -1025,26 +962,6 @@ async def salvar_inspecao(dados: InspecaoCreate):
         "itens_inspecionados": len(itens_inspecionados),
         "refugos": len(refugos),
     }
-
-
-if __name__ == "__main__":
-    exemplo = InspecaoCreate(
-        op=96663,
-        codigo=0,
-        descricao="",
-        quantidade=0,
-        data_hora_inicio_inspecao=datetime.now(),
-        data_hora_fim_inspecao=datetime.now(),
-        possui_op=True,
-        qtd_etiquetas=1,
-        status="teste",
-        conformidade=True,
-        refugo=False,
-        aprovado=True,
-    )
-
-    print(asyncio.run(salvar_inspecao(exemplo)))
-
 
 def _resumir_dados_inspecao(df_dados: pd.DataFrame, id_inspecao: int | str) -> dict[str, Any]:
     if df_dados.empty or "id_inspecao" not in df_dados.columns:
@@ -1122,7 +1039,6 @@ def _salvar_inspecao_dados(
             {
                 "id": proximo_id,
                 "id_inspecao": id_inspecao,
-                "item_sequencia": indice,
                 "op": dados.op or item_base.get("op", 0),
                 "codigo": item_base["codigo"],
                 "descricao": item_base["descricao"],
@@ -1254,4 +1170,24 @@ def buscar_inspecao_dados_por_id(id_inspecao: int | str) -> dict[str, Any]:
     return retorno
 
 if __name__ == "__main__":
+    """print(refugos_da_inspecao(32))
+
+    exemplo = InspecaoCreate(
+        op=96663,
+        codigo=0,
+        descricao="",
+        quantidade=0,
+        data_hora_inicio_inspecao=datetime.now(),
+        data_hora_fim_inspecao=datetime.now(),
+        possui_op=True,
+        qtd_etiquetas=1,
+        status="teste",
+        conformidade=True,
+        refugo=False,
+        aprovado=True,
+    )
+
+    print(asyncio.run(salvar_inspecao(exemplo)))
+    """
+
     print(listar_inspecoes_do_dia())
