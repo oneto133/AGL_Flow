@@ -10,3 +10,6 @@ id,id_inspecao,codigo,descricao,quantidade,codigo_nc,observacao
 16,32,2001161,Estator,estator,3,F,Item com fio ruim
 33,36,2001035,Estator,2,A,Item com aranha suja
 34,36,2001035,Etiqueta Tampa,100,T,Etiqueta trocada
+37,39,2001161,Engrenagem,1,A,
+40,41,2001161,Estator,2,a,item com problema
+41,41,2001161,Capacitor,1,t,capacitor trocado

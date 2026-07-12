@@ -52,7 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
     return response.json();
   }
 
-  function createCard({ eyebrow, title, description, meta = [], actionLabel, onClick }) {
+  function createCard({ eyebrow, title, description, meta = [], actionLabel, onClick, actionOnClick }) {
     const card = document.createElement("article");
     card.className = "quality-card quality-card--clickable";
 
@@ -87,6 +87,12 @@ document.addEventListener("DOMContentLoaded", () => {
       action.type = "button";
       action.className = "primary-button";
       action.textContent = actionLabel;
+      if (actionOnClick) {
+        action.addEventListener("click", (event) => {
+          event.stopPropagation();
+          actionOnClick(event);
+        });
+      }
       card.appendChild(action);
     }
 
@@ -1344,6 +1350,170 @@ document.addEventListener("DOMContentLoaded", () => {
   async function initDiaPage() {
     const lista = document.querySelector("#inspecoesDiaLista");
     const count = document.querySelector("#diaCount");
+    const modal = document.querySelector("#inspecaoDiaModal");
+    const modalTitulo = document.querySelector("#diaModalTitle");
+    const modalResumo = document.querySelector("#diaModalResumo");
+    const modalLista = document.querySelector("#diaModalLista");
+    const modalCount = document.querySelector("#diaModalCount");
+    const btnConferirNovamente = document.querySelector("#btnConferirNovamenteDia");
+    let registroAtivo = null;
+    let detalheAtivo = null;
+
+    function closeDiaModal() {
+      modal?.classList.add("hidden");
+      modal?.setAttribute("aria-hidden", "true");
+      registroAtivo = null;
+      detalheAtivo = null;
+      if (btnConferirNovamente) {
+        btnConferirNovamente.href = "#";
+      }
+    }
+
+    modal?.querySelectorAll("[data-close-dia-modal]").forEach((button) => {
+      button.addEventListener("click", closeDiaModal);
+    });
+
+    modal?.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        closeDiaModal();
+      }
+    });
+
+    function renderResumo(registro, detalhe = null) {
+      if (!modalResumo) {
+        return;
+      }
+
+      const itens = Array.isArray(detalhe?.conferencias) ? detalhe.conferencias : [];
+      const quantidadeItens = itens.length || (Array.isArray(registro.itens_inspecionados) ? registro.itens_inspecionados.length : 0);
+      const quantidadeRefugos = Number(registro.refugos || 0);
+
+      modalResumo.innerHTML = "";
+
+      const resumoItens = [
+        { label: "OP", value: registro.op || "-" },
+        { label: "Linha", value: registro.linha || "-" },
+        { label: "Código", value: registro.codigo || "-" },
+        { label: "Destino", value: registro.destino || "Sem destino" },
+        { label: "Itens", value: quantidadeItens },
+        { label: "Refugos", value: quantidadeRefugos },
+      ];
+
+      resumoItens.forEach((item) => {
+        const box = document.createElement("article");
+        box.className = "quality-stat";
+        box.innerHTML = `
+          <span>${safeText(item.label)}</span>
+          <strong>${safeText(item.value)}</strong>
+        `;
+        modalResumo.appendChild(box);
+      });
+    }
+
+    function renderConferencias(registro, detalhe = null) {
+      if (!modalLista) {
+        return;
+      }
+
+      modalLista.innerHTML = "";
+
+      const conferencias = Array.isArray(detalhe?.conferencias) ? detalhe.conferencias : [];
+      const fallbackItens = Array.isArray(registro.itens_inspecionados) ? registro.itens_inspecionados : [];
+      const lista = conferencias.length
+        ? conferencias
+        : fallbackItens.map((item) => ({
+            codigo_item: item.codigo,
+            descricao_item: item.descricao,
+            campo: item.campo,
+            quantidade_programada: registro.quantidade_programada || 0,
+            quantidade_nc: 0,
+            codigo_nc: "",
+            observacao: "",
+            destino: registro.destino || "",
+            sem_fim: "",
+            central: "",
+            inspecoes: "",
+            tensao: "",
+          }));
+
+      if (modalCount) {
+        modalCount.textContent = `${lista.length} itens`;
+      }
+
+      if (!lista.length) {
+        const empty = document.createElement("div");
+        empty.className = "quality-empty";
+        empty.textContent = "Nenhum detalhe encontrado para esta inspeção.";
+        modalLista.appendChild(empty);
+        return;
+      }
+
+      lista.forEach((item, index) => {
+        const quantidadeProgramada = Number(item.quantidade_programada || registro.quantidade_programada || 0);
+        const quantidadeNc = Number(item.quantidade_nc || 0);
+        const descricaoItem = safeText(item.descricao_item || item.descricao || item.titulo || "Item");
+        const codigoItem = safeText(item.codigo_item || item.codigo || "-");
+        const observacao = safeText(item.observacao || "-");
+        const codigoNc = safeText(item.codigo_nc || "-");
+
+        const card = document.createElement("article");
+        card.className = "quality-card quality-card--day-detail";
+        card.innerHTML = `
+          <p class="quality-card__eyebrow">Item ${index + 1}</p>
+          <h3>${descricaoItem}</h3>
+          <p>Código ${codigoItem}</p>
+          <div class="quality-card__meta">
+            <span class="quality-pill">Programado: ${quantidadeProgramada}</span>
+            <span class="quality-pill ${quantidadeNc > 0 ? "quality-pill--alert" : ""}">Refugo: ${quantidadeNc}</span>
+            <span class="quality-pill">NC: ${codigoNc}</span>
+          </div>
+          <p><strong>Observação:</strong> ${observacao}</p>
+          <p><strong>Destino:</strong> ${safeText(item.destino || registro.destino || "Sem destino")}</p>
+          <p><strong>Sem fim:</strong> ${safeText(item.sem_fim || "-")}</p>
+          <p><strong>Central:</strong> ${safeText(item.central || "-")}</p>
+          <p><strong>Tensão:</strong> ${safeText(item.tensao || "-")}</p>
+          <p><strong>Qtd. inspeções:</strong> ${safeText(item.inspecoes || "-")}</p>
+        `;
+        modalLista.appendChild(card);
+      });
+    }
+
+    async function openDiaModal(registro) {
+      if (!modal || !registro?.id_inspecao) {
+        return;
+      }
+
+      registroAtivo = registro;
+      detalheAtivo = null;
+      modal.classList.remove("hidden");
+      modal.setAttribute("aria-hidden", "false");
+      if (modalTitulo) {
+        modalTitulo.textContent = `Inspeção da OP ${registro.op || "-"}`;
+      }
+      if (btnConferirNovamente) {
+        btnConferirNovamente.href = registro.url_reinspecao || "#";
+      }
+      if (modalLista) {
+        modalLista.innerHTML = `<div class="quality-empty">Carregando detalhes da inspeção...</div>`;
+      }
+      if (modalCount) {
+        modalCount.textContent = "0 itens";
+      }
+
+      try {
+        const detalhe = await fetchJson(`/api/qualidade/inspecoes/dados/${encodeURIComponent(registro.id_inspecao)}`);
+        detalheAtivo = detalhe;
+        renderResumo(registro, detalhe);
+        renderConferencias(registro, detalhe);
+      } catch (error) {
+        console.error(error);
+        renderResumo(registro, null);
+        renderConferencias(registro, null);
+        if (modalLista) {
+          modalLista.innerHTML = `<div class="quality-empty">Não foi possível carregar os detalhes desta inspeção.</div>`;
+        }
+      }
+    }
 
     try {
       setStatus("Carregando inspeções do dia...", "");
@@ -1367,8 +1537,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       registros.forEach((registro) => {
-        const quantidadeItens = Array.isArray(registro.itens_inspecionados) ? registro.itens_inspecionados.length : 0;
-        const quantidadeRefugos = Array.isArray(registro.refugos) ? registro.refugos.length : 0;
+        const quantidadeRefugos = Number(registro.refugos || 0);
         const card = createCard({
           eyebrow: registro.status || "Inspeção",
           title: `Linha ${registro.linha || "-"}`,
@@ -1376,12 +1545,13 @@ document.addEventListener("DOMContentLoaded", () => {
           meta: [
             `${registro.codigo || "-"} - ${registro.descricao || ""}`,
             registro.destino || "Sem destino",
-            `${quantidadeItens} itens`,
+            `${Number(registro.quantidade_programada || 0)} programados`,
             quantidadeRefugos ? `${quantidadeRefugos} refugos` : "Sem refugo",
           ],
           actionLabel: "Conferir novamente",
-          onClick: () => {
-            window.location.href = `/qualidade/inspecoes/op/${registro.op}`;
+          onClick: () => openDiaModal(registro),
+          actionOnClick: () => {
+            window.location.href = registro.url_reinspecao || `/qualidade/inspecoes/op/${registro.op}`;
           },
         });
 

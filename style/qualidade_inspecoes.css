@@ -239,6 +239,39 @@
   box-shadow: 0 30px 70px rgba(0, 0, 0, 0.38);
 }
 
+.quality-dia-modal {
+  width: min(100% - 20px, 1040px);
+}
+
+.quality-dia-modal__summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+  margin: 16px 0 18px;
+}
+
+.quality-dia-modal__section {
+  display: grid;
+  gap: 12px;
+}
+
+.quality-card--day-detail {
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 14px;
+}
+
+.quality-card--day-detail .quality-card__eyebrow {
+  margin-bottom: 4px;
+}
+
+.quality-pill--alert {
+  border-color: rgba(217, 78, 53, 0.35);
+  background: rgba(217, 78, 53, 0.12);
+  color: #ffb7ab;
+}
+
 .quality-modal--lines .quality-grid--sections {
   opacity: 0.14;
   filter: blur(1px);
@@ -654,4 +687,11 @@
   max-width: 200px;
   height: auto;
   margin: 0 auto 1px;
+}
+
+
+.adicionar_op_manual{
+  background: yellow;
+  width: 20px;
+  right: 20px;
 }

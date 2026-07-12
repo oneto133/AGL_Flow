@@ -1,0 +1,19 @@
+body.qualidade-op-page .quality-stats--op {
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+}
+
+body.qualidade-op-page .quality-form__group--controls {
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
+body.qualidade-op-page .quality-field--full {
+  grid-column: 1 / -1;
+}
+
+body.qualidade-op-page .quality-item-modal {
+  width: min(100% - 20px, 720px);
+}
+
+body.qualidade-op-page .quality-modal__panel {
+  max-width: 980px;
+}

@@ -284,6 +284,39 @@ def _ultima_observacao_qualidade(op: int | str) -> str:
     return str(linha.get("observacao", "")).strip()
 
 
+def _ultima_inspecao_por_op(op: int | str) -> dict[str, Any] | None:
+    df_inspecoes = _ler_csv(INSPECOES)
+    if df_inspecoes.empty or "op" not in df_inspecoes.columns:
+        return None
+
+    filtro = df_inspecoes.loc[df_inspecoes["op"].astype(str) == str(op)].copy()
+    if filtro.empty:
+        return None
+
+    if "data_hora_fim_inspecao" in filtro.columns:
+        filtro["data_fim_dt"] = pd.to_datetime(filtro["data_hora_fim_inspecao"], errors="coerce")
+    else:
+        filtro["data_fim_dt"] = pd.NaT
+
+    if "data_hora_inicio_inspecao" in filtro.columns:
+        filtro["data_inicio_dt"] = pd.to_datetime(filtro["data_hora_inicio_inspecao"], errors="coerce")
+    else:
+        filtro["data_inicio_dt"] = pd.NaT
+
+    filtro["data_referencia_dt"] = filtro["data_fim_dt"].fillna(filtro["data_inicio_dt"])
+    filtro = filtro.sort_values(by=["data_referencia_dt", "id"], ascending=False)
+    row = filtro.iloc[0]
+    id_inspecao = _to_int(row.get("id", 0))
+
+    if not id_inspecao:
+        return None
+
+    try:
+        return buscar_inspecao_dados_por_id(id_inspecao)
+    except ValueError:
+        return None
+
+
 def _serializar_op_com_status_qualidade(row: pd.Series) -> dict[str, Any]:
     op = _serializar_op(row)
     status_qualidade = _ultimo_status_qualidade(op["op"])
@@ -403,6 +436,7 @@ def buscar_op_inspecao(op: int | str) -> dict[str, Any]:
 
     linha = filtro.iloc[-1]
     codigo_pai = _to_int(linha.get("codigo_produto"))
+    ultima_inspecao = _ultima_inspecao_por_op(op)
     return {
         **_serializar_op_com_status_qualidade(linha),
         "possui_op": True,
@@ -410,6 +444,8 @@ def buscar_op_inspecao(op: int | str) -> dict[str, Any]:
         "resultado": "",
         "observacao": _ultima_observacao_qualidade(op) or str(linha.get("observacao", "")).strip(),
         "itens_disponiveis": _itens_disponiveis_por_codigo(codigo_pai),
+        "id_inspecao_ultima": _to_int(ultima_inspecao.get("id_inspecao", 0)) if ultima_inspecao else 0,
+        "inspecao_ultima": ultima_inspecao or {},
     }
 
 
@@ -926,6 +962,7 @@ def buscar_inspecao_dados_por_id(id_inspecao: int | str) -> dict[str, Any]:
     retorno["itens_disponiveis"] = _itens_disponiveis_por_codigo(retorno.get("codigo", 0))
     retorno["itens_inspecionados"] = itens_inspecionados_da_inspecao(alvo)
     retorno["refugos"] = refugos_da_inspecao(alvo)
+    retorno["conferencias"] = df.fillna("").to_dict(orient="records")
     return retorno
 
 
@@ -937,6 +974,9 @@ async def salvar_inspecao(dados: InspecaoCreate):
 
     if dados.op is None or int(dados.op) <= 0:
         raise ValueError("A OP é obrigatória para salvar a inspeção.")
+
+    if normalize_text(dados.tipo_inspecao or "") != "manual" and _status_inicial_inspecao(dados.status):
+        raise ValueError("Selecione um status diferente de Iniciado antes de salvar.")
 
     item_base = montar_item_base_para_salvar(dados)
     df_inspecoes = _ler_csv(INSPECOES)
@@ -1116,9 +1156,7 @@ def listar_inspecoes_do_dia():
                 "destino": str(resumo.get("destino", "")).strip(),
                 "observacao": str(resumo.get("observacao", row.get("observacao", ""))).strip(),
                 "url_reinspecao": (
-                    f"/qualidade/inspecoes/linha/{linha}/manual?id_inspecao={id_inspecao}"
-                    if linha
-                    else f"/qualidade/inspecoes/op/{op}"
+                    f"/qualidade/inspecoes/op/{op}?id_inspecao={id_inspecao}"
                 ),
                 "itens_inspecionados": itens_inspecionados_da_inspecao(id_inspecao),
                 "refugos": refugos_da_inspecao(id_inspecao),
@@ -1168,6 +1206,11 @@ def buscar_inspecao_dados_por_id(id_inspecao: int | str) -> dict[str, Any]:
     retorno["itens_inspecionados"] = itens_inspecionados_da_inspecao(alvo)
     retorno["refugos"] = refugos_da_inspecao(alvo)
     return retorno
+
+
+def _status_inicial_inspecao(status: str) -> bool:
+    return normalize_text(status) in {"iniciado", "em analise"}
+
 
 if __name__ == "__main__":
     """print(refugos_da_inspecao(32))

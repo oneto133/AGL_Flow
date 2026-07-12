@@ -6,8 +6,9 @@
   <title>Inspeção da OP</title>
   <link rel="stylesheet" href="/style/estoque.css">
   <link rel="stylesheet" href="/style/qualidade_inspecoes.css">
+  <link rel="stylesheet" href="/style/qualidade_inspecao_op.css">
 </head>
-<body class="login-page qualidade-page" data-page="qualidade-op" data-op="{{ op }}">
+<body class="login-page qualidade-page qualidade-op-page" data-page="qualidade-op" data-op="{{ op }}">
 
   <img src="/imagens/logo_agl.png" alt="Logo AGL" class="logo">
 
@@ -61,7 +62,8 @@
           <div class="quality-field">
             <label>Status</label>
             <select id="fStatus" class="tipo">
-              <option value="Em análise" selected>Iniciado</option>
+              <option value="Iniciado" selected>Iniciado</option>
+              <option value="Pausado">Pausado</option>
               <option value="Conforme">Conforme</option>
               <option value="Não conforme">Não conforme</option>
             </select>
@@ -72,6 +74,15 @@
             <select id="fResultado" class="tipo">
               <option value="true" selected>Aprovado</option>
               <option value="false">Reprovado</option>
+            </select>
+          </div>
+
+          <div class="quality-field">
+            <label>Destino</label>
+            <select id="fDestino" class="tipo" required>
+              <option value="">Selecione</option>
+              <option value="Nacional">Nacional</option>
+              <option value="Exportação">Exportação</option>
             </select>
           </div>
 
@@ -160,9 +171,10 @@
           Salvar refugo
         </button>
       </div>
+      <p id="statusMessage" class="login-status qualidade-status" role="status"></p>
     </section>
   </div>
 
-  <script src="/style/qualidade_inspecoes.js"></script>
+  <script src="/style/qualidade_inspecao_op.js"></script>
 </body>
 </html>

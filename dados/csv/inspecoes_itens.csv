@@ -98,3 +98,24 @@ id,id_inspecao,codigo,descricao,data
 97,36,2001035,Manual,manual
 98,36,2001035,Cilindro e chave,cilindro_e_chave
 99,36,2001035,Etiqueta Tampa,etiqueta_tampa
+100,37,2004050,CONJ. MOVIMENTADOR TRINO 500 127V 50-60HZ KRIPT SEM CREMALHEIRA,item_principal
+101,38,2001036,Estator,estator
+102,38,2001036,Sem fim,sem_fim
+103,39,2001161,Estator,estator
+104,39,2001161,Sem fim,sem_fim
+105,39,2001161,Engrenagem,engrenagem
+106,39,2001161,Capacitor,capacitor
+107,39,2001161,Placa,placa
+108,39,2001161,Base,base
+109,39,2001161,Tampa,tampa
+110,39,2001161,Manual,manual
+111,40,2001161,Estator,estator
+112,40,2001161,Sem fim,sem_fim
+113,40,2001161,Engrenagem,engrenagem
+114,40,2001161,Capacitor,capacitor
+115,40,2001161,Placa,placa
+116,40,2001161,Base,base
+117,41,2001161,Estator,estator
+118,41,2001161,Sem fim,sem_fim
+119,41,2001161,Engrenagem,engrenagem
+120,41,2001161,Capacitor,capacitor
