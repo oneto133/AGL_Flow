@@ -1,6 +1,7 @@
 from fastapi import APIRouter, File, UploadFile, HTTPException
 from fastapi.requests import Request
 from fastapi.responses import FileResponse
+from urllib.parse import quote
 
 from config.templates import templates
 from config import CSV_DIR
@@ -165,21 +166,24 @@ def qualidade_inspecoes(request: Request):
     return templates.TemplateResponse("qualidade_inspecoes.html", {"request": request})
 
 
-@router.get("/qualidade/inspecoes/linha/{celula_linha:path}")
-def qualidade_inspecao_linha(request: Request, celula_linha: str):
+@router.get("/qualidade/inspecoes/linha/manual")
+def qualidade_inspecao_manual(request: Request):
+    linha = request.query_params.get("linha", "").strip()
+    url_voltar = f"/qualidade/inspecoes/linha/{quote(linha)}" if linha else "/qualidade/inspecoes"
     return templates.TemplateResponse(
-        "qualidade_inspecao_linha.html",
+        "qualidade_inspecao_manual.html",
         {
             "request": request,
-            "celula_linha": celula_linha,
+            "linha": linha,
+            "url_voltar": url_voltar,
         },
     )
 
 
-@router.get("/qualidade/inspecoes/linha/{celula_linha:path}/manual")
-def qualidade_inspecao_manual(request: Request, celula_linha: str):
+@router.get("/qualidade/inspecoes/linha/{celula_linha:path}")
+def qualidade_inspecao_linha(request: Request, celula_linha: str):
     return templates.TemplateResponse(
-        "qualidade_inspecao_manual.html",
+        "qualidade_inspecao_linha.html",
         {
             "request": request,
             "celula_linha": celula_linha,

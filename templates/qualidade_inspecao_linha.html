@@ -44,9 +44,14 @@
     
     
   </main>
-  <div class="adicionar_op_manual" title="Adicionar op manual" aria-label="Adicionar ordem de produção">
-      <span>+</span>
-    </div>
+  <a
+    class="adicionar_op_manual"
+    href="/qualidade/inspecoes/linha/manual?linha={{ celula_linha | urlencode }}"
+    title="Adicionar inspeção manual"
+    aria-label="Adicionar inspeção manual"
+    style="text-decoration: none;">
+      <span id="adicionar_op_manual">+</span>
+  </a>
 
   <script src="/style/qualidade_inspecoes.js"></script>
 </body>

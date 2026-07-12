@@ -3,17 +3,16 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Inspeção manual</title>
+  <title>Inspeção manual da linha</title>
   <link rel="stylesheet" href="/style/estoque.css">
   <link rel="stylesheet" href="/style/qualidade_inspecoes.css">
 </head>
-<body class="login-page qualidade-page" data-page="qualidade-op-manual" data-linha="{{ celula_linha }}">
+<body class="login-page qualidade-page qualidade-manual-linha-page" data-page="qualidade-manual-linha" data-linha="{{ linha }}">
+  <img src="/imagens/logo_agl.png" alt="Logo AGL" class="logo">
+
   <main class="login-shell qualidade-shell">
     <header class="login-header qualidade-header">
-      <a href="/qualidade/inspecoes/linha/{{ celula_linha | urlencode }}" class="primary-button qualidade-header__back">Voltar</a>
-      <div class="qualidade-actions">
-        <a href="/qualidade/inspecoes/dia" class="secondary-button qualidade-action">Inspeções do dia</a>
-      </div>
+      <a href="{{ url_voltar }}" class="primary-button qualidade-header__back">Voltar</a>
     </header>
 
     <section class="login-card qualidade-hero">
@@ -22,10 +21,10 @@
         <div>
           <h1>Inspeção manual da linha</h1>
           <p class="qualidade-subtitle">
-            Preencha a OP e o código do item manualmente. Se o item não existir na base, você pode adicioná-lo na hora.
+            Informe a linha, a OP e o código do produto. A descrição e os itens disponíveis serão carregados pelo código.
           </p>
         </div>
-        <div class="quality-chip" id="manualLinhaChip">{{ celula_linha }}</div>
+        <div class="quality-chip" id="manualLinhaChip">{{ linha or "Linha não informada" }}</div>
       </div>
       <p id="statusMessage" class="login-status qualidade-status" role="status"></p>
     </section>
@@ -34,7 +33,6 @@
       <form id="inspecaoForm" class="quality-form">
         <input type="hidden" id="fInicio" name="data_hora_inicio_inspecao">
         <input type="hidden" id="fFim" name="data_hora_fim_inspecao">
-        <input type="hidden" id="fQuantidadeProgramada" name="quantidade_programada">
         <input type="hidden" id="fQuantidadeNc" name="quantidade_nc" value="0">
         <input type="hidden" id="fCodigoNc" name="codigo_nc">
         <input type="hidden" id="fSemFim" name="sem_fim">
@@ -45,46 +43,35 @@
         <section class="quality-form__group quality-form__group--controls">
           <div class="quality-field">
             <label>Linha</label>
-            <select id="fLinha" class="tipo" name="linha" required>
-              <option value="">Selecione a linha</option>
-            </select>
-            <small class="quality-help-text">
-              Escolha a linha antes de preencher a OP e o código.
-            </small>
+            <input id="fLinha" type="text" placeholder="Informe a linha" value="{{ linha }}">
           </div>
 
           <div class="quality-field">
             <label>OP</label>
-            <div class="quality-inline">
-              <input id="fOp" type="number" min="0" placeholder="Digite a OP" autofocus>
-              <button type="button" class="secondary-button" id="btnBuscarOp">Carregar dados</button>
-            </div>
-            <small class="quality-help-text">
-              Se a OP não existir no sistema, siga preenchendo manualmente e use o código do produto para carregar a descrição e os itens.
-            </small>
+            <input id="fOp" type="number" min="0" placeholder="Digite a OP">
           </div>
 
           <div class="quality-field">
-            <label>Código do produto</label>
+            <label>Código</label>
             <div class="quality-inline">
-              <input id="fCodigo" type="number" min="0" placeholder="Digite o código">
-              <button type="button" class="secondary-button" id="btnBuscarProduto">Carregar</button>
+              <input id="fCodigo" type="number" min="0" placeholder="Digite o código do produto">
+              <button type="button" class="secondary-button" id="btnBuscarProduto">Carregar itens</button>
             </div>
           </div>
 
           <div class="quality-field">
             <label>Descrição do produto</label>
-            <input id="fDescricao" type="text" placeholder="Descrição do produto">
+            <input id="fDescricao" type="text" placeholder="Descrição carregada pelo código" readonly>
           </div>
 
           <div class="quality-field">
-            <label>Quantidade</label>
+            <label>Quantidade programada</label>
             <input id="fQuantidade" type="number" min="0" step="1" placeholder="Quantidade programada">
           </div>
 
           <div class="quality-field">
             <label>Destino</label>
-            <select id="fDestino" class="tipo">
+            <select id="fDestino" class="tipo" required>
               <option value="">Selecione</option>
               <option value="Nacional">Nacional</option>
               <option value="Exportação">Exportação</option>
@@ -94,7 +81,7 @@
           <div class="quality-field quality-field--switch">
             <label class="quality-switch">
               <input id="fConformidade" type="checkbox" checked>
-              <span>Conformidade</span>
+              <span>Tem etiqueta?</span>
             </label>
           </div>
 
@@ -125,7 +112,7 @@
 
           <div class="quality-field quality-field--full">
             <label>Observações</label>
-            <textarea id="fObservacao" rows="3" placeholder="Registre observações da inspeção"></textarea>
+            <textarea id="fObservacao" rows="4" placeholder="Registre observações da inspeção"></textarea>
           </div>
         </section>
 
@@ -133,43 +120,21 @@
           <div class="quality-panel__header">
             <div>
               <p class="eyebrow">ITENS INSPECIONADOS</p>
-              <h2>Marque os itens disponíveis</h2>
+              <h2>Selecione os itens do produto</h2>
             </div>
             <span class="quality-chip quality-chip--muted" id="itensSelecionadosCount">0 selecionados</span>
           </div>
           <p class="quality-empty quality-empty--compact">
-            Clique na descrição para abrir o modal de refugo. Use o formulário abaixo para adicionar um item manualmente à base.
+            Clique no item para marcar o checkbox e abrir o refugo. Os itens são carregados pelo código do produto.
           </p>
           <div id="itensInspecionados" class="quality-stack"></div>
-        </section>
-
-        <section class="quality-form__group">
-          <div class="quality-panel__header">
-            <div>
-              <p class="eyebrow">ITEM MANUAL</p>
-              <h2>Adicionar item ausente</h2>
-            </div>
-          </div>
-          <div class="quality-form__group--controls quality-form__group--compact">
-            <div class="quality-field">
-              <label>Código do item</label>
-              <input id="novoItemCodigo" type="number" min="0" placeholder="Código do item">
-            </div>
-            <div class="quality-field">
-              <label>Descrição do item</label>
-              <input id="novoItemDescricao" type="text" placeholder="Descrição do item">
-            </div>
-            <div class="quality-field quality-field--full">
-              <button type="button" class="primary-button" id="btnAdicionarItemBase">Adicionar item à base e marcar</button>
-            </div>
-          </div>
         </section>
 
         <div class="quality-form__footer">
           <button type="submit" class="primary-button" id="btnSalvarInspecao">
             Salvar inspeção
           </button>
-          <a href="/qualidade/inspecoes/linha/{{ celula_linha | urlencode }}" class="secondary-button quality-form__cancel">
+          <a href="{{ url_voltar }}" class="secondary-button quality-form__cancel">
             Cancelar
           </a>
         </div>
@@ -219,6 +184,6 @@
     </section>
   </div>
 
-  <script src="/style/qualidade_inspecoes.js"></script>
+  <script src="/style/qualidade_inspecao_manual.js"></script>
 </body>
 </html>

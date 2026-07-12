@@ -190,7 +190,7 @@
 
 .quality-card--clickable {
   cursor: pointer;
-  transition: transform 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+  transition: transform 0.5s ease, border-color 0.5s ease, background 0.5s ease;
 }
 
 .quality-card--clickable:hover {
@@ -691,7 +691,36 @@
 
 
 .adicionar_op_manual{
-  background: yellow;
-  width: 20px;
-  right: 20px;
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  
+  background-color: #ffeb3b;
+  color: #000000;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+  z-index: 9999;
+
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+
+  transition: transform 1s ease, background-color 1s ease;
+
+}
+
+.adicionar_op_manual span{
+  font-size: 32px;
+  font-weight: bold;
+  line-height: 1;
+}
+
+.adicionar_op_manual:hover{
+  transform: scale(1.2);
+  background-color: #fdd835;
 }
