@@ -67,6 +67,7 @@ body {
 }
 
 .login-card {
+  width: auto;
   display: grid;
   gap: 12px;
   border: 1px solid var(--line);

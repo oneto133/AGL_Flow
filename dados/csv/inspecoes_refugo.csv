@@ -1,0 +1,10 @@
+id,id_inspecao,codigo,descricao,quantidade,codigo_nc,observacao
+2,9,2001161,Engrenagem,engrenagem,40,f,Item inspecionado
+10,10,2001161,Estator,estator,20,F,
+11,10,2001161,Engrenagem,engrenagem,4,V,
+11,12,2001221,Estator,estator,10,F,Item estava carcaceando
+12,12,2001221,Placa,placa,1,A,Placa com problema
+13,13,2001221,Estator,estator,1,B,
+14,14,2001031,Engrenagem,engrenagem,5,A,
+15,15,2001031,Manual,manual,0,,Manual trocado
+16,32,2001161,Estator,estator,3,F,Item com fio ruim

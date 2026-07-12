@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Inspeções de Qualidade</title>
+  <link rel="stylesheet" href="/style/estoque.css">
+  <link rel="stylesheet" href="/style/qualidade_inspecoes.css">
+</head>
+<body class="login-page qualidade-page" data-page="qualidade-home">
+
+  <img src="/imagens/logo_agl.png" alt="Logo AGL" class="logo">
+
+  <main class="login-shell qualidade-shell">
+    <header class="login-header qualidade-header">
+      <a href="/tela_inicial" class="primary-button qualidade-header__back">Voltar</a>
+    </header>
+
+    <section class="login-card qualidade-hero">
+      <p class="eyebrow">QUALIDADE</p>
+      <div class="qualidade-hero__content">
+        <div>
+          <h1>Inspeções de linhas</h1>
+          <p class="qualidade-subtitle">
+            Selecione a seção, escolha a linha e abra a OP para registrar a inspeção.
+          </p>
+        </div>
+
+        <div class="qualidade-actions">
+          <a href="/qualidade" class="primary-button qualidade-action"
+          title="Módulo dedicado a separação e contagem de refugos">
+            Separação de Refugo
+          </a>
+          <p></p>
+          <button type="button" class="primary-button qualidade-action" id="btnAbrirModalLinhas">
+            Inspeção de Linhas
+          </button>
+          <a href="/qualidade/inspecoes/dia" class="primary-button quanlidade-action"
+          style="text-decoration: none; background-color: aqua;"
+          title="Verifique as inspeções já feitas hoje">
+            Inspeções do dia
+          </a>
+        </div>
+      </div>
+
+      <div class="quality-stats" id="qualityStats">
+        <article class="quality-stat">
+          <span>Seções</span>
+          <strong id="statSecoes">0</strong>
+        </article>
+        <article class="quality-stat">
+          <span>Linhas</span>
+          <strong id="statLinhas">0</strong>
+        </article>
+        <article class="quality-stat">
+          <span>OPs ativas</span>
+          <strong id="statOps">0</strong>
+        </article>
+      </div>
+
+      <p id="statusMessage" class="login-status qualidade-status" role="status"></p>
+    </section>
+
+    
+  </main>
+
+  <div id="modalLinhas" class="quality-modal hidden" aria-hidden="true">
+    <div class="quality-modal__backdrop" data-close-modal></div>
+    <section class="quality-modal__panel" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <header class="quality-modal__header">
+        <div>
+          <p class="eyebrow">PAINEL DE LINHAS</p>
+          <h2 id="modalTitle">Selecione uma seção</h2>
+        </div>
+
+        <button type="button" class="quality-modal__close" data-close-modal>&times;</button>
+      </header>
+
+      <div class="quality-modal__toolbar">
+        <button type="button" class="secondary-button" id="btnVoltarSecoes" hidden>
+          Voltar para seções
+        </button>
+        <span class="quality-modal__hint" id="modalHint">
+          Clique em uma seção para ver as linhas disponíveis.
+        </span>
+      </div>
+
+      <div id="secaoCards" class="quality-grid quality-grid--sections"></div>
+      <div id="linhaCards" class="quality-grid quality-grid--lines hidden"></div>
+    </section>
+  </div>
+
+  <script src="/style/qualidade_inspecoes.js"></script>
+</body>
+</html>

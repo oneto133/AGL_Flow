@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Linhas em inspeção</title>
+  <link rel="stylesheet" href="/style/estoque.css">
+  <link rel="stylesheet" href="/style/qualidade_inspecoes.css">
+</head>
+<body class="login-page qualidade-page" data-page="qualidade-linha" data-linha="{{ celula_linha }}">
+  <main class="login-shell qualidade-shell">
+    <header class="login-header qualidade-header">
+      <a href="/qualidade/inspecoes" class="primary-button qualidade-header__back">Voltar</a>
+      <div class="qualidade-actions">
+      </div>
+    </header>
+    
+    <section class="login-card qualidade-hero" style="margin-top: 20px;">
+      <p class="eyebrow">QUALIDADE</p>
+      <div class="qualidade-hero__content">
+        <div>
+          <h1 id="linhaTitulo">Carregando linha...</h1>
+          <p class="qualidade-subtitle" id="linhaSubtitulo">
+            Carregando ordens desta linha.
+          </p>
+        </div>
+      </div>
+
+      <p id="statusMessage" class="login-status qualidade-status" role="status"></p>
+    </section>
+    <p></p>
+    <section class="login-card qualidade-panel">
+      <div class="quality-panel__header">
+        <div>
+          <p class="eyebrow">OPS SELECIONADAS</p>
+          <h2>Ordens em produção</h2>
+        </div>
+        <span class="quality-chip" id="linhaCount">0 ops</span>
+      </div>
+
+      <div id="opsGrid" class="quality-grid quality-grid--ops"></div>
+    </section>
+  </main>
+
+  <script src="/style/qualidade_inspecoes.js"></script>
+</body>
+</html>
