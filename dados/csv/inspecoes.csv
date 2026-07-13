@@ -1,0 +1,2 @@
+id,op,codigo,descricao,quantidade,data_hora_inicio_inspecao,data_hora_fim_inspecao,possui_op,qtd_etiquetas,status,conformidade,refugo,aprovado,observacao
+1,97159,2001161,CONJ. MOVIMENTADOR TRINO 300 220V LIGHT 50-60HZ SEM CREMALHEIRA,200,2026-07-12T16:48:00,2026-07-12T16:49:00,True,10,Conforme,True,False,True,Item sem op

@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Inspeções do dia</title>
+  <link rel="stylesheet" href="/style/estoque.css">
+  <link rel="stylesheet" href="/style/qualidade_inspecoes.css">
+</head>
+<body class="login-page qualidade-page" data-page="qualidade-dia">
+
+  <img src="/imagens/logo_agl.png" alt="Logo AGL" class="logo">
+
+  <main class="login-shell qualidade-shell">
+    <header class="login-header qualidade-header">
+      <a href="/qualidade/inspecoes" class="primary-button qualidade-header__back">Voltar</a>
+    </header>
+    <section class="login-card qualidade-panel">
+      <div class="quality-panel__header">
+        <div>
+          <p class="eyebrow">REGISTROS DE HOJE</p>
+          <h2>Inspeções registradas</h2>
+        </div>
+        <span class="quality-chip quality-chip--muted" id="diaCount">0 registros</span>
+      </div>
+      <div id="inspecoesDiaLista" class="quality-stack"></div>
+    </section>
+  </main>
+
+  <div id="inspecaoDiaModal" class="quality-modal hidden" aria-hidden="true">
+    <div class="quality-modal__backdrop" data-close-dia-modal></div>
+    <section class="quality-modal__panel quality-dia-modal" role="dialog" aria-modal="true" aria-labelledby="diaModalTitle">
+      <header class="quality-modal__header">
+        <div>
+          <p class="eyebrow">CONFERÊNCIA DO DIA</p>
+          <h2 id="diaModalTitle">Detalhes da inspeção</h2>
+        </div>
+        <button type="button" class="quality-modal__close" data-close-dia-modal>&times;</button>
+      </header>
+
+      <div class="quality-dia-modal__summary" id="diaModalResumo"></div>
+
+      <section class="quality-dia-modal__section">
+        <div class="quality-panel__header">
+          <div>
+            <p class="eyebrow">ITENS CONFERIDOS</p>
+            <h3>Registro completo</h3>
+          </div>
+          <span class="quality-chip quality-chip--muted" id="diaModalCount">0 itens</span>
+        </div>
+        <div id="diaModalLista" class="quality-stack"></div>
+      </section>
+
+      <div class="quality-form__footer">
+        <button type="button" class="secondary-button" data-close-dia-modal>
+          Fechar
+        </button>
+        <a href="#" class="primary-button" id="btnConferirNovamenteDia">
+          Conferir novamente
+        </a>
+      </div>
+    </section>
+  </div>
+
+  <script src="/style/qualidade_inspecoes.js"></script>
+</body>
+</html>

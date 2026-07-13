@@ -1,0 +1,11 @@
+id,id_inspecao,codigo,descricao,data
+1,1,2001161,Estator,estator
+2,1,2001161,Sem fim,sem_fim
+3,1,2001161,Engrenagem,engrenagem
+4,1,2001161,Capacitor,capacitor
+5,1,2001161,Placa,placa
+6,1,2001161,Base,base
+7,1,2001161,Tampa,tampa
+8,1,2001161,Manual,manual
+9,1,2001161,Cilindro e chave,cilindro_e_chave
+10,1,2001161,Etiqueta Tampa,etiqueta_tampa

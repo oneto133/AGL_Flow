@@ -7,3 +7,7 @@ from .normalizar import value_to_text, only_digits, zpl_text
 from .funcoes import _alterar_nome_linha, _consultar_nome_linhas, adicionar_horas_uteis, calcular_horas_uteis
 
 from .registrar_log import logger, JsonFormatter, arquivo_log
+
+from .pandas_utils import _ler_csv
+
+from .auth import normalize_text
