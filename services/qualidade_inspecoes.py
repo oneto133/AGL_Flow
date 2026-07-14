@@ -1105,6 +1105,8 @@ def listar_inspecoes_do_dia():
     df_dados = _ler_csv(INSPECOES_DADOS)
     df_linha = _ler_csv(SEQUENCIAMENTO)
 
+    
+
     if df_inspecoes.empty or "data_hora_fim_inspecao" not in df_inspecoes.columns:
         return []
 
@@ -1126,6 +1128,7 @@ def listar_inspecoes_do_dia():
 
     for _, row in fim_inspecao.iterrows():
         id_inspecao = _to_int(row.get("id", 0))
+
         op = _to_int(row.get("op", 0))
         linha = ""
 
@@ -1138,6 +1141,8 @@ def listar_inspecoes_do_dia():
         quantidade_programada = _to_int(resumo.get("quantidade_programada", row.get("quantidade", 0)))
         codigo = _to_int(resumo.get("codigo", row.get("codigo", 0)))
         descricao = str(resumo.get("descricao", row.get("descricao", ""))).strip()
+        _observacao = buscar_observacao_inspecao(id_inspecao, df_inspecoes)
+        print(str(_observacao).strip())
 
         registros.append(
             {
@@ -1154,7 +1159,7 @@ def listar_inspecoes_do_dia():
                 "codigo_item": _to_int(resumo.get("codigo_item", row.get("codigo", 0))),
                 "descricao_item": str(resumo.get("descricao_item", "")).strip(),
                 "destino": str(resumo.get("destino", "")).strip(),
-                "observacao": str(resumo.get("observacao", row.get("observacao", ""))).strip(),
+                "observacao":str(_observacao).strip(),
                 "url_reinspecao": (
                     f"/qualidade/inspecoes/op/{op}?id_inspecao={id_inspecao}"
                 ),
@@ -1164,6 +1169,12 @@ def listar_inspecoes_do_dia():
         )
 
     return registros
+
+def buscar_observacao_inspecao(id, df):
+    observacao = df.loc[df["id"] == id, "observacao"].item()
+
+    return observacao
+
 
 def buscar_inspecao_dados_por_id(id_inspecao: int | str) -> dict[str, Any]:
     df_inspecoes = _ler_csv(INSPECOES)
@@ -1233,4 +1244,6 @@ if __name__ == "__main__":
     print(asyncio.run(salvar_inspecao(exemplo)))
     """
 
-    print(listar_inspecoes_do_dia())
+    #print(listar_inspecoes_do_dia())
+    df = _ler_csv(INSPECOES)
+    print(buscar_observacao_inspecao(5, df))

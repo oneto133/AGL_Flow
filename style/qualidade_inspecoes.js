@@ -1397,6 +1397,7 @@ document.addEventListener("DOMContentLoaded", () => {
         { label: "Destino", value: registro.destino || "Sem destino" },
         { label: "Itens", value: quantidadeItens },
         { label: "Refugos", value: quantidadeRefugos },
+       
       ];
 
       resumoItens.forEach((item) => {
@@ -1408,9 +1409,11 @@ document.addEventListener("DOMContentLoaded", () => {
         `;
         modalResumo.appendChild(box);
       });
+
+      
     }
 
-    function renderConferencias(registro, detalhe = null) {
+    async function renderConferencias(registro, detalhe = null) {
       if (!modalLista) {
         return;
       }
@@ -1428,7 +1431,7 @@ document.addEventListener("DOMContentLoaded", () => {
             quantidade_programada: registro.quantidade_programada || 0,
             quantidade_nc: 0,
             codigo_nc: "",
-            observacao: "",
+            observacao: registro.observacao,
             destino: registro.destino || "",
             sem_fim: "",
             central: "",
@@ -1448,10 +1451,49 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
+
+
+      // Verificando se a observação está vazia
+      if (registro.observacao && registro.observacao.trim() !== ""){
+        const observacao_ = document.createElement("article");
+        observacao_.className = "quality-card quality-card--day-detail quality-card--observacao";
+        observacao_.innerHTML = `
+          <h1 class="observacao-geral">Observação</h1>
+          <label class="quebrar-linha">${safeText(registro.observacao)}</label>
+        `;
+        modalLista.appendChild(observacao_);
+      }
+
+      const dadosCatalogo = Array.isArray(detalhe?.itens_disponiveis)
+        ? detalhe
+        : await fetchJson(`/api/qualidade/inspecoes/op/${op}`);
+      const itensFallback = Array.isArray(dadosCatalogo.itens_disponiveis) ? dadosCatalogo.itens_disponiveis : [];
+
+      function normalizarChaveItem(item = {}) {
+        return [
+          safeText(item.codigo_pai || item.codigo_item || item.codigo || ""),
+          safeText(item.descricao_item || item.descricao || item.titulo || ""),
+          safeText(item.item_campo || item.campo || ""),
+        ]
+          .join("|")
+          .toLowerCase();
+      }
+
       lista.forEach((item, index) => {
         const quantidadeProgramada = Number(item.quantidade_programada || registro.quantidade_programada || 0);
         const quantidadeNc = Number(item.quantidade_nc || 0);
-        const descricaoItem = safeText(item.descricao_item || item.descricao || item.titulo || "Item");
+        const itemDisponivel =
+          itensFallback.find((registroItem) => normalizarChaveItem(registroItem) === normalizarChaveItem(item))
+          || itensFallback.find((registroItem) =>
+            safeText(registroItem.codigo_pai || registroItem.codigo_item || registroItem.codigo || "") === safeText(item.codigo_item || item.codigo || "") &&
+            safeText(registroItem.item_campo || registroItem.campo || "") === safeText(item.item_campo || item.campo || "")
+          )
+          || {};
+        const tituloItem = safeText(item.descricao_item || item.descricao || item.titulo || `Item ${index + 1}`);
+        const descricaoItem = safeText(
+          itemDisponivel.valor ||
+          "Sem descrição"
+        );
         const codigoItem = safeText(item.codigo_item || item.codigo || "-");
         const observacao = safeText(item.observacao || "-");
         const codigoNc = safeText(item.codigo_nc || "-");
@@ -1460,18 +1502,8 @@ document.addEventListener("DOMContentLoaded", () => {
         card.className = "quality-card quality-card--day-detail";
         card.innerHTML = `
           <p class="quality-card__eyebrow">Item ${index + 1}</p>
-          <h3>${descricaoItem}</h3>
-          <p>Código ${codigoItem}</p>
-          <div class="quality-card__meta">
-            <span class="quality-pill">Programado: ${quantidadeProgramada}</span>
-            <span class="quality-pill ${quantidadeNc > 0 ? "quality-pill--alert" : ""}">Refugo: ${quantidadeNc}</span>
-            <span class="quality-pill">NC: ${codigoNc}</span>
-          </div>
-          <p><strong>Observação:</strong> ${observacao}</p>
+          <h3>${tituloItem}</h3>
           <p><strong>Destino:</strong> ${safeText(item.destino || registro.destino || "Sem destino")}</p>
-          <p><strong>Sem fim:</strong> ${safeText(item.sem_fim || "-")}</p>
-          <p><strong>Central:</strong> ${safeText(item.central || "-")}</p>
-          <p><strong>Tensão:</strong> ${safeText(item.tensao || "-")}</p>
           <p><strong>Qtd. inspeções:</strong> ${safeText(item.inspecoes || "-")}</p>
         `;
         modalLista.appendChild(card);

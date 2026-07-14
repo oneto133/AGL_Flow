@@ -4,4 +4,4 @@ id,op,codigo,descricao,quantidade,data_hora_inicio_inspecao,data_hora_fim_inspec
 3,95437,2008004,CONJ. MOVIMENTADOR TRINO BV4 220V SEM ACIONAMENTO,100,2026-07-14T15:40:00,2026-07-14T15:53:00,True,8,Não conforme,True,False,True,Motor faltando parafuso
 4,96959,2007087,CONJUNTO MOVIMENTADOR TRINO PIVÔ 3 127V SEM ACIONAMENTO - DUPLO,90,2026-07-14T16:00:00,2026-07-14T16:02:00,True,9,Conforme,True,False,True,Capacitor de 30
 5,97319,2007087,CONJUNTO MOVIMENTADOR TRINO PIVÔ 3 127V SEM ACIONAMENTO - DUPLO,75,2026-07-14T16:05:00,2026-07-14T16:12:00,True,8,Não conforme,True,False,True,"Motores sujos de PU e óleo 
-Ediqueta pivo na central pivo dupla"
+Etiqueta pivo simples na central pivo dupla"
