@@ -1418,3 +1418,7 @@ if __name__ == "__main__":
     os.environ["PORT"] = str(SERVER_PORT)
     print(f"Servidor disponivel em http://{get_lan_ip()}:{SERVER_PORT}")
     uvicorn.run(app, host="0.0.0.0", port=SERVER_PORT, reload=False)
+
+
+
+

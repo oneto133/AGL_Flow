@@ -1,4 +1,4 @@
-from fastapi import APIRouter, File, UploadFile, HTTPException
+﻿from fastapi import APIRouter, File, UploadFile, HTTPException
 from fastapi.requests import Request
 from fastapi.responses import FileResponse
 from urllib.parse import quote
@@ -33,7 +33,7 @@ router = APIRouter(tags=["Qualidade"])
 
 @router.get("/qualidade")
 def qualidade(request: Request):
-    return templates.TemplateResponse("qualidade.html", {"request": request})
+    return templates.TemplateResponse(request, "qualidade.html")
 
 
 @router.post("/api/registrar-coleta")
@@ -48,7 +48,7 @@ def registrar_coleta(dados: RegistrarColeta):
         }
 
     return {
-        "erro": "Não foi possível registrar a coleta"
+        "erro": "NÃ£o foi possÃ­vel registrar a coleta"
     }
 
 
@@ -125,7 +125,7 @@ async def upload_base_qualidade(file: UploadFile = File(...)):
 
 
 # =========================
-# HISTÓRICO
+# HISTÃ“RICO
 # =========================
 
 @router.get("/historico/download")
@@ -163,7 +163,7 @@ def donwload_base_deslizante():
 
 @router.get("/qualidade/inspecoes")
 def qualidade_inspecoes(request: Request):
-    return templates.TemplateResponse("qualidade_inspecoes.html", {"request": request})
+    return templates.TemplateResponse(request, "qualidade_inspecoes.html")
 
 
 @router.get("/qualidade/inspecoes/linha/manual")
@@ -171,9 +171,9 @@ def qualidade_inspecao_manual(request: Request):
     linha = request.query_params.get("linha", "").strip()
     url_voltar = f"/qualidade/inspecoes/linha/{quote(linha)}" if linha else "/qualidade/inspecoes"
     return templates.TemplateResponse(
+        request,
         "qualidade_inspecao_manual.html",
         {
-            "request": request,
             "linha": linha,
             "url_voltar": url_voltar,
         },
@@ -183,9 +183,9 @@ def qualidade_inspecao_manual(request: Request):
 @router.get("/qualidade/inspecoes/linha/{celula_linha:path}")
 def qualidade_inspecao_linha(request: Request, celula_linha: str):
     return templates.TemplateResponse(
+        request,
         "qualidade_inspecao_linha.html",
         {
-            "request": request,
             "celula_linha": celula_linha,
         },
     )
@@ -194,17 +194,18 @@ def qualidade_inspecao_linha(request: Request, celula_linha: str):
 @router.get("/qualidade/inspecoes/dia")
 def qualidade_inspecoes_dia(request: Request):
     return templates.TemplateResponse(
+        request,
         "qualidade_inspecoes_dia.html",
-        {"request": request},
+        {},
     )
 
 
 @router.get("/qualidade/inspecoes/op/{op}")
 def qualidade_inspecao_op(request: Request, op: int):
     return templates.TemplateResponse(
+        request,
         "qualidade_inspecao_op.html",
         {
-            "request": request,
             "op": op,
         },
     )
@@ -253,5 +254,12 @@ async def api_qualidade_inspecoes_salvar(dados: InspecaoCreate):
         return await salvar_inspecao(dados)
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
+
+
+
+
+
+
+
 
 

@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+﻿from fastapi import APIRouter
 from fastapi.requests import Request
 from config.templates import templates
 
@@ -19,6 +19,9 @@ def enviar_cartao_trello(dados: DadosCartao):
     enviar_trello = executar(dados.codigo, dados.op, dados.quantidade, dados.linhaCelula, dados.posicao)
 
     if enviar_trello:
-        return {"mensagem": "Cartão enviado para o Trello com sucesso."}
+        return {"mensagem": "CartÃ£o enviado para o Trello com sucesso."}
 
-    return {'erro': 'Não foi possível enviar o cartão parao Trello'}
+    return {'erro': 'NÃ£o foi possÃ­vel enviar o cartÃ£o parao Trello'}
+
+
+

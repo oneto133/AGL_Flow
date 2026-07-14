@@ -1,92 +1,171 @@
-Código,Modelo,Estator,Sem fim,Engrenagem,Capacitor ,Placa,Jumper,Base,Tampa,Manual,Cilindro e chave,Etiqueta Tampa,.2
-2001031,Trino 300 220V 50-60Hz,P17 220V,1 entrada,Nylon sem imã,12uF/15uF,Flex,220V,Sem encoder,Preta,Português - Light e Flex,Plástico,Trino 300,-
-2001031,Trino 300 220V 50-60Hz,P17 220V,1 entrada,Nylon sem imã,12uF/15uF,Flex,220V,Sem encoder,Preta,Português - Light e Flex,Plástico,Trino 300,-
-2001031,Trino 300 220V 50-60Hz,P17 220V,1 entrada,Nylon sem imã,12uF/15uF,Flex,220V,Sem encoder,Preta,Português - Light e Flex,Plástico,Trino 300,-
-2001031,Trino 300 220V 50-60Hz,P17 220V,1 entrada,Nylon sem imã,12uF/15uF,Flex,220V,Sem encoder,Preta,Português - Light e Flex,Plástico,Trino 300,-
-2001031,Trino 300 220V 50-60Hz,P17 220V,1 entrada,Nylon sem imã,12uF/15uF,Flex,220V,Sem encoder,Preta,Português - Light e Flex,Plástico,Trino 300,-
-2001031,Trino 300 220V 50-60Hz,P17 220V,1 entrada,Nylon sem imã,12uF/15uF,Flex,220V,Sem encoder,Preta,Português - Light e Flex,Plástico,Trino 300,-
-2001032,Trino 300 127V 50-60Hz,P17 127V,1 entrada,Nylon sem imã,25uF/30uF,Flex,127V,Sem encoder,Preta,Português - Light e Flex,Plástico,Trino 300,-
-2001033,Trino 300 Speed 127V 50-60Hz,P35 127V,2 entradas,Zamac com imã,50uF,Flex,127V,Com encoder,Cinza,Português - Light e Flex,Metal com Chave,Trino Speed 300,-
-2001034,Trino 300 Speed 220V 50-60Hz,P35 220V,2 entradas,Zamac com imã,20uF,Flex,220V,Com encoder,Cinza,Português - Light e Flex,Metal com Chave,Trino Speed 300,-
-2001035,Trino 500 127V 50-60Hz,P28 127V,1 entrada,Nylon sem imã,25uF/30uF,Flex,127V,Sem encoder,Preta,Português - Light e Flex,Metal com Chave,Trino 500,-
-2001036,Trino 500 220V 50-60Hz,P28 220V,1 entrada,Nylon sem imã,12uF/15uF,Flex,220V,Sem encoder,Preta,Português - Light e Flex,Metal com Chave,Trino 500,-
-2001037,Trino 500 Speed 127V 50-60Hz,P45 127V,2 entradas,Zamac com imã,50uF,Flex,127V,Com encoder,Cinza/Veneziana,Português - Light e Flex,Plástico,Trino Speed 500,-
-2001038,Trino 500 Speed 220V 50-60Hz,P45 220V,2 entradas,Zamac com imã,20uF,Flex,220V,Com encoder,Cinza/Veneziana,Português - Light e Flex,Metal com Chave,Trino Speed 500,-
-2001039,Trino 700 127V 50-60Hz,P35 127V,1 entrada,Zamac com imã,25uF/30uF,Flex,127V,Com encoder,Preta,Português - Light e Flex,Metal com Chave,Trino 700,-
-2001040,Trino 700 220V 50-60Hz,P35 220V,1 entrada,Zamac com imã,12uF/15uF,Flex,220V,Com encoder,Preta,Português - Light e Flex,Metal com Chave,Trino 700,-
-2001041,Trino 900 127V 50-60Hz,P45 127V,1 entrada,Zamac com imã,50uF,Flex,127V,Com encoder,Preta/Veneziana,Português - Light e Flex,Metal com Chave,Trino 900,-
-2001042,Trino 900 220V 50-60Hz,P45 220V,1 entrada,Zamac com imã,12uF/15uF,Flex,220V,Com encoder,Preta/Veneziana,Português - Light e Flex,Metal com Chave,Trino 900,-
-2001070,Trino 300 220V 50-60hz C/Cremalheira 3MT EX,P17 220V 50Hz,Alumínio,Nylon sem imã,12uF/15uF,Flex,-,Sem encoder,Preta,Espanhol -  Light e Flex,Metal com Chave,Trino light,-
-2001073,Trino 500 127V 50-60Hz EX,P28 127V,1 entrada,Nylon sem imã,25uF/30uF,Flex,127V,Sem encoder,Preta,Espanhol -  Light e Flex,Metal com Chave,Trino 500,-
-2001074,Trino 500 220V 50-60Hz EX,P28 220V 50Hz,1 entrada,Nylon sem imã,12uF/15uF,Flex,220V,Sem encoder,Preta,Espanhol -  Light e Flex,Metal com Chave,Trino 500,-
-2001078,Trino 700 220V 50-60Hz EX,P33 220V 50Hz,1 entrada,Zamac com imã,12uF/15uF,Flex,220V,Com encoder,Preta,Espanhol -  Light e Flex,Metal com Chave,Trino 700,-
-2001079,Trino 900 127V 50-60Hz EX,P45 127V,1 entrada,Zamac com imã,50uF,Flex,127V,Com encoder,Preta/Veneziana,Espanhol -  Light e Flex,Metal com Chave,Trino 900,-
-2001139,Trino 300 220V Light 50-60hz C/Cremalheira 3MT EX,P17 220V 50Hz,Alumínio,Nylon sem imã,12uF/15uF,Light,-,Sem encoder,Preta,Espanhol -  Light e Flex,Metal com Chave,Trino light,
-2001161,Trino 300 220V Light 50-60hz,P17 220V,Alumínio,Nylon sem imã,12uF/15uF,Light,-,Sem encoder,Preta,Português - Light e Flex,Plástico,Trino light,-
-2001178,Trino 300 220V 50-60Hz B. Aluminium,P17 220V,1 entrada,Nylon sem imã,12uF/15uF,Flex,220V,Sem encoder,Preta,Português - Light e Flex,Plástico,Trino 300,
-2001182,Trino 500 127V 50-60Hz B. Aluminium,P28 127V,1 entrada,Nylon sem imã,25uF/30uF,Flex,127V,Com encoder,Preta,Português - Light e Flex,Metal com Chave,Trino 500,-
-2001184,Trino 500 Speed 127V 50-60Hz B. Aluminium,P45 127V,2 entradas,Zamac com imã,50uF,Flex,127V,Com encoder,Cinza/Veneziana,Português - Light e Flex,Metal com Chave,Trino Speed 500,-
-2001187,Trino 700 220V 50-60Hz B. Aluminium,P33 220V,1 entrada,Zamac com imã,12uF/15uF,Flex,220V,Com encoder,Preta,Português - Light e Flex,Metal com Chave,Trino 700,-
-2001188,Trino 900 220V 50-60Hz B. Aluminium,P45 127V,1 entrada,Zamac com imã,50uF,Flex,127V,Com encoder,Preta/Veneziana,Português - Light e Flex,Metal com Chave,Trino 900,-
-2001189,Trino 900 220V 50-60Hz B. Aluminium,P45 220V,1 entrada,Zamac com imã,12uF/15uF,Flex,220V,Com encoder,Preta/Veneziana,Português - Light e Flex,Metal com Chave,Trino 900,-
-2001207,Trino Speed Turbo Pro 1/4 Freq. Inv. Biv. 50-60 B. Alu,P24 Trifásico,1 entrada,Zamac com imã,Não usa,New Inverter,220V,Com encoder,Cinza/Veneziana,Central Inversora Smart Encoder,Metal com Chave,Speed Turbo Pro,-
-2001215,Dz Brabus Speed Light 220V 50-60Hz,P22 220V 2 polos,1 entrada aço,Nylon com imã,20uF,Fx Brabus,220V,Com encoder,Preta/Veneziana,Linha Deslizante Brabus Speed - Bilíngue,Plástico,Brabus,-
-2001215,Dz Brabus Speed Speed Light 220V 50-60Hz,P22 220V 2 polos,1 entrada aço,Nylon com imã,20uF,Fx Brabus,220V,Com encoder,Preta/Veneziana,Linha Deslizante Brabus Speed - Bilíngue,Plástico,Brabus,-
-2001221,Industrial Strong 2000Kg 220V,P80 220V,1 entrada industrial,Nylon IND C/imã,20uF,CCMD Industrial,-,Com encoder,Preta,QR Code,Metal alumínio,-,-
-2001222,Industrial Strong 2000Kg 220V S/Cremalheira EX,P80 220V,1 entrada industrial,Nylon IND C/imã,20uF,CCMD Industrial,-,Com encoder,Preta,QR Code,Metal alumínio,-,-
-2001223,Trino 900 220V 50-60Hz B. Aluminium C/Cremalheira 3MT EX,P45 220V 50Hz,1 entrada aço,Zamac com imã,12uF/15uF,Flex,220V,Com encoder,Preta/Veneziana,Espanhol -  Light e Flex,Metal com Chave,Trino 900,-
-2001225,Trino Soft 220V 50-60Hz B. Aluminium BBS EX,P28 50Hz 220V,2 entradas,Zamac com imã,20uF,Flex,220V,Com encoder,Cinza/Veneziana,Espanhol -  Light e Flex,Metal com Chave,BBS,-
-2001226,Trino 300 Speed 220V 50-60Hz B. Aluminium C/Cremalheira 3MT EX,P33 220V 50Hz,2 entradas,Zamac com imã,20uF,Flex,220V,Com encoder,Cinza,Espanhol -  Light e Flex,Metal com Chave,Trino Speed 300,-
-2001229,Trino 300 220V Light 50-60hz B. Aluminium C/Cremalheira 3MT EX,P17 220V,Alumínio,Nylon sem imã,12uF/15uF,Light,-,Sem encoder,Preta,Espanhol -  Light e Flex,Metal com Chave,BBS - Trino light,-
-2001233,Trino 300 127V Light 50-60Hz,P17 127V,Alumínio,Nylon sem imã,25uF/30uF,Light,-,Sem encoder,Preta,Português - Light e Flex,Plástico,Trino light,-
-2001237,Trino Speed Turbo Pro 1/2 Freq. Inv. Biv. 50-60 B. Alu,P39 127V Trif,1 entrada,Nylon com imã,Não usa,New Inverter,220V,Com encoder,Cinza/Veneziana,Central Inversora Smart Encoder,Metal com Chave,Speed Turbo Pro,-
-2001239,Trino 500 220V 50-60Hz B. Aluminium C/Cremalheira 3MT EX,P28 220V 50Hz,1 entrada,Nylon sem imã,12uF/15uF,Flex,220V,Sem encoder,Preta,Espanhol -  Light e Flex,Metal com Chave,Trino 500,-
-2001240,Trino 500 Speed 220V 50-60Hz B. Aluminium Ex C/Cremalheira 3MT EX,P45 220V,2 entradas,Zamac com imã,20uF,Flex,220V,Com encoder,Cinza/Veneziana,Espanhol -  Light e Flex,Metal com Chave,Trino Speed 500,-
-2001245,Trino 300 220V 50-60Hz B. Aluminium Eng. ZAMAC Tampa preta,P17 220V,1 entrada,Zamac sem imã,12uF/15uF,Flex,220V,Sem encoder,Preta,Português - Light e Flex,Plástico,Trino 300,-
-2001262,Dz Brabus Speed 500 B. Aluminium 220V 50-60Hz,P28 220V 2 polos,1 entrada aço,Nylon com imã,20uF,Fx Brabus,220V,Com encoder,Preta/Veneziana,Linha Deslizante Brabus Speed - Bilíngue,Metal com Chave,Brabus,-
-2001276,Dz Brabus Speed 300 B. Aluminium 127V 50-60Hz,P24 127V 2 polos,1 entrada aço,Nylon com imã,40uF,Fx Brabus,127V,Com encoder,Preta/Veneziana,Linha Deslizante Brabus Speed - Bilíngue,Metal com Chave,Brabus,-
-2001277,Dz Brabus Speed 300 B. Aluminium 220V 50-60Hz,P24 220V 2 polos,1 entrada aço,Nylon com imã,20uF,Fx Brabus,220V,Com encoder,Preta/Veneziana,Linha Deslizante Brabus Speed - Bilíngue,Metal com Chave,Brabus,-
-2001277,Dz Brabus Speed 300 B. Aluminium 220V 50-60Hz,P24 220V 2 polos,1 entrada aço,Nylon com imã,20uF,Fx Brabus,220V,Com encoder,Preta/Veneziana,Linha Deslizante Brabus Speed - Bilíngue,Metal com Chave,Brabus,-
-2001279,Dz Brabus Speed 500 B. Aluminium 220V 50-60Hz,P28 220V,1 entrada aço,Nylon com imã,20uF,Fx Brabus,220V,Com encoder,Preta/Veneziana,Linha Deslizante Brabus Speed - Bilíngue,Metal com Chave,Brabus,-
-2001281,Dz Brabus Speed 700 B. Aluminium 220V 50-60Hz,P39 220V 2 polos,1 entrada aço,Nylon com imã,20uF,Fx Brabus,220V,Com encoder,Preta/Veneziana,Linha Deslizante Brabus Speed - Bilíngue,Metal com Chave,Brabus,-
-2001283,Dz Brabus Speed Light 127V 50-60Hz,P22 127V 2 polos,1 entrada aço,Nylon com imã,40uF,Fx Brabus,127V,Com encoder,Preta/Veneziana,Linha Deslizante Brabus Speed - Bilíngue,Plástico,Brabus,-
-2001284,Dz Brabus Speed Light 220V 50-60Hz,P22 220V 2 polos,1 entrada aço,Nylon com imã,20uF,Fx Brabus,220V,Com encoder,Preta/Veneziana,Linha Deslizante Brabus Speed - Bilíngue,Plástico,Brabus,-
-2001285,Trino 300 220V Light 50-60Hz B. Aluminium BBS EX,P17 50Hz 220V,Alumínio,Nylon sem imã,12uF/15uF,Light,-,Sem encoder,Preta,Espanhol -  Light e Flex,Plástico,Trino light,-
-2001291,Dz Brabus Speed Light 127V 50-60Hz,P22 127V 2 polos,1 entrada aço,Nylon com imã,40uF,Fx Brabus,220V,Com encoder,Preta/Veneziana,Linha Deslizante Brabus Speed - Bilíngue,Plástico,Brabus,-
-2001300,Industrial Strong 1500Kg 220V,P60 220V,1 entrada industrial,Nylon IND C/imã,20uF,CCMD Industrial,-,Com encoder,Preta,QR Code,Metal alumínio,-,-
-2001311,Trino 300 127V Light 50-60hz Kript,P17 127V,Alumínio,Nylon sem imã,25uF/30uF,Light,-,Sem encoder,Preta,Português - Light e Flex,Plástico,Trino light,-
-2001329,Trino 900 127V 50-60Hz B. Aluminium Ex TECLAN,P45 127V,1 entrada,Zamac com imã,40uF,Flex,127V,Com encoder,Preta/Veneziana,Espanhol -  Light e Flex,Metal com Chave,Trino 900,-
-2001333,Trino 300 127V Light 50-60hz,P17 127V,Alumínio,Nylon sem imã,25uF/30uF,Light,-,Sem encoder,Preta,Português - Light e Flex,Plástico,Trino light,-
-2001344,Trino 300 127V Light 50-60Hz LOG,P17 127V,Alumínio,Nylon sem imã,25uF/30uF,Light,-,Sem encoder,Preta,Português - Light e Flex,Plástico,Trino light,-
-2001345,Trino 300 220V Light 50-60hz LOG,P17 220V,Alumínio,Nylon sem imã,12uF/15uF,Light,-,Sem encoder,Preta,Português - Light e Flex,Plástico,Trino light,-
-2006030,Inteligente - Izzy 300 220V 50-60Hz C/Cremalheira 3MT EX,P17 220V 50Hz,1 entrada,Nylon com imã,12uF/15uF,Izzy,-,Com encoder,Grafite,QR Code,Metal com Chave,Izzy,Chip e capinha
-2006030,Inteligente - Izzy 300 220V 50-60Hz C/Cremalheira 3MT EX,P17 220V 50Hz,1 entrada,Nylon com imã,12uF/15uF,Izzy,-,Com encoder,Grafite,QR Code,Metal com Chave,Izzy,Chip e capinha
-2006035,Izzy Industrial Strong 2000Kg 220V,P80 220V,1 entrada industrial,Nylon IND C/imã,20uF,Izzy Industrial,-,Com encoder,Preta,QR Code,Metal alumínio,-,-
-2006037,Inteligente - Izzy 900 220V 50-60Hz B. Aluminium C/Cremalheira 3MT EX,P45 220V 50Hz,1 entrada aço,Zamac com imã,12uF/15uF,Izzy,-,Com encoder,Grafite/Veneziana,QR Code,Metal com Chave,Izzy,Chip e capinha
-2006039,Inteligente - Izzy 900 220V 50-60Hz,P45 220V,1 entrada,Nylon com imã,12uF/15uF,Izzy,-,Com encoder,Grafite,QR Code,Plástico,Izzy,Chip e capinha
-2006041,Inteligente - Izzy 300 220V 50-60Hz,P17 220V,1 entrada,Nylon com imã,12uF/15uF,Izzy,-,Com encoder,Grafite,QR Code,Plástico,Izzy,Chip e capinha
-2006042,Inteligente - Izzy 500 220V 50-60Hz,P28 220V,1 entrada,Nylon com imã,12uF/15uF,Izzy,-,Com encoder,Grafite,QR Code,Metal com Chave,Izzy,Chip e capinha
-2006044,Inteligente - Izzy 300 220V 50-60Hz B. Aluminium,P17 220V,1 entrada,Nylon com imã,12uF/15uF,Izzy,-,Com encoder,Grafite,QR Code,Plástico,Izzy,Chip e capinha
-2006050,Inteligente - Izzy 500 127V 50-60Hz EX,P28 127V,1 entrada,Nylon com imã,25uF/30uF,Izzy,-,Com encoder,Grafite,QR Code,Metal com Chave,Izzy,Chip e capinha
-2006053,Inteligente - Izzy 300 127V 50-60Hz,P17 127V,1 entrada,Nylon com imã,25uF/30uF,Izzy,-,Com encoder,Grafite,QR Code,Plástico,Izzy,Chip e capinha
-2006055,Inteligente - Izzy 500 127V 50-60Hz,P28 127V,1 entrada,Nylon com imã,25uF/30uF,Izzy,-,Com encoder,Grafite,QR Code,Metal com Chave,Izzy,Chip e capinha
-2006059,Inteligente - Izzy 300 Speed 220V 50-60Hz,P35 220V,2 entradas,Zamac com imã,20uF,Izzy,-,Com encoder,Branca,QR Code,Metal com Chave,Izzy,Chip e capinha
-2006061,Inteligente - Izzy 500 Speed 127V 50-60Hz,P28 127V,2 entradas,Zamac com imã,50uF,Izzy,-,Com encoder,Grafite,QR Code,Metal com Chave,Izzy,Chip e capinha
-2006062,Inteligente - Izzy 500 Speed 220V 50-60Hz ,P45 220V,2 entradas,Zamac com imã,20uF,Izzy,-,Com encoder,Branca/Veneziana,QR Code,Metal com Chave,Izzy,Chip e capinha
-2006063,Inteligente - Izzy 900 220V 50-60Hz,P45 220V,1 entrada,Zamac com imã,12uF/15uF,Izzy,-,Com encoder,Grafite/Veneziana,QR Code,Metal com Chave,Izzy,Chip e capinha
-2006068,Inteligente - Izzy 700 220V 50-60Hz,P33 220V,1 entrada,Zamac com imã,12uF/15uF,Izzy,-,Com encoder,Grafite,QR Code,Metal com Chave,Izzy,Chip e capinha
-2006090,Inteligente - Izzy 900 127V 50-60Hz B. Aluminium,P45 127V,1 entrada,Zamac com imã,50uF,Izzy,-,Com encoder,Grafite/Veneziana,QR Code,Metal com Chave,Izzy,Chip e capinha
-2006113,Inteligente - Izzy 300 Speed 127V B. Aluminium 50-60Hz ,P35 127V,2 entradas,Zamac com imã,50uF,Izzy,-,Com encoder,Cinza/Veneziana,QR Code,Metal com Chave,Izzy,Chip e capinha
-2006114,Inteligente - Izzy 300 Speed 220V B. Aluminium 50-60Hz ,P35 220V,2 entradas,Zamac com imã,20uF,Izzy,-,Com encoder,Branca/Veneziana,QR Code,Metal com Chave,Izzy,Chip e capinha
-2006115,Inteligente - Izzy 900 220V 50-60Hz B. Aluminium,P45 220V,1 entrada,Zamac com imã,12uF/15uF,Izzy,-,Com encoder,Grafite/Veneziana,QR Code,Metal com Chave,Izzy,Chip e capinha
-2006119,Inteligente - Izzy 300 B. Aluminium 50-60Hz ,P17 127V,1 entrada,Nylon com imã,30uF,Izzy,-,Com encoder,Grafite,QR Code,Plástico,Izzy,Chip e capinha
-2006126,Inteligente - Izzy 900 127V 50-60Hz B. Aluminium Ex Teclan,P45 127V,1 entrada,Zamac com imã,50uF,Izzy,-,Com encoder,Grafite/Veneziana,QR Code,Metal com Chave,Izzy,Chip e capinha
-2006131,Inteligente - Izzy 300 127V 50-60Hz B. Aluminium Ex Teclan,P28 127V,1 entrada,Nylon com imã,25uF/30uF,Izzy,-,Com encoder,Grafite,QR Code,Metal com Chave,Izzy,Chip e capinha
-2006143,Izzy Speed Turbo Pro 1/2 Freq. Inv. Biv. 50-60 B. Alu,P39 127V Trif,1 entrada,Nylon com imã,Não usa,New Inverter C/Módulo,220V,Com encoder,Cinza/Veneziana,QR Code,Metal com Chave,Izzy,Chip e capinha
-2006144,Izzy Speed Turbo Pro 1/4 Freq. Inv. Biv. 50-60 B. Alu,P24 127V Trif,1 entrada,Nylon com imã,Não usa,New Inverter C/Módulo,220V,Com encoder,Cinza/Veneziana,QR Code,Metal com Chave,Izzy,Chip e capinha
-2006148,Inteligente - Izzy 300 220V LOG,P17 220V,1 entrada,Nylon com imã,12uF/15uF,Izzy,-,Com encoder,Grafite,QR Code,Plástico,Izzy,Chip e capinha
-2006149,Inteligente - Izzy 300 127V 50-60Hz LOG,P17 127V,1 entrada,Nylon com imã,25uF/30uF,Izzy,-,Com encoder,Grafite,QR Code,Plástico,Izzy,Chip e capinha
-2006150,Inteligente - Izzy 300 220V 50-60Hz,P17 220V,1 entrada,Nylon com imã,12uF/15uF,Izzy,-,Com encoder,Grafite,QR Code,Plástico,Izzy,Chip e capinha
-2006151,Inteligente - Izzy 500 127V 50-60Hz C/Cremalheira Door Line EX,P28 127V,1 entrada,Nylon com imã,25uF/30uF,Izzy,-,Com encoder,Grafite,QR Code,Metal com Chave,Izzy Door Line,Chip e capinha
-2009007,Pivo Robô Strong 220V,P45 6 Polos,1 entrada,Eixo do pivo robô,12uF,CCMD Industrial,-,Com encoder,Preta Industrial,A confirmar,Metal com Chave,Manual de Instalação Pivo Robo,Chip e capinha
-2009011,Izzy Pivo Robô Strong 220V,P45 6 Polos,1 entrada,Eixo do pivo robô,20uF,Izzy Industrial,-,Com encoder,Preta Industrial,A confirmar,Metal com Chave,Izzy,Chip e capinha
+Código,Modelo,Estator,Sem fim,Calço,Furo,Engrenagem,Capacitor,Placa,Jumper,Base,Rolamento,KIT,Tampa,Manual,Cilindro e chave,Etiqueta Tampa
+2001031,Trino 300 220V 50-60Hz,P17 220V,1 entrada,,,Nylon sem imã,12uF/15uF,Flex,220V,Sem encoder,,,Preta,Português - Light e Flex,Plástico,Trino 300
+2001031,Trino 300 220V 50-60Hz,P17 220V,1 entrada,,,Nylon sem imã,12uF/15uF,Flex,220V,Sem encoder,,,Preta,Português - Light e Flex,Plástico,Trino 300
+2001031,Trino 300 220V 50-60Hz,P17 220V,1 entrada,,,Nylon sem imã,12uF/15uF,Flex,220V,Sem encoder,,,Preta,Português - Light e Flex,Plástico,Trino 300
+2001031,Trino 300 220V 50-60Hz,P17 220V,1 entrada,,,Nylon sem imã,12uF/15uF,Flex,220V,Sem encoder,,,Preta,Português - Light e Flex,Plástico,Trino 300
+2001031,Trino 300 220V 50-60Hz,P17 220V,1 entrada,,,Nylon sem imã,12uF/15uF,Flex,220V,Sem encoder,,,Preta,Português - Light e Flex,Plástico,Trino 300
+2001031,Trino 300 220V 50-60Hz,P17 220V,1 entrada,,,Nylon sem imã,12uF/15uF,Flex,220V,Sem encoder,,,Preta,Português - Light e Flex,Plástico,Trino 300
+2001032,Trino 300 127V 50-60Hz,P17 127V,1 entrada,,,Nylon sem imã,25uF/30uF,Flex,127V,Sem encoder,,,Preta,Português - Light e Flex,Plástico,Trino 300
+2001033,Trino 300 Speed 127V 50-60Hz,P35 127V,2 entradas,,,Zamac com imã,50uF,Flex,127V,Com encoder,,,Cinza,Português - Light e Flex,Metal com Chave,Trino Speed 300
+2001034,Trino 300 Speed 220V 50-60Hz,P35 220V,2 entradas,,,Zamac com imã,20uF,Flex,220V,Com encoder,,,Cinza,Português - Light e Flex,Metal com Chave,Trino Speed 300
+2001035,Trino 500 127V 50-60Hz,P28 127V,1 entrada,,,Nylon sem imã,25uF/30uF,Flex,127V,Sem encoder,,,Preta,Português - Light e Flex,Metal com Chave,Trino 500
+2001036,Trino 500 220V 50-60Hz,P28 220V,1 entrada,,,Nylon sem imã,12uF/15uF,Flex,220V,Sem encoder,,,Preta,Português - Light e Flex,Metal com Chave,Trino 500
+2001037,Trino 500 Speed 127V 50-60Hz,P45 127V,2 entradas,,,Zamac com imã,50uF,Flex,127V,Com encoder,,,Cinza/Veneziana,Português - Light e Flex,Plástico,Trino Speed 500
+2001038,Trino 500 Speed 220V 50-60Hz,P45 220V,2 entradas,,,Zamac com imã,20uF,Flex,220V,Com encoder,,,Cinza/Veneziana,Português - Light e Flex,Metal com Chave,Trino Speed 500
+2001039,Trino 700 127V 50-60Hz,P35 127V,1 entrada,,,Zamac com imã,25uF/30uF,Flex,127V,Com encoder,,,Preta,Português - Light e Flex,Metal com Chave,Trino 700
+2001040,Trino 700 220V 50-60Hz,P35 220V,1 entrada,,,Zamac com imã,12uF/15uF,Flex,220V,Com encoder,,,Preta,Português - Light e Flex,Metal com Chave,Trino 700
+2001041,Trino 900 127V 50-60Hz,P45 127V,1 entrada,,,Zamac com imã,50uF,Flex,127V,Com encoder,,,Preta/Veneziana,Português - Light e Flex,Metal com Chave,Trino 900
+2001042,Trino 900 220V 50-60Hz,P45 220V,1 entrada,,,Zamac com imã,12uF/15uF,Flex,220V,Com encoder,,,Preta/Veneziana,Português - Light e Flex,Metal com Chave,Trino 900
+2001070,Trino 300 220V 50-60hz C/Cremalheira 3MT EX,P17 220V 50Hz,Alumínio,,,Nylon sem imã,12uF/15uF,Flex,-,Sem encoder,,,Preta,Espanhol -  Light e Flex,Metal com Chave,Trino light
+2001073,Trino 500 127V 50-60Hz EX,P28 127V,1 entrada,,,Nylon sem imã,25uF/30uF,Flex,127V,Sem encoder,,,Preta,Espanhol -  Light e Flex,Metal com Chave,Trino 500
+2001074,Trino 500 220V 50-60Hz EX,P28 220V 50Hz,1 entrada,,,Nylon sem imã,12uF/15uF,Flex,220V,Sem encoder,,,Preta,Espanhol -  Light e Flex,Metal com Chave,Trino 500
+2001078,Trino 700 220V 50-60Hz EX,P33 220V 50Hz,1 entrada,,,Zamac com imã,12uF/15uF,Flex,220V,Com encoder,,,Preta,Espanhol -  Light e Flex,Metal com Chave,Trino 700
+2001079,Trino 900 127V 50-60Hz EX,P45 127V,1 entrada,,,Zamac com imã,50uF,Flex,127V,Com encoder,,,Preta/Veneziana,Espanhol -  Light e Flex,Metal com Chave,Trino 900
+2001139,Trino 300 220V Light 50-60hz C/Cremalheira 3MT EX,P17 220V 50Hz,Alumínio,,,Nylon sem imã,12uF/15uF,Light,-,Sem encoder,,,Preta,Espanhol -  Light e Flex,Metal com Chave,Trino light
+2001161,Trino 300 220V Light 50-60hz,P17 220V,Alumínio,,,Nylon sem imã,12uF/15uF,Light,-,Sem encoder,,,Preta,Português - Light e Flex,Plástico,Trino light
+2001178,Trino 300 220V 50-60Hz B. Aluminium,P17 220V,1 entrada,,,Nylon sem imã,12uF/15uF,Flex,220V,Sem encoder,,,Preta,Português - Light e Flex,Plástico,Trino 300
+2001182,Trino 500 127V 50-60Hz B. Aluminium,P28 127V,1 entrada,,,Nylon sem imã,25uF/30uF,Flex,127V,Com encoder,,,Preta,Português - Light e Flex,Metal com Chave,Trino 500
+2001184,Trino 500 Speed 127V 50-60Hz B. Aluminium,P45 127V,2 entradas,,,Zamac com imã,50uF,Flex,127V,Com encoder,,,Cinza/Veneziana,Português - Light e Flex,Metal com Chave,Trino Speed 500
+2001187,Trino 700 220V 50-60Hz B. Aluminium,P33 220V,1 entrada,,,Zamac com imã,12uF/15uF,Flex,220V,Com encoder,,,Preta,Português - Light e Flex,Metal com Chave,Trino 700
+2001188,Trino 900 220V 50-60Hz B. Aluminium,P45 127V,1 entrada,,,Zamac com imã,50uF,Flex,127V,Com encoder,,,Preta/Veneziana,Português - Light e Flex,Metal com Chave,Trino 900
+2001189,Trino 900 220V 50-60Hz B. Aluminium,P45 220V,1 entrada,,,Zamac com imã,12uF/15uF,Flex,220V,Com encoder,,,Preta/Veneziana,Português - Light e Flex,Metal com Chave,Trino 900
+2001207,Trino Speed Turbo Pro 1/4 Freq. Inv. Biv. 50-60 B. Alu,P24 Trifásico,1 entrada,,,Zamac com imã,Não usa,New Inverter,220V,Com encoder,,,Cinza/Veneziana,Central Inversora Smart Encoder,Metal com Chave,Speed Turbo Pro
+2001215,Dz Brabus Speed Light 220V 50-60Hz,P22 220V 2 polos,1 entrada aço,,,Nylon com imã,20uF,Fx Brabus,220V,Com encoder,,,Preta/Veneziana,Linha Deslizante Brabus Speed - Bilíngue,Plástico,Brabus
+2001215,Dz Brabus Speed Speed Light 220V 50-60Hz,P22 220V 2 polos,1 entrada aço,,,Nylon com imã,20uF,Fx Brabus,220V,Com encoder,,,Preta/Veneziana,Linha Deslizante Brabus Speed - Bilíngue,Plástico,Brabus
+2001221,Industrial Strong 2000Kg 220V,P80 220V,1 entrada industrial,,,Nylon IND C/imã,20uF,CCMD Industrial,-,Com encoder,,,Preta,QR Code,Metal alumínio,-
+2001222,Industrial Strong 2000Kg 220V S/Cremalheira EX,P80 220V,1 entrada industrial,,,Nylon IND C/imã,20uF,CCMD Industrial,-,Com encoder,,,Preta,QR Code,Metal alumínio,-
+2001223,Trino 900 220V 50-60Hz B. Aluminium C/Cremalheira 3MT EX,P45 220V 50Hz,1 entrada aço,,,Zamac com imã,12uF/15uF,Flex,220V,Com encoder,,,Preta/Veneziana,Espanhol -  Light e Flex,Metal com Chave,Trino 900
+2001225,Trino Soft 220V 50-60Hz B. Aluminium BBS EX,P28 50Hz 220V,2 entradas,,,Zamac com imã,20uF,Flex,220V,Com encoder,,,Cinza/Veneziana,Espanhol -  Light e Flex,Metal com Chave,BBS
+2001226,Trino 300 Speed 220V 50-60Hz B. Aluminium C/Cremalheira 3MT EX,P33 220V 50Hz,2 entradas,,,Zamac com imã,20uF,Flex,220V,Com encoder,,,Cinza,Espanhol -  Light e Flex,Metal com Chave,Trino Speed 300
+2001229,Trino 300 220V Light 50-60hz B. Aluminium C/Cremalheira 3MT EX,P17 220V,Alumínio,,,Nylon sem imã,12uF/15uF,Light,-,Sem encoder,,,Preta,Espanhol -  Light e Flex,Metal com Chave,BBS - Trino light
+2001233,Trino 300 127V Light 50-60Hz,P17 127V,Alumínio,,,Nylon sem imã,25uF/30uF,Light,-,Sem encoder,,,Preta,Português - Light e Flex,Plástico,Trino light
+2001237,Trino Speed Turbo Pro 1/2 Freq. Inv. Biv. 50-60 B. Alu,P39 127V Trif,1 entrada,,,Nylon com imã,Não usa,New Inverter,220V,Com encoder,,,Cinza/Veneziana,Central Inversora Smart Encoder,Metal com Chave,Speed Turbo Pro
+2001239,Trino 500 220V 50-60Hz B. Aluminium C/Cremalheira 3MT EX,P28 220V 50Hz,1 entrada,,,Nylon sem imã,12uF/15uF,Flex,220V,Sem encoder,,,Preta,Espanhol -  Light e Flex,Metal com Chave,Trino 500
+2001240,Trino 500 Speed 220V 50-60Hz B. Aluminium Ex C/Cremalheira 3MT EX,P45 220V,2 entradas,,,Zamac com imã,20uF,Flex,220V,Com encoder,,,Cinza/Veneziana,Espanhol -  Light e Flex,Metal com Chave,Trino Speed 500
+2001245,Trino 300 220V 50-60Hz B. Aluminium Eng. ZAMAC Tampa preta,P17 220V,1 entrada,,,Zamac sem imã,12uF/15uF,Flex,220V,Sem encoder,,,Preta,Português - Light e Flex,Plástico,Trino 300
+2001262,Dz Brabus Speed 500 B. Aluminium 220V 50-60Hz,P28 220V 2 polos,1 entrada aço,,,Nylon com imã,20uF,Fx Brabus,220V,Com encoder,,,Preta/Veneziana,Linha Deslizante Brabus Speed - Bilíngue,Metal com Chave,Brabus
+2001276,Dz Brabus Speed 300 B. Aluminium 127V 50-60Hz,P24 127V 2 polos,1 entrada aço,,,Nylon com imã,40uF,Fx Brabus,127V,Com encoder,,,Preta/Veneziana,Linha Deslizante Brabus Speed - Bilíngue,Metal com Chave,Brabus
+2001277,Dz Brabus Speed 300 B. Aluminium 220V 50-60Hz,P24 220V 2 polos,1 entrada aço,,,Nylon com imã,20uF,Fx Brabus,220V,Com encoder,,,Preta/Veneziana,Linha Deslizante Brabus Speed - Bilíngue,Metal com Chave,Brabus
+2001277,Dz Brabus Speed 300 B. Aluminium 220V 50-60Hz,P24 220V 2 polos,1 entrada aço,,,Nylon com imã,20uF,Fx Brabus,220V,Com encoder,,,Preta/Veneziana,Linha Deslizante Brabus Speed - Bilíngue,Metal com Chave,Brabus
+2001279,Dz Brabus Speed 500 B. Aluminium 220V 50-60Hz,P28 220V,1 entrada aço,,,Nylon com imã,20uF,Fx Brabus,220V,Com encoder,,,Preta/Veneziana,Linha Deslizante Brabus Speed - Bilíngue,Metal com Chave,Brabus
+2001281,Dz Brabus Speed 700 B. Aluminium 220V 50-60Hz,P39 220V 2 polos,1 entrada aço,,,Nylon com imã,20uF,Fx Brabus,220V,Com encoder,,,Preta/Veneziana,Linha Deslizante Brabus Speed - Bilíngue,Metal com Chave,Brabus
+2001283,Dz Brabus Speed Light 127V 50-60Hz,P22 127V 2 polos,1 entrada aço,,,Nylon com imã,40uF,Fx Brabus,127V,Com encoder,,,Preta/Veneziana,Linha Deslizante Brabus Speed - Bilíngue,Plástico,Brabus
+2001284,Dz Brabus Speed Light 220V 50-60Hz,P22 220V 2 polos,1 entrada aço,,,Nylon com imã,20uF,Fx Brabus,220V,Com encoder,,,Preta/Veneziana,Linha Deslizante Brabus Speed - Bilíngue,Plástico,Brabus
+2001285,Trino 300 220V Light 50-60Hz B. Aluminium BBS EX,P17 50Hz 220V,Alumínio,,,Nylon sem imã,12uF/15uF,Light,-,Sem encoder,,,Preta,Espanhol -  Light e Flex,Plástico,Trino light
+2001291,Dz Brabus Speed Light 127V 50-60Hz,P22 127V 2 polos,1 entrada aço,,,Nylon com imã,40uF,Fx Brabus,220V,Com encoder,,,Preta/Veneziana,Linha Deslizante Brabus Speed - Bilíngue,Plástico,Brabus
+2001300,Industrial Strong 1500Kg 220V,P60 220V,1 entrada industrial,,,Nylon IND C/imã,20uF,CCMD Industrial,-,Com encoder,,,Preta,QR Code,Metal alumínio,-
+2001311,Trino 300 127V Light 50-60hz Kript,P17 127V,Alumínio,,,Nylon sem imã,25uF/30uF,Light,-,Sem encoder,,,Preta,Português - Light e Flex,Plástico,Trino light
+2001329,Trino 900 127V 50-60Hz B. Aluminium Ex TECLAN,P45 127V,1 entrada,,,Zamac com imã,40uF,Flex,127V,Com encoder,,,Preta/Veneziana,Espanhol -  Light e Flex,Metal com Chave,Trino 900
+2001333,Trino 300 127V Light 50-60hz,P17 127V,Alumínio,,,Nylon sem imã,25uF/30uF,Light,-,Sem encoder,,,Preta,Português - Light e Flex,Plástico,Trino light
+2001344,Trino 300 127V Light 50-60Hz LOG,P17 127V,Alumínio,,,Nylon sem imã,25uF/30uF,Light,-,Sem encoder,,,Preta,Português - Light e Flex,Plástico,Trino light
+2001345,Trino 300 220V Light 50-60hz LOG,P17 220V,Alumínio,,,Nylon sem imã,12uF/15uF,Light,-,Sem encoder,,,Preta,Português - Light e Flex,Plástico,Trino light
+2006030,Inteligente - Izzy 300 220V 50-60Hz C/Cremalheira 3MT EX,P17 220V 50Hz,1 entrada,,,Nylon com imã,12uF/15uF,Izzy,-,Com encoder,,,Grafite,QR Code,Metal com Chave,Izzy
+2006030,Inteligente - Izzy 300 220V 50-60Hz C/Cremalheira 3MT EX,P17 220V 50Hz,1 entrada,,,Nylon com imã,12uF/15uF,Izzy,-,Com encoder,,,Grafite,QR Code,Metal com Chave,Izzy
+2006035,Izzy Industrial Strong 2000Kg 220V,P80 220V,1 entrada industrial,,,Nylon IND C/imã,20uF,Izzy Industrial,-,Com encoder,,,Preta,QR Code,Metal alumínio,-
+2006037,Inteligente - Izzy 900 220V 50-60Hz B. Aluminium C/Cremalheira 3MT EX,P45 220V 50Hz,1 entrada aço,,,Zamac com imã,12uF/15uF,Izzy,-,Com encoder,,,Grafite/Veneziana,QR Code,Metal com Chave,Izzy
+2006039,Inteligente - Izzy 900 220V 50-60Hz,P45 220V,1 entrada,,,Nylon com imã,12uF/15uF,Izzy,-,Com encoder,,,Grafite,QR Code,Plástico,Izzy
+2006041,Inteligente - Izzy 300 220V 50-60Hz,P17 220V,1 entrada,,,Nylon com imã,12uF/15uF,Izzy,-,Com encoder,,,Grafite,QR Code,Plástico,Izzy
+2006042,Inteligente - Izzy 500 220V 50-60Hz,P28 220V,1 entrada,,,Nylon com imã,12uF/15uF,Izzy,-,Com encoder,,,Grafite,QR Code,Metal com Chave,Izzy
+2006044,Inteligente - Izzy 300 220V 50-60Hz B. Aluminium,P17 220V,1 entrada,,,Nylon com imã,12uF/15uF,Izzy,-,Com encoder,,,Grafite,QR Code,Plástico,Izzy
+2006050,Inteligente - Izzy 500 127V 50-60Hz EX,P28 127V,1 entrada,,,Nylon com imã,25uF/30uF,Izzy,-,Com encoder,,,Grafite,QR Code,Metal com Chave,Izzy
+2006053,Inteligente - Izzy 300 127V 50-60Hz,P17 127V,1 entrada,,,Nylon com imã,25uF/30uF,Izzy,-,Com encoder,,,Grafite,QR Code,Plástico,Izzy
+2006055,Inteligente - Izzy 500 127V 50-60Hz,P28 127V,1 entrada,,,Nylon com imã,25uF/30uF,Izzy,-,Com encoder,,,Grafite,QR Code,Metal com Chave,Izzy
+2006059,Inteligente - Izzy 300 Speed 220V 50-60Hz,P35 220V,2 entradas,,,Zamac com imã,20uF,Izzy,-,Com encoder,,,Branca,QR Code,Metal com Chave,Izzy
+2006061,Inteligente - Izzy 500 Speed 127V 50-60Hz,P28 127V,2 entradas,,,Zamac com imã,50uF,Izzy,-,Com encoder,,,Grafite,QR Code,Metal com Chave,Izzy
+2006062,Inteligente - Izzy 500 Speed 220V 50-60Hz ,P45 220V,2 entradas,,,Zamac com imã,20uF,Izzy,-,Com encoder,,,Branca/Veneziana,QR Code,Metal com Chave,Izzy
+2006063,Inteligente - Izzy 900 220V 50-60Hz,P45 220V,1 entrada,,,Zamac com imã,12uF/15uF,Izzy,-,Com encoder,,,Grafite/Veneziana,QR Code,Metal com Chave,Izzy
+2006068,Inteligente - Izzy 700 220V 50-60Hz,P33 220V,1 entrada,,,Zamac com imã,12uF/15uF,Izzy,-,Com encoder,,,Grafite,QR Code,Metal com Chave,Izzy
+2006090,Inteligente - Izzy 900 127V 50-60Hz B. Aluminium,P45 127V,1 entrada,,,Zamac com imã,50uF,Izzy,-,Com encoder,,,Grafite/Veneziana,QR Code,Metal com Chave,Izzy
+2006113,Inteligente - Izzy 300 Speed 127V B. Aluminium 50-60Hz ,P35 127V,2 entradas,,,Zamac com imã,50uF,Izzy,-,Com encoder,,,Cinza/Veneziana,QR Code,Metal com Chave,Izzy
+2006114,Inteligente - Izzy 300 Speed 220V B. Aluminium 50-60Hz ,P35 220V,2 entradas,,,Zamac com imã,20uF,Izzy,-,Com encoder,,,Branca/Veneziana,QR Code,Metal com Chave,Izzy
+2006115,Inteligente - Izzy 900 220V 50-60Hz B. Aluminium,P45 220V,1 entrada,,,Zamac com imã,12uF/15uF,Izzy,-,Com encoder,,,Grafite/Veneziana,QR Code,Metal com Chave,Izzy
+2006119,Inteligente - Izzy 300 B. Aluminium 50-60Hz ,P17 127V,1 entrada,,,Nylon com imã,30uF,Izzy,-,Com encoder,,,Grafite,QR Code,Plástico,Izzy
+2006126,Inteligente - Izzy 900 127V 50-60Hz B. Aluminium Ex Teclan,P45 127V,1 entrada,,,Zamac com imã,50uF,Izzy,-,Com encoder,,,Grafite/Veneziana,QR Code,Metal com Chave,Izzy
+2006131,Inteligente - Izzy 300 127V 50-60Hz B. Aluminium Ex Teclan,P28 127V,1 entrada,,,Nylon com imã,25uF/30uF,Izzy,-,Com encoder,,,Grafite,QR Code,Metal com Chave,Izzy
+2006143,Izzy Speed Turbo Pro 1/2 Freq. Inv. Biv. 50-60 B. Alu,P39 127V Trif,1 entrada,,,Nylon com imã,Não usa,New Inverter C/Módulo,220V,Com encoder,,,Cinza/Veneziana,QR Code,Metal com Chave,Izzy
+2006144,Izzy Speed Turbo Pro 1/4 Freq. Inv. Biv. 50-60 B. Alu,P24 127V Trif,1 entrada,,,Nylon com imã,Não usa,New Inverter C/Módulo,220V,Com encoder,,,Cinza/Veneziana,QR Code,Metal com Chave,Izzy
+2006148,Inteligente - Izzy 300 220V LOG,P17 220V,1 entrada,,,Nylon com imã,12uF/15uF,Izzy,-,Com encoder,,,Grafite,QR Code,Plástico,Izzy
+2006149,Inteligente - Izzy 300 127V 50-60Hz LOG,P17 127V,1 entrada,,,Nylon com imã,25uF/30uF,Izzy,-,Com encoder,,,Grafite,QR Code,Plástico,Izzy
+2006150,Inteligente - Izzy 300 220V 50-60Hz,P17 220V,1 entrada,,,Nylon com imã,12uF/15uF,Izzy,-,Com encoder,,,Grafite,QR Code,Plástico,Izzy
+2006151,Inteligente - Izzy 500 127V 50-60Hz C/Cremalheira Door Line EX,P28 127V,1 entrada,,,Nylon com imã,25uF/30uF,Izzy,-,Com encoder,,,Grafite,QR Code,Metal com Chave,Izzy Door Line
+2009007,Pivo Robô Strong 220V,P45 6 Polos,1 entrada,,,Eixo do pivo robô,12uF,CCMD Industrial,-,Com encoder,,,Preta Industrial,A confirmar,Metal com Chave,Manual de Instalação Pivo Robo
+2009011,Izzy Pivo Robô Strong 220V,P45 6 Polos,1 entrada,,,Eixo do pivo robô,20uF,Izzy Industrial,-,Com encoder,,,Preta Industrial,A confirmar,Metal com Chave,Izzy
+2001156,"Kit deslizante horizontal 1/3 HP 3,25m 220V EX",P33 220V 50Hz,P33 Com mola,-,Sim,,12uF,Flex,220V,,,Kit de instalação,,Espanhol,Plástico,Pivo
+2007001,"Trino Pivô 3 127V - 0,50m",P33 127V,P33 Com mola,-,Sim,,25uF,Flex,127V,,,Simples,,Português - Light e Flex,Plástico,Pivo
+2007002,"Trino Pivô 3 220V - 0,50m ",P33 220V,P33 Com mola,-,Sim,,12uF,Flex,220V,,,Simples,,Português - Light e Flex,Metal com Chave,Pivo
+2007003,"Trino Pivô 3 127V - 0,75m",P33 127V,P33 Com mola,-,Sim,,25uF,Flex,127V,,,Simples,,Português - Light e Flex,Plástico,Pivo
+2007004,"Trino Pivô 3 220V - 0,75m ",P33 220V,P33 Com mola,-,Sim,,12uF,Flex,220V,,,Simples,,Português - Light e Flex,Plástico,Pivo
+2007005,"Trino Pivô 3 127V - 1,00m ",P33 127V,P33 Com mola,-,Sim,,12uF,Flex,127V,,,Simples,,Português - Light e Flex,Plástico,Pivo
+2007006,"Trino Pivô 3 220V - 1,00m ",P33 220V,P33 Com mola,-,Sim,,12uF,Flex,220V,,,Simples,,Português - Light e Flex,,Pivo
+2007007,"Trino Pivô 3 127V - 1,50m",P33 127V,P33 Com mola,-,Sim,,25uF,Flex,127V,,,Simples,,Português - Light e Flex,Plástico,Pivo
+2007008,"Trino Pivô 3 220V - 1,50m",P33 220V,P33 Com mola,-,Sim,,12uF,Flex,220V,,,Simples,,Português - Light e Flex,Plástico,Pivo
+2007011,"Trino Pivô 4 127V - 0,75m",P28 127V,P28 Com mola,Sim,Sim,,25uF,Flex,127V,,,Simples,,Português - Light e Flex,Metal com Chave,Pivo
+2007012,"Trino Pivô 4 220V - 0,75m",P28 220V,P28 Com mola,Sim,Sim,,12uF,Flex,220V,,,Simples,,Português - Light e Flex,Plástico,Pivo
+2007014,"Trino Pivô 4 220V - 1,00m",P28 220V,P28 Com mola,Sim,Sim,,12uF,Flex,220V,,,Simples,,Português - Light e Flex,Plástico,Pivo
+2007016,"Trino Pivô 4 220V - 1,50m",P28 220V,P28 Com mola,Sim,Sim,,12uF,Flex,220V,,,Simples,,Português - Light e Flex,Metal com Chave,Pivo
+2007077,"Trino Pivô 3 220V - 0,50m  EX",P33 220V,P33 Com mola,-,Sim,,12uF,Flex,220V,,,Simples,,Espanhol,Metal com Chave,Pivo
+2007086,Trino Pivô 3 127V - SEM ACIONAMENTO ,P33 127V,P33 Com mola,-,Sim,,25uF,Flex,127V,,,Simples,,Português - Light e Flex,,Pivo
+2007088,Trino Pivô 3 220V - SEM ACIONAMENTO,P33 220V,P33 Com mola,-,Sim,,12uF,Flex,220V,,,Simples,,Português - Light e Flex,,Pivo
+2007092,Trino Pivô 4 220V - SEM ACIONAMENTO,P28 220V,P28 Com mola,Sim,Sim,,12uF,Flex,220V,,,Simples,,Português - Light e Flex,,Pivo
+2009001,Pivo 3 127V - SEM ACIONAMENTO E SEM CENTRAL,P33 127V,P33 Com mola,-,Sim,,25uF,Flex,127V,,,Simples,,Português - Light e Flex,,Pivo
+2007017,"Trino Pivô 3 127V - 0,50m - Duplo",P33 127V,P33 Com mola,-,Sim,,25uF,Duplo,127V,,,Duplo,,Português - Light e Flex,Metal com Chave,Pivo Duplo
+2007018,"Trino Pivô 3 220V - 0,50m - Duplo",P33 220V,P33 Com mola,-,Sim,,12uF,Duplo,220V,,,Duplo,,Português - Light e Flex,Metal com Chave,Pivo Duplo
+2007019,"Trino Pivô 3 127V - 0,75m - Duplo",P33 127V,P33 Com mola,-,Sim,,25uF,Duplo,127V,,,Duplo,,Português - Light e Flex,Metal com Chave,Pivo Duplo
+2007020,"Trino Pivô 3 220V - 0,75m - Duplo",P33 220V,P33 Com mola,-,Sim,,12uF,Duplo,220V,,,Duplo,,Português - Light e Flex,Metal com Chave,Pivo Duplo
+2007021,Trino Pivô 3 220V - 1m - Duplo,P33 127V,P33 Com mola,-,Sim,,25uF,Duplo,127V,,,Duplo,,Português - Light e Flex,Metal com Chave,Pivo Duplo
+2007022,Trino Pivô 3 220V - 1m - Duplo,P33 220V,P33 Com mola,-,Sim,,12uF,Duplo,220V,,,Duplo,,Português - Light e Flex,Metal com Chave,Pivo Duplo
+2007023,"Trino Pivô 3 127V - 1,50m - Duplo",P33 127V,P33 Com mola,-,Sim,,25uF,Duplo,127V,,,Duplo,,Português - Light e Flex,Metal com Chave,Pivo Duplo
+2007026,"Trino Pivô 4 220V - 0,50m - Duplo",P28 220V,P28 Com mola,Sim,Sim,,15uF,Duplo,220V,,,Duplo,,Português - Light e Flex,Metal com Chave,Pivo Duplo
+2007027,"Trino Pivô 4 127V - 0,75m - Duplo",P28 127V,P28 Com mola,Sim,Sim,,25uF,Duplo,127V,,,Duplo,,Português - Light e Flex,Metal com Chave,Pivo Duplo
+2007028,"Trino Pivô 4 220V - 0,75m - Duplo",P28 220V,P28 Com mola,Sim,Sim,,12uF,Duplo,220V,,,Duplo,,Português - Light e Flex,Metal com Chave,Pivo Duplo
+2007030,"Trino Pivô 4 220V - 1,00m - Duplo",P28 220V,P28 Com mola,Sim,Sim,,12uF,Duplo,220V,,,Duplo,,Português - Light e Flex,Metal com Chave,Pivo Duplo
+2007032,"Trino Pivô 4 220V - 1,5m - Duplo",P28 220V,P28 Com mola,Sim,Sim,,12uF,Duplo,220V,,,Duplo,,Espanhol,Plástico,Pivo Duplo
+2007036,"Trino Pivô 3 220V - 0,75m - duplo EX",P33 220V,P33 Com mola,Sim,Sim,,12uF,Duplo,220V,,,Duplo,,Espanhol,Plástico,Pivo Duplo
+2007038,"Trino Pivô 3 220V - 1,00m - duplo EX",P33 220V,P33 Com mola,Sim,Sim,,12uF,Duplo,220V,,,Duplo,,Espanhol,Plástico,Pivo Duplo
+2007043,"Trino Pivô 4 127V - 0,75m - duplo EX",P28 127V,P28 Com mola,Sim,Sim,,25uF,Duplo,127V,,,Duplo,,Espanhol,Metal com Chave,Pivo Duplo
+2007044,"Trino Pivô 4 127V - 0,75m - duplo EX",P28 220V,P28 Com mola,Sim,Sim,,12uF,Duplo,220V,,,Duplo,,Espanhol,Metal com Chave,Pivo Duplo
+2007052,"Trino Pivô 3 220V - 1,5m - DUPLO EX",P33 220V 50Hz,P33 Com mola,-,Sim,,12uF,Duplo,220V,,,Duplo,,Português - Light e Flex,,Pivo Duplo
+2007084,"Trino Pivô 4 127V - 0,75m - duplo Teclan EX",P28 127V,P28 Com mola,Sim,Sim,,25uF,Duplo,127V,,,Duplo S/graxa s/logo,,Espanhol,,Pivo Duplo
+2007087,Trino Pivô 3 127V - SEM ACIONAMENTO - DUPLO,P33 127V,P33 Com mola,-,Sim,,25uF,Duplo,127V,,,Duplo,,Português - Light e Flex,,Pivo Duplo
+2007089,Trino Pivô 3 220V - SEM ACIONAMENTO - DUPLO,P33 220V,P33 Com mola,-,Sim,,12uF,Duplo,220V,,,Duplo,,Português - Light e Flex,,Pivo Duplo
+2007091,Trino Pivô 4 127V - SEM ACIONAMENTO - DUPLO,P28 127V,P28 Com mola,Sim,Sim,,25uF,Duplo,127V,,,Duplo,,Português - Light e Flex,,Pivo Duplo
+2007093,Trino Pivô 4 220V - SEM ACIONAMENTO - DUPLO,P28 220V,P28 Com mola,Sim,Sim,,12uF,Duplo,220V,,,Duplo,,Português - Light e Flex,,Pivo Duplo
+2007097,Izzy Trino Pivô 3 220V - SEM ACIONAMENTO - DUPLO,P33 220V,P33 Com mola,-,Sim,,12uF,Dupla Izzy,220V,,,Duplo,,Português - Light e Flex,,Izzy
+2006079,Inteligente Izzy Trino New BV 4 220V,P28 220V,1 entrada,,,Nylon com imã,12uF,Izzy,,,Plástico,,Grafite,QR Code,Plástico,Izzy
+2006081,Inteligente Izzy Trino New BV 4 Speed 220V,P28 220V,2 entradas,,,Nylon com imã,20uF,Izzy,,,Plástico,,Grafite,QR Code,Plástico,Izzy
+2006082,Inteligente Izzy Trino New BV 3 Speed 220V,P28 220V,2 entradas,,,Nylon com imã,20uF,Izzy,,,Plástico,,Grafite,QR Code,Metal com Chave,Izzy
+2006092,Inteligente Izzy Trino New BV Heavy 127V,P39 127V,1 entrada,,,Nylon com imã,25uF,Izzy,,,6004,,Grafite,QR Code,Plástico,Izzy
+2006094,Inteligente Izzy Trino New BV 3 127V,P33 127V,1 entrada,,,Nylon com imã,25uF,Izzy,,,Plástico,,Preta,QR Code,Plástico,Izzy
+2006080,Inteligente Izzy Trino New BV 3 220V,P33 220V,1 entrada,,,Nylon com imã,12uF,Izzy,,,Plástico,,Preta,QR Code,Plástico,Izzy
+2006086,Inteligente Izzy Trino New BV Heavy Speed 220V,P39 220V,2 entradas,,,Nylon com imã,12uF,Izzy,,,6004,,,QR Code,,Izzy
+2006103,Izzy New BV Heavy 127V EX,P39 127V,1 entrada,,,Nylon com imã,30uF,Izzy,,,6004,,Preta,QR Code,Plástico,Izzy
+2008026,Trino New BV 4 127V,P28 127V,1 entrada,,,Nylon sem imã,25uF,Flex,,,Plástico,,Preta,Português - Light e Flex,Plástico,New NB 4
+2014019,Kit reposição do movimentador de Placa Solar,P39 220V,1 entrada,,,Zamac com imã,15uF,-,,,6004,,Preta,Português - Light e Flex,Metal com Chave,-
+2008027,Trino New BV 4 220V,P28 220V,1 entrada,,,Nylon sem imã,12uF,Flex,,,Plástico,,Preta,Português - Light e Flex,Plástico,New NB 4
+2008028,Trino New BV 3 127V,P28 127V,1 entrada,,,Nylon sem imã,25uF,Flex,,,Plástico,,Preta,Português - Light e Flex,Plástico,New NB 4
+2008029,Trino New BV3 220V,P33 220V,1 entrada,,,Nylon sem imã,12uF,Flex,,,Plástico,,Preta,Português - Light e Flex,Metal com Chave,New BV 3
+2008031,Trino New BV 4 Speed 220V,P28 220V,2 entradas,,,Nylon sem imã,20uF,Flex,,,Plástico,,Preta,Português - Light e Flex,Metal com Chave,New BV4 Speed
+2008032,Trino New BV 3 Speed 127V,P33 127V,2 entradas,,,Nylon sem imã,50uF,Flex,,,Plástico,,Preta,Português - Light e Flex,Metal com Chave,New BV3 Speed
+2008033,Trino New BV 3 Speed 220V,P33 220V,2 entradas,,,Nylon sem imã,20uF,Flex,,,Plástico,,Preta,Português - Light e Flex,Metal com Chave,New BV3 Speed
+2008034,Trino New BV Light 127V,P17 127V,1 entrada,,,Nylon sem imã,25uF,Light,,,Plástico,,Preta,Português - Light e Flex,Metal com Chave,NBV Light
+2008035,Trino New BV Light 220V,P17 220V ,1 entrada,,,Nylon sem imã,12uF,Light,,,Plástico,,Preta/Veneziana,Português - Light e Flex,Metal com Chave,NBV Light
+2008039,BV Speed Turbo Pro 1/2HP Frequency Inverter Bivolt,P39 Trifásico,1 entrada,,,Nylon com imã,Não usa,New Inverter,,,6004,,Preta/Veneziana,Português - New Inverter - sem logo,Metal com Chave,Speed Turbo Pro
+2008042,Trino New BV Heavy 220V,P39 220V,1 entrada,,,Nylon sem imã,12uF,Flex,,,6004,,Grafite/Veneziana,Português - Light e Flex,Metal com Chave,New BV Heavy
+2008043,Trino New BV Heavy Speed 127V,P39 127V,2 entradas,,,Nylon sem imã,50uF,Flex,,,6004,,Grafite/Veneziana,Português - Light e Flex,Metal com Chave,New BV Heavy Speed
+2008044,Trino New BV Heavy Speed 220V,P39 220V,2 entradas,,,Nylon sem imã,20uF,Flex,,,6004,,Grafite,Português - Light e Flex,Metal com Chave,New BV Heavy Speed
+2008047,BV Speed Turbo Pro 1/2HP Frequency Inverter Bivolt EX,P39 Trifásico,1 entrada,,,Nylon com imã,Não usa,New Inverter,,,6004,,Grafite/Veneziana,Espanhol - New Inverter - sem logo,Metal com Chave,Speed Turbo Pro
+2008077,BV Speed Turbo Pro 1/2HP Frequency Inverter Bivolt S/CENTRAL,P39 Trifásico,1 entrada,,,Nylon com imã,-,-,,,6004,,Grafite/Veneziana,Português - New Inverter - sem logo,Metal com Chave,Speed Turbo Pro
+2008085,New BV Cadena 1/3HP 220V,P33 220V,1 entrada,,,Nylon com imã,15uF,Flex,,,Aço,,Preta/Veneziana,Português - Light e Flex,Metal com Chave,New BV 3
+2008091,BV Speed Turbo Pro Light 1/5HP Frequency Inverter Bivolt EX,P17 127V Trifásico,1 entrada,,,Nylon com imã,Não usa,New Inverter,,,6004,,Grafite,Espanhol - New Inverter - sem logo,Plástico,Speed Turbo Pro
+2006093,Inteligente Izzy Trino New BV 3 Speed 127V,P28 127V,2 entradas,,,Nylon com imã,50uF,Izzy,,,Plástico,,Preta,QR Code,Plástico,Izzy
+2008062,Trino New BV Light 220V EX,P17 220V ,1 entrada,,,Nylon sem imã,20uF,Light,,,Plástico,,Preta/Veneziana,Espanhol - Light e Flex,Plástico,NBV Light
+2008086,New BV Cadena 1/2HP 220V,P39 220V,1 entrada,,,Nylon com imã,15uF,Flex,,,Aço,,Preta/Veneziana,Português - Light e Flex,Metal com Chave,BV Cadena
+2008102,New BV Cadena 1/2HP 220V EX,P39 220V 50Hz,1 entrada,,,Nylon com imã,15uF,Flex,,,Aço,,Preta/Veneziana,Espanhol - Light e Flex,Metal com Chave,BV Cadena
+2008030,Trino New BV 4 Speed 127V,P28 127V,2 entradas,,,Nylon sem imã,50uF,Flex,,,Plástico,,Preta/Veneziana,Português - Light e Flex,Metal com Chave,New BV4 Speed
+2008003,Trino BV 4 127V,P28 127V,P28 Sem mola,Sim,,,25uF/30uF,,127V,,,,Controle c/ Borne,Português - Light e Flex,,Basculante
+2008004,Trino BV 4 220V,P28 220V,P28 Sem mola,Sim,,,12uF/15uF,,220V,,,,Controle c/ Borne,Português - Light e Flex,,Basculante
+2008022,Trino BV 4 220V EX,P28 220V 50Hz,P28 Sem mola,Sim,,,12uF/15uF,,220V,,,,Controle c/ Borne,Espanhol,,Basculante
+2008001,Trino BV 3 127V,P33 127V,P33 Sem mola,-,,,25uF/30uF,,127V,,,,Controle c/ Borne,Português - Light e Flex,,Basculante
+2008002,Trino BV 3 220V,P33 220V,P33 Sem mola,-,,,12uF/15uF,,220V,,,,Controle c/ Borne,Português - Light e Flex,,Basculante
+2008094,Trino BV 3 220V - CONDOMINIAL 1000,P33 220V,P33 Sem mola,-,,,12uF/15uF,,220V,,,,Controle c/ Borne,Português - Light e Flex,,Basculante
+2008025,Trino BV 3 220V EX,P33 220V 50hz,P33 Sem mola,-,,,12uF/15uF,,220V,,,,Controle c/ Borne,Espanhol,,Basculante

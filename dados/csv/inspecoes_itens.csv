@@ -9,3 +9,36 @@ id,id_inspecao,codigo,descricao,data
 8,1,2001161,Manual,manual
 9,1,2001161,Cilindro e chave,cilindro_e_chave
 10,1,2001161,Etiqueta Tampa,etiqueta_tampa
+11,2,2007089,Estator,estator
+12,2,2007089,Sem fim,sem_fim
+13,2,2007089,Furo,furo
+14,2,2007089,Capacitor,capacitor
+15,2,2007089,Placa,placa
+16,2,2007089,Jumper,jumper
+17,2,2007089,Manual,manual
+18,2,2007089,Etiqueta Tampa,etiqueta_tampa
+19,3,2008004,Estator,estator
+20,3,2008004,Sem fim,sem_fim
+21,3,2008004,Calço,calco
+22,3,2008004,Capacitor,capacitor
+23,3,2008004,Jumper,jumper
+24,3,2008004,Tampa,tampa
+25,3,2008004,Manual,manual
+26,3,2008004,Etiqueta Tampa,etiqueta_tampa
+27,4,2007087,Estator,estator
+28,4,2007087,Sem fim,sem_fim
+29,4,2007087,Furo,furo
+30,4,2007087,Capacitor,capacitor
+31,4,2007087,Placa,placa
+32,4,2007087,Jumper,jumper
+33,4,2007087,KIT,kit
+34,4,2007087,Manual,manual
+35,4,2007087,Etiqueta Tampa,etiqueta_tampa
+36,5,2007087,Estator,estator
+37,5,2007087,Sem fim,sem_fim
+38,5,2007087,Furo,furo
+39,5,2007087,Capacitor,capacitor
+40,5,2007087,Placa,placa
+41,5,2007087,Jumper,jumper
+42,5,2007087,KIT,kit
+43,5,2007087,Manual,manual

@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException
+﻿from fastapi import APIRouter, HTTPException
 from fastapi.requests import Request
 from config.templates import templates
 
@@ -27,7 +27,7 @@ def registrar_contagem_sistema(dados: RegistrarContagem):
     if not registrar:
         raise HTTPException(
             status_code=500,
-            detail="Não foi possível registrar a contagem"
+            detail="NÃ£o foi possÃ­vel registrar a contagem"
         )
 
     return {"mensagem": "Contagem registrada com sucesso"}
@@ -35,7 +35,7 @@ def registrar_contagem_sistema(dados: RegistrarContagem):
 @router.get("/api/buscar-dados")
 def buscar_dados(codigo: int):
     """
-    Busca descricao, média, estoque sistema e futuramente ultima contagem
+    Busca descricao, mÃ©dia, estoque sistema e futuramente ultima contagem
     """
 
     try:
@@ -58,7 +58,7 @@ def buscar_dados(codigo: int):
 def itens_a_contar_rota():
     """
     Retorna lista de itens que precisam ser contados hoje
-    com base na média de dias entre contagens.
+    com base na mÃ©dia de dias entre contagens.
     """
     try:
         dados = itens_a_contar()
@@ -72,3 +72,7 @@ def itens_a_contar_rota():
             detail=f"Erro ao gerar lista de contagem: {str(e)}"
         )
     
+
+
+
+
