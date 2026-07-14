@@ -279,8 +279,8 @@ input {
 
 @media (max-width: 768px) {
 
-  .inventory-table th:nth-child(n+3),
-  .inventory-table td:nth-child(n+3) {
+  .inventory-table th:nth-child(n+4),
+  .inventory-table td:nth-child(n+4) {
     display: none;
   }
 
