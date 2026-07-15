@@ -724,14 +724,3 @@
   transform: scale(1.2);
   background-color: #fdd835;
 }
-
-.quebrar-linha{
-  white-space: pre-wrap;
-  display: block;
-}
-
-.quality-card--observacao{
-  background-color: #5a4f1d !important;
-
-
-}

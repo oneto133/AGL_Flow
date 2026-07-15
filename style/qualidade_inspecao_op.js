@@ -297,7 +297,6 @@ document.addEventListener("DOMContentLoaded", () => {
       const codigoPai = Number(card.dataset.codigoPai || 0);
       const campo = card.dataset.campo || "";
       const titulo = card.dataset.titulo || "";
-      const valor = card.dataset.valor || "";
       const quantidade = Number(card.dataset.refugoQuantidade || 0);
       const codigoNc = card.dataset.refugoCodigoNc || "";
       const observacao = card.dataset.refugoObservacao || "";
@@ -307,7 +306,7 @@ document.addEventListener("DOMContentLoaded", () => {
         id: itens.length + 1,
         id_inspecao: 0,
         codigo: codigoPai,
-        descricao: valor,
+        descricao: titulo,
         campo,
       });
 
@@ -316,7 +315,7 @@ document.addEventListener("DOMContentLoaded", () => {
           id: refugos.length + 1,
           id_inspecao: 0,
           codigo: codigoPai,
-          descricao: valor,
+          descricao: titulo,
           campo,
           quantidade,
           codigo_nc: codigoNc,

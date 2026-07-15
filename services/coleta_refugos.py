@@ -151,6 +151,10 @@ def exportar_contagens_para_xlsx(caminho_csv: str, caminho_saida_xlsx: str):
             colunas.insert(1 if "codigo" in colunas else 0, "descricao")
 
         df = df[colunas]
+
+    elif nome_arquivo == "inspecoes.csv":
+        pass
+    
     else:
         colunas = [
             "codigo",

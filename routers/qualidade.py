@@ -123,11 +123,6 @@ async def upload_base_qualidade(file: UploadFile = File(...)):
         "message": "Base de qualidade atualizada com sucesso"
     }
 
-
-# =========================
-# HISTÃ“RICO
-# =========================
-
 @router.get("/historico/download")
 def download_historico():
 
@@ -143,6 +138,22 @@ def download_historico():
         path=caminho_saida,
         filename="registro_refugos.xlsx",
         media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    )
+
+@router.get("/inspecoes/download")
+def download_inspecoes():
+    caminho = CSV_DIR / "inspecoes.csv"
+    caminho_saida = CSV_DIR / "inspecoes.xlsx"
+
+    exportar_contagens_para_xlsx(
+        str(caminho),
+        str(caminho_saida)
+    )
+
+    return FileResponse(
+        path=caminho_saida,
+        filename="inspecoes.xlsx",
+        media_type="application/vnd.openxmlformats-officedocument.spreadsheettml.sheet"
     )
 
 @router.get("/base/inspecoes-deslizantes")
@@ -254,8 +265,6 @@ async def api_qualidade_inspecoes_salvar(dados: InspecaoCreate):
         return await salvar_inspecao(dados)
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
-
-
 
 
 

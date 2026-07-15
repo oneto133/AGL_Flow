@@ -9,6 +9,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const inputUploadBaseQualidade = document.getElementById("inputUploadBaseQualidade");
 
   const btnDownloadBaseQualidade = document.getElementById("btnDownloadBaseQualidade");
+
+  const btnDownloadInspecoes = document.getElementById("btnDownloadInspecoes");
   
 
   if (!sidebar) {
@@ -93,6 +95,30 @@ document.addEventListener("DOMContentLoaded", () => {
     } catch (err) {
       console.error(err);
       alert("Erro ao baixar base");
+    }
+  });
+
+  btnDownloadInspecoes?.addEventListener("click", async () => {
+    try{
+      const res = await fetch("/inspecoes/download");
+      if (!res.ok) {
+        throw new Error("Erro download");
+      }
+
+      const blob = await res.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "inspecoes.xlsx";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(url);
+    }
+
+    catch (err) {
+      console.error(err);
+      alert("Erro ao baixar a base");
     }
   });
 
