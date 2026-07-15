@@ -2,6 +2,17 @@
 
 Documentação principal: [README.md](README.md)
 
+## [1.7.0] - 15/07/2026
+
+### Adicionado
+
+- Inspeções de linhas
+- lista de linhas inspecionadas do dia
+- Geração de relatórios da qualidade
+
+### Melhorado
+- Alterações na exibição de itens contados em separação de refugos
+
 ## [1.6.1] - 05/07/2026
 
 ### Adicionado
