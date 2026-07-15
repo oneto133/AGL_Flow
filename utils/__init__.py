@@ -11,3 +11,5 @@ from .registrar_log import logger, JsonFormatter, arquivo_log
 from .pandas_utils import _ler_csv
 
 from .auth import normalize_text
+
+from .arquivos import exportar_contagens_para_xlsx

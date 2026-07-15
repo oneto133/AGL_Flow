@@ -14,8 +14,10 @@ from services import (
     importar_base_xlsx,
     csv_para_xlsx,
     xlsx_para_csv,
-    exportar_contagens_para_xlsx
 )
+
+from utils import exportar_contagens_para_xlsx
+
 from services.qualidade_inspecoes import (
     listar_secoes_inspecao,
     listar_linhas_por_secao,
