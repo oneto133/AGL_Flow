@@ -35,7 +35,7 @@ router = APIRouter(tags=["Qualidade"])
 
 @router.get("/qualidade")
 def qualidade(request: Request):
-    return templates.TemplateResponse(request, "qualidade.html")
+    return templates.TemplateResponse(request, "qualidade/qualidade.html")
 
 
 @router.post("/api/registrar-coleta")
@@ -176,7 +176,7 @@ def donwload_base_deslizante():
 
 @router.get("/qualidade/inspecoes")
 def qualidade_inspecoes(request: Request):
-    return templates.TemplateResponse(request, "qualidade_inspecoes.html")
+    return templates.TemplateResponse(request, "qualidade/qualidade_inspecoes.html")
 
 
 @router.get("/qualidade/inspecoes/linha/manual")
@@ -185,7 +185,7 @@ def qualidade_inspecao_manual(request: Request):
     url_voltar = f"/qualidade/inspecoes/linha/{quote(linha)}" if linha else "/qualidade/inspecoes"
     return templates.TemplateResponse(
         request,
-        "qualidade_inspecao_manual.html",
+        "qualidade/qualidade_inspecao_manual.html",
         {
             "linha": linha,
             "url_voltar": url_voltar,
@@ -197,7 +197,7 @@ def qualidade_inspecao_manual(request: Request):
 def qualidade_inspecao_linha(request: Request, celula_linha: str):
     return templates.TemplateResponse(
         request,
-        "qualidade_inspecao_linha.html",
+        "qualidade/qualidade_inspecao_linha.html",
         {
             "celula_linha": celula_linha,
         },
@@ -208,7 +208,7 @@ def qualidade_inspecao_linha(request: Request, celula_linha: str):
 def qualidade_inspecoes_dia(request: Request):
     return templates.TemplateResponse(
         request,
-        "qualidade_inspecoes_dia.html",
+        "qualidade/qualidade_inspecoes_dia.html",
         {},
     )
 
@@ -217,7 +217,7 @@ def qualidade_inspecoes_dia(request: Request):
 def qualidade_inspecao_op(request: Request, op: int):
     return templates.TemplateResponse(
         request,
-        "qualidade_inspecao_op.html",
+        "qualidade/qualidade_inspecao_op.html",
         {
             "op": op,
         },

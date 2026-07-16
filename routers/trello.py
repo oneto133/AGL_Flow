@@ -24,4 +24,7 @@ def enviar_cartao_trello(dados: DadosCartao):
     return {'erro': 'NÃ£o foi possÃ­vel enviar o cartÃ£o parao Trello'}
 
 
+@router.get("/api/apontamento")
+def apontamento(request: Request):
+    return templates.TemplateResponse(request, "apontamento.html")
 
