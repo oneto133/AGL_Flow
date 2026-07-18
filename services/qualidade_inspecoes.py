@@ -9,7 +9,7 @@ import pandas as pd
 
 from config import CSV_DIR
 from schemas import InspecaoCreate, ItemInspecionado, RefugoInspecao
-from utils import _ler_csv, normalize_text, _proximo_id
+from utils import _ler_csv, normalize_text, _proximo_id, _append_csv
 
 
 SEQUENCIAMENTO = CSV_DIR / "sequenciamento.csv"
@@ -521,31 +521,6 @@ def adicionar_item_base_qualidade(codigo: int | str, descricao_item: str) -> dic
         "descricao_item": descricao_texto,
         "status": "ok",
     }
-
-
-
-
-
-
-def _append_csv(caminho: Path, linha: dict[str, Any]) -> None:
-
-    """
-    salva os dados nas suas respectivas colunas
-    """
-    df_linha = pd.DataFrame([linha])
-
-    if not caminho.exists() or caminho.stat().st_size == 0:
-        df_linha.to_csv(caminho, index=False, encoding="utf-8")
-        return
-
-    df_linha.to_csv(
-        caminho,
-        mode="a",
-        index=False,
-        header=False,
-        encoding="utf-8",
-    )
-
 
 def obter_item_da_op(op: int | str) -> dict[str, Any]:
     """

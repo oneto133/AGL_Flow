@@ -1,5 +1,6 @@
 import pandas as pd
 from pathlib import Path
+from typing import Any
 
 def _ler_csv(caminho: Path) -> pd.DataFrame:
 
@@ -39,3 +40,23 @@ def _proximo_id(df: pd.DataFrame) -> int:
         return 1
 
     return int(ids.max()) + 1
+
+
+def _append_csv(caminho: Path, linha: dict[str, Any]) -> None:
+
+    """
+    salva os dados nas suas respectivas colunas
+    """
+    df_linha = pd.DataFrame([linha])
+
+    if not caminho.exists() or caminho.stat().st_size == 0:
+        df_linha.to_csv(caminho, index=False, encoding="utf-8")
+        return
+
+    df_linha.to_csv(
+        caminho,
+        mode="a",
+        index=False,
+        header=False,
+        encoding="utf-8",
+    )
