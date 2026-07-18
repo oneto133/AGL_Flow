@@ -8,7 +8,7 @@ from .funcoes import _alterar_nome_linha, _consultar_nome_linhas, adicionar_hora
 
 from .registrar_log import logger, JsonFormatter, arquivo_log
 
-from .pandas_utils import _ler_csv
+from .pandas_utils import _ler_csv, _proximo_id
 
 from .auth import normalize_text
 

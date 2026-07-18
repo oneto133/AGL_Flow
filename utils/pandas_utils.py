@@ -25,3 +25,17 @@ def _ler_csv(caminho: Path) -> pd.DataFrame:
             continue
 
     return pd.DataFrame()
+
+def _proximo_id(df: pd.DataFrame) -> int:
+    """
+    Calcula qual será o proximo id, quando passarmos para o banco de dados isso não será útil
+    """
+
+    if df.empty or "id" not in df.columns:
+        return 1
+
+    ids = pd.to_numeric(df["id"], errors="coerce").dropna()
+    if ids.empty:
+        return 1
+
+    return int(ids.max()) + 1

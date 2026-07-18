@@ -9,7 +9,7 @@ import pandas as pd
 
 from config import CSV_DIR
 from schemas import InspecaoCreate, ItemInspecionado, RefugoInspecao
-from utils import _ler_csv, normalize_text
+from utils import _ler_csv, normalize_text, _proximo_id
 
 
 SEQUENCIAMENTO = CSV_DIR / "sequenciamento.csv"
@@ -524,19 +524,7 @@ def adicionar_item_base_qualidade(codigo: int | str, descricao_item: str) -> dic
 
 
 
-def _proximo_id(df: pd.DataFrame) -> int:
-    """
-    Calcula qual será o proximo id, quando passarmos para o banco de dados isso não será útil
-    """
 
-    if df.empty or "id" not in df.columns:
-        return 1
-
-    ids = pd.to_numeric(df["id"], errors="coerce").dropna()
-    if ids.empty:
-        return 1
-
-    return int(ids.max()) + 1
 
 
 def _append_csv(caminho: Path, linha: dict[str, Any]) -> None:
@@ -1233,4 +1221,4 @@ if __name__ == "__main__":
     print(asyncio.run(salvar_inspecao(exemplo)))
     """
 
-    print(listar_inspecoes_do_dia())
+    print(listar_ops_por_linha("Célula 3 - BIANCA"))
