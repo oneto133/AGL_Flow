@@ -19,7 +19,7 @@ from contextlib import asynccontextmanager
 from utils import (
     send_raw_to_printer, get_default_printer_name, _find_draw_start, value_to_text, _alterar_nome_linha, _consultar_nome_linhas,
     _last_pq_match, _last_zpl_label_match, _shift_zpl_position, prepare_raw_label, only_digits, ensure_parent_dirs, _find_matching_code
-    , build_label_column
+    , build_label_column, _coerce_float
     )
 
 from services import verificar_cartoes
@@ -28,6 +28,7 @@ from auxiliar.check_relatorio import main as checar_relatorio
 from routers.trello import router as trello_router
 from routers.estoque import router as estoque_router
 from routers.qualidade import router as qualidade_router
+from routers.apontamento import router as apontamento_router
 
 try:
     from utils.config_store import APP_HOME, CONFIG_PATH, DEFAULT_CONFIG, load_config, resolve_path, save_config
@@ -172,7 +173,8 @@ app = FastAPI(title="PCP - AGL Brasil",
 
 app.include_router(trello_router)
 app.include_router(estoque_router)
-app. include_router(qualidade_router)
+app.include_router(qualidade_router)
+app.include_router(apontamento_router)
 
 style_dir = RESOURCE_DIR / "style"
 images_dir = RESOURCE_DIR / "imagens"
@@ -230,16 +232,6 @@ def dots_to_mm(value, dpi=LABEL_DPI):
 
 def _default_label_profiles():
     return json.loads(json.dumps(DEFAULT_CONFIG["label_profiles"]))
-
-
-def _coerce_float(value, default=0.0):
-    try:
-        if value in (None, ""):
-            return float(default)
-        return float(value)
-    except (TypeError, ValueError):
-        return float(default)
-
 
 def _coerce_int(value, default=0):
     try:
@@ -1418,7 +1410,3 @@ if __name__ == "__main__":
     os.environ["PORT"] = str(SERVER_PORT)
     print(f"Servidor disponivel em http://{get_lan_ip()}:{SERVER_PORT}")
     uvicorn.run(app, host="0.0.0.0", port=SERVER_PORT, reload=False)
-
-
-
-

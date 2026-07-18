@@ -230,9 +230,12 @@ def produto(codigo):
         return None
 
     df = pd.read_csv(r"dados/csv/config_linhas.csv", encoding="utf-8")
-    celulas_dz = df.loc[df["secao"] == "deslizante", "celula_linha"].tolist()
+    linhas_ignorar = ["cremalheiras", "acionamentos", "cancelas"]
+    filtro = df[~df["secao"].isin(linhas_ignorar)]
+
+    celulas_dz = filtro.loc[filtro["secao"] == "deslizante", "celula_linha"].tolist()
     
-    celulas_outros = df.loc[df["secao"] != "deslizante", "celula_linha"].tolist()
+    celulas_outros = filtro.loc[filtro["secao"] != "deslizante", "celula_linha"].tolist()
 
     if os.path.exists(caminho_destino["BASE_DESLIZANTES_CSV"]):
         df = pd.read_csv(caminho_destino["BASE_DESLIZANTES_CSV"], encoding='utf-8')
@@ -262,7 +265,6 @@ def produto(codigo):
             return {"descricao": str(retorno.values[0][1]), "opcoes": celulas_outros}
 
     return None
-
 
 
 if __name__ == "__main__":

@@ -18,3 +18,11 @@ def zpl_text(value):
 def strip_accents(value):
     normalized = unicodedata.normalize("NFKD", value or "")
     return "".join(char for char in normalized if not unicodedata.combining(char))
+
+def _coerce_float(value, default=0.0):
+    try:
+        if value in (None, ""):
+            return float(default)
+        return float(value)
+    except (TypeError, ValueError):
+        return float(default)

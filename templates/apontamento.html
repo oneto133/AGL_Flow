@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Apontar ordem de produção</title>
     <link rel="stylesheet" href="/style/trello.css">
-    <link rel="stylesheet" href="/style/apontamento.css"
+    <link rel="stylesheet" href="/style/apontamento.css">
+    <link rel="stylesheet" href="/style/qualidade_inspecao_op.css">
+    <link rel="stylesheet" href="/style/qualidade_inspecao_op.css">
 
   </head>
   <body class="login-page">
@@ -23,7 +25,7 @@
         </a>
       </header>
 
-      <img src="imagens/logo_agl.png" alt="Logo AGL" class="logo">
+      <img src="/imagens/logo_agl.png" alt="Logo AGL" class="logo">
       
       <section class="login-card">
         <p class="eyebrow">Apontamento de OP</p>
@@ -51,107 +53,46 @@
             </select>
           </label>
 
-          <section>
-            <span>OP: </span>
-            <span>Código: </span>
-            <span>Descricao: </span>
-            <span>Quantidade programada</span>
-            <span>Quantidade apontada</span>
-            <span>Quantidade ultimo apontamento: </span>
-            <span>Data hora último apontamento</span>
+          <section id="painelResumo" class="login-card qualidade-hero" style="display: none;">
+            <div><strong>OP:</strong> <span id="infoOP">-</span></div>
+            <div><strong>Código:</strong> <span id="infoCodigo">-</span></div>
+            <div><strong>Descrição:</strong> <span id="infoDescricao">-</span></div>
+            <div><strong>Quantidade programada:</strong> <span id="infoQtdProgramada">-</span></div>
+            <div><strong>Quantidade apontada:</strong> <span id="infoQtdApontada">-</span></div>
+            <div><strong>Último apontamento:</strong> <span id="infoUltimoApontamento">-</span></div>
+            <div><strong>Data/Hora último apontamento:</strong> <span id="infoDataHora">-</span></div>
           </section>
 
           <label>
             <span>Quantidade</span>
-            <input id="manualQuantity" name="quantidade" type="number" min="1" max="500" value="1" required>
+            <input id="manualQuantity" name="quantidade" type="text" inputmode="numeric" pattern="[0-9]*" min="1" max="500" value="1" required class="tipo centralizar-texto">
           </label>
 
           <label>
-            <span>OP</span>
-            <input id="manualOP" name="op" type="text" placeholder="Digite a OP" autocomplete="off" required>
+            <span>Status</span>
+            <select name="statusOP" id="statusOP" class="tipo centralizar-texto">
+              <option value="" disabled selected>Selecione um status</option>
+              <option value="Em processo">Em Processo</option>
+              <option value="Pausado">Pausado</option>
+              <option value="Aguardando Qualidade">Aguardando Qualidade</option>
+              <option value="Café">Café</option>
+              <option value="Almoço">Almoço</option>
+            </select>
+          </label>
+
+          <label for="">
+            <span>Observação</span>
+            <textarea name="observação" id="observacao" title="Digite aqui a observação" rows="5" class="tipo" placeholder="Digite a observação da linha se houver" style="cursor: text !important;"></textarea>
           </label>
 
           <div class="container-enviar-trello">
-            <button class="primary-button" type="submit" style="width: 85%; height: auto;">Enviar para o Trello</button>
-            <label class="prioridade">
-              <input class="prioridade-check" id="prioridade" type="checkbox" title="Adiciona o cartão ao topo da lista no Kanban">
-              Prioridade
-            </label>
+            <button class="primary-button" type="submit" style="width: 100%; height: auto;">Registrar Apontamento</button>
           </div>
         </form>
 
         <p id="statusMessage" class="login-status" role="status"></p>
       </section>
     </main>
-    <p></p>
-
-    <div id="configSidebar" class="sidebar-panel">
-      <div class="sidebar-header">
-        <h2 class="atualizacao">Configurações</h2>
-        <button id="fecharSidebar" class="sidebar-fechar">&times;</button>
-      </div>
-      <div class="sidebar-conteudo">
-        
-        <div class="secao-retratil">
-          <p class="atualizacao titulo-gatilho" style="margin-bottom: 10px; font-weight: bold; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
-            <span>Atualização de base</span>
-            <span class="seta-icone">▼</span>
-          </p>
-          
-          <div class="conteudo-gatilho" style="display: none;">
-            <div class="config-grupo">
-              <button type="button" class="config-menu-btn">Deslizante</button>
-              <div class="config-sub-opcoes">
-                <button type="button" class="btn-acao btn-upload" data-tipo="deslizante" data-acao="upload">Upload</button>
-                <button type="button" class="btn-acao btn-download" data-tipo="deslizante" data-acao="download">Download</button>
-              </div>
-            </div>
-
-            <div class="config-grupo">
-              <button type="button" class="config-menu-btn">New BV</button>
-              <div class="config-sub-opcoes">
-                <button type="button" class="btn-acao btn-upload" data-tipo="new_bv" data-acao="upload">Upload</button>
-                <button type="button" class="btn-acao btn-download" data-tipo="new_bv" data-acao="download">Download</button>
-              </div>
-            </div>
-
-            <!-- Grupo Pivotante -->
-            <div class="config-grupo">
-              <button type="button" class="config-menu-btn">Pivotante</button>
-              <div class="config-sub-opcoes">
-                <button type="button" class="btn-acao btn-upload" data-tipo="pivotante" data-acao="upload">Upload</button>
-                <button type="button" class="btn-acao btn-download" data-tipo="pivotante" data-acao="download">Download</button>
-              </div>
-            </div>
-
-            <!-- Grupo Basculantes -->
-            <div class="config-grupo">
-              <button type="button" class="config-menu-btn">Basculantes</button>
-              <div class="config-sub-opcoes">
-                <button type="button" class="btn-acao btn-upload" data-tipo="basculante" data-acao="upload">Upload</button>
-                <button type="button" class="btn-acao btn-download" data-tipo="basculante" data-acao="download">Download</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="secao-retratil" style="margin-top: 20px;">
-          <p class="atualizacao titulo-gatilho" style="margin-bottom: 10px; font-weight: bold; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
-            <span>Alterar nome da Célula/linha</span>
-            <span class="seta-icone">▼</span>
-          </p>
-
-          <div class="conteudo-gatilho" style="display: none;">
-            <div class="config-grupo">
-              <button type="button" class="config-menu-btn" id="btnMenuLinhas">Linhas</button>
-              <div class="config-sub-opcoes" id="containerListaLinhas" style="display: none; flex-direction: column; gap: 10px; padding: 10px 0;">
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </div>
         <footer class=""><a href="https://github.com/oneto133/etiquetas/blob/master/CHANGELOG.md">Versão 1.7.0</a></footer>
     <script src="/style/apontamento.js"></script>
     

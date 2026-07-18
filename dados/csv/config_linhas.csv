@@ -8,3 +8,11 @@ id,celula_linha,secao,cor_cartao,id_lista
 7,Célula 1 - PIVOTANTE - ADRIANO,pivotante,blue,68c9668e66279a3ce2c2c962
 8,Célula 2 - PIVOTANTE - CARLOS,pivotante,purple,68c96695d275d94d9daba124
 9,Célula 3 - PIVOTANTE - THALES,pivotante,red,69a6be4d9ffb44018d6dd8d2
+10,Célula 1,cremalheiras,,
+11,Célula 2,cremalheiras,,
+12,Célula 3,cremalheiras,,
+13,Célula 4,cremalheiras,,
+14,Máquina,cremalheiras,,
+15,Cancelas,cancelas,,
+16,ISACK,acionamentos,,
+17,Linha,acionamentos,,

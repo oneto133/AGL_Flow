@@ -19,7 +19,7 @@ def enviar_cartao_trello(dados: DadosCartao):
     enviar_trello = executar(dados.codigo, dados.op, dados.quantidade, dados.linhaCelula, dados.posicao)
 
     if enviar_trello:
-        return {"mensagem": "CartÃ£o enviado para o Trello com sucesso."}
+        return {"mensagem": "Cartão enviado para o Trello com sucesso."}
 
     return {'erro': 'NÃ£o foi possÃ­vel enviar o cartÃ£o parao Trello'}
 

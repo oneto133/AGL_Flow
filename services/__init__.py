@@ -1,7 +1,7 @@
 from services.enviar_trello import executar
 from .criar_sequenciamento import sequenciar
 from .verificar_cartao import verificar_cartoes
-from .apontamento import registrar_apontamento
+from .apontamento import registrar_apontamento, retornar_dados_apontamento
 from services.cartao import (
     ler_base_de_dados,
     atualizar_base_de_dados,
