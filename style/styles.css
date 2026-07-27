@@ -181,6 +181,9 @@ input {
   cursor: pointer;
   font-weight: 700;
   padding: 0 12px;
+
+
+  margin-top: 16px;
 }
 
 .icon-button:hover {

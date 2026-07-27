@@ -483,5 +483,111 @@ settingsForm.addEventListener("submit", saveConfig);
 saveRemoteTargetButton?.addEventListener("click", applyRemoteTarget);
 resetSettingsButton.addEventListener("click", resetConfig);
 
+document.addEventListener('DOMContentLoaded', () => {
+  const btnInserir = document.getElementById('inserirBase');
+  const backdrop = document.getElementById('settingsBackdrop'); // Usando o backdrop que já existe no seu HTML
+  let modalProduto = null;
+
+  if (btnInserir) {
+    btnInserir.addEventListener('click', async () => {
+      // 1. Fecha a sidebar de configurações se ela estiver aberta para não sobrepor visualmente
+      const sidebar = document.getElementById('configSidebar');
+      if (sidebar && typeof fecharSidebar === 'function') {
+        // Se você já tiver uma função para fechar a sidebar no seu script, chame-a aqui
+        // Exemplo comum: sidebar.classList.remove('active') ou sidebar.hidden = true;
+      }
+
+      if (!modalProduto) {
+        try {
+          const response = await fetch('/modal-produto'); 
+          
+          if (!response.ok) throw new Error('Não foi possível carregar o modal auxiliar.');
+          
+          const htmlTexto = await response.text();
+          document.body.insertAdjacentHTML('beforeend', htmlTexto);
+          modalProduto = document.getElementById('productModal');
+
+          const btnFecharModalX = document.getElementById('closeProductModalX'); 
+          if (btnFecharModalX) {
+            btnFecharModalX.addEventListener('click', fecharOModal);
+          };
+
+          // Configura o envio do formulário do produto
+          const formProduto = document.getElementById('productForm');
+          if (formProduto) {
+            
+            formProduto.addEventListener('submit', async (e) => {
+              e.preventDefault();
+
+              const formData = new FormData(formProduto);
+
+              const params = new URLSearchParams({
+                codigo: formData.get('codigo_interno'),
+                descricao: formData.get('descricao'),
+                ean: formData.get('codigo_barras')
+              });
+
+              try {
+                const response = await fetch(`/api/atualizar-base-reposicao?${params.toString()}`, {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json'
+                  },
+                });
+
+                if (!response.ok) throw new Error('Erro ao salvar no servidor');
+
+                const resultado = await response.json();
+                alert(resultado.mensagem);
+
+                fecharOModal();
+                formProduto.reset();
+
+                if(typeof atualizarListaTela === 'function') {
+                  atualizarListaTela();
+                }
+
+
+              }
+
+              catch (erro) {
+                console.error('Erro ao atualizar base: ', erro);
+                alert('Não foi possível salvar o Produto na Base.');
+                
+              }
+
+            });
+          }
+        } catch (erro) {
+          console.error('Erro no carregamento do componente de inserção:', erro);
+          alert('Erro ao abrir o formulário. Tente novamente.');
+          return;
+        }
+      }
+
+      // 3. Exibe o modal e ativa o fundo escuro (backdrop)
+      if (modalProduto && backdrop) {
+        modalProduto.style.display = 'block';
+        modalProduto.removeAttribute('hidden');
+        modalProduto.setAttribute('aria-hidden', 'false');
+        
+        backdrop.removeAttribute('hidden');
+        backdrop.style.display = 'block';
+      }
+    });
+  }
+
+  // Função auxiliar para fechar a tela de inserção
+  function fecharOModal() {
+    if (modalProduto && backdrop) {
+      modalProduto.style.display = 'none';
+      modalProduto.setAttribute('hidden', 'true');
+      modalProduto.setAttribute('aria-hidden', 'true');
+      
+      backdrop.setAttribute('hidden', 'true');
+      backdrop.style.display = 'none';
+    }
+  }
+});
 
 loadConfig().finally(loadItems);

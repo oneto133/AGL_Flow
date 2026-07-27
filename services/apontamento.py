@@ -8,6 +8,7 @@ from config import CSV_DIR
 
 
 APONTAMENTO = CSV_DIR / "apontamento.csv"
+SEQUENCIAMENTO = CSV_DIR / "sequenciamento.csv"
 
 
 def registrar_apontamento(dados: RegistrarApontamento):
@@ -73,6 +74,9 @@ def ultima_quantidade(filtro) -> int:
 
     return int(filtro.loc[ultima_qtd, "quantidade"])
 
+def producao_tempo_real():
+    pass
+    
 
 if __name__ == "__main__":
     dados = RegistrarApontamento(

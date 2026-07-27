@@ -1,0 +1,37 @@
+<div id="productModal" class="settings-modal" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 10000; max-width: 500px; width: 90%;">
+    <div class="settings-modal__header" style="display: flex; justify-content: space-between; align-items: flex-start; width: 100%;">
+        <div>
+            <p class="eyebrow">Inserir produto</p>
+        </div>
+
+        <button id="closeProductModalX" type="button" style="background: none; border: none; font-size: 24px; line-height: 1; cursor: pointer; color: var(--text); padding: 0 5px;">
+            &times;
+        </button>
+    </div>
+
+
+    <form id="productForm" class="settings-form">
+        <label>
+            <span>Nome do produto</span>
+            <input type="text" name="descricao" placeholder="Digite a descrição do produto aqui" required>
+        </label>
+
+        <div class="settings-grid">
+            <label>
+                <span>Código interno</span>
+                <input type="number" name="codigo_interno" maxlength="7" placeholder="Digite aqui o código interno do produto" required>
+            </label>
+            <label style="width: 150%;">
+                <span>Código de barras</span>
+                <input type="number" name="codigo_barras" maxlength="11" placeholder="Digite aqui os números do código de barras" required>
+            </label>
+        </div>
+
+        <div class="seetings-actions">
+            <div class="settings_actions__right">
+                <button class="primary-button" type="submit">Inserir</button>
+            </div>
+        </div>
+    </form>
+</div>
+

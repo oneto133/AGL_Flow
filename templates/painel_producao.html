@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Painel de produção</title>
+    <link rel="stylesheet" href="/style/styles.css">
+    <link rel="stylesheet" href="/style/painel_producao.css">
+  </head>
+  <body class="login-page painel-producao-page">
+    <main class="login-shell painel-producao-shell">
+      <header class="login-header painel-producao-header">
+        <div class="painel-producao-header__title">
+          <p class="eyebrow">PAINEL DE PRODUÇÃO</p>
+        </div>
+
+        <div class="painel-producao-header__actions">
+          <a href="/tela_inicial" class="primary-button">Voltar</a>
+          <button type="button" class="primary-button" id="btnAtualizarPainel">Atualizar agora</button>
+        </div>
+      </header>
+
+      <section class="login-card painel-resumo">
+        <div class="painel-resumo__item">
+          <span>Seções ativas</span>
+          <strong id="painelTotalSecoes">0</strong>
+        </div>
+        <div class="painel-resumo__item">
+          <span>Cartões ativos</span>
+          <strong id="painelTotalCards">0</strong>
+        </div>
+        <div class="painel-resumo__item">
+          <span>OPS em andamento</span>
+          <strong id="painelTotalOps">0</strong>
+        </div>
+      </section>
+
+      <section class="painel-status" id="painelStatus" aria-live="polite"></section>
+
+      <section id="painelSecoes" class="painel-secoes"></section>
+    </main>
+
+    <template id="painelCardTemplate">
+      <article class="painel-card">
+        <header class="painel-card__header">
+          <div>
+            <p class="painel-card__title">Linha</p>
+            <p class="painel-card__subtitle">OP - Código - Descrição</p>
+          </div>
+          <span class="painel-badge">Eficiência</span>
+        </header>
+
+        <div class="painel-card__meta">
+          <div>
+            <span>Quantidade programada</span>
+            <strong data-field="programada">0</strong>
+          </div>
+          <div>
+            <span>Último apontamento</span>
+            <strong data-field="ultimoApontamento">-</strong>
+          </div>
+          <div>
+            <span>Previsão de saída</span>
+            <strong data-field="previsaoSaida">-</strong>
+          </div>
+          <div>
+            <span>Eficiência</span>
+            <strong data-field="eficiencia">0%</strong>
+          </div>
+        </div>
+
+        <div class="painel-card__timeline">
+          <div>
+            <span>Início da fila</span>
+            <strong data-field="inicioFila">-</strong>
+          </div>
+          <div>
+            <span>Sequenciamento</span>
+            <strong data-field="sequenciamento">-</strong>
+          </div>
+        </div>
+
+        <div class="painel-progresso">
+          <div class="painel-progresso__legenda">
+            <span class="painel-progresso__esperado">
+              Deveria ter produzido
+              <strong data-field="esperadoQtd">0</strong>
+            </span>
+            <span class="painel-progresso__apontado">
+              Apontado
+              <strong data-field="apontadoQtd">0</strong>
+            </span>
+          </div>
+
+          <div class="painel-progresso__barra" aria-hidden="true">
+            <span class="painel-progresso__esperado-bar" data-field="esperadoBar"></span>
+            <span class="painel-progresso__apontado-bar" data-field="apontadoBar"></span>
+          </div>
+        </div>
+      </article>
+    </template>
+
+    <script src="/style/painel_producao.js"></script>
+  </body>
+</html>

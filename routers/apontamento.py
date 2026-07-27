@@ -2,10 +2,10 @@ from fastapi import FastAPI, HTTPException, APIRouter, status
 from fastapi.requests import Request
 from fastapi.responses import Response
 
-from config import templates
+from config.templates import templates
 from services import registrar_apontamento, retornar_dados_apontamento
 from schemas import RegistrarApontamento
-
+from services.atualizar_base import atualizar_base_reposicao
 router = APIRouter(
     tags=["Produção"]
 )
@@ -34,3 +34,12 @@ async def registro_apontamento(op: int):
 
     dados = retornar_dados_apontamento(op)
     return dados
+
+
+@router.get("/modal-produto")
+async def abrir_modal(request: Request):
+    return templates.TemplateResponse(request, "modal-produto.html")
+
+@router.post("/api/atualizar-base-reposicao")
+async def _atualizar_base_reposicao(codigo: int, descricao: str, ean: int):
+    return await atualizar_base_reposicao(codigo, descricao, ean)
