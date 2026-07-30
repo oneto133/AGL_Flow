@@ -29,6 +29,7 @@ document.addEventListener("DOMContentLoaded", function() {
     if(form) {
         form.addEventListener("submit", enviarApontamento);
     }
+
 });
 
 async function carregarSecoes() {
@@ -211,7 +212,6 @@ async function enviarApontamento(event) {
 
     const statusMsg = document.getElementById("statusMessage");
     const opSelecionada = selecaoOP.value;
-
     const detalhesOP = window.dadosOPsDaLinhaAtual.find(o => String(o.op) === String(opSelecionada));
 
     if (!detalhesOP){

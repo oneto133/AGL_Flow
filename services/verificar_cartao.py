@@ -5,13 +5,9 @@ import requests
 import csv
 from config.paths import CSV_DIR, TRELLO_KEY, TRELLO_TOKEN
 from utils import adicionar_horas_uteis, calcular_horas_uteis
+from .trello_fila import listar_ids_feitos
 
-LISTAS_FEITOS = [
-    "6526bb4c2b984ff99ae15707", #BASCULANTES
-    "67090b6470563e5a400fb2cc", #DESLIZANTES
-    "6a3d61a7c7ef895b33597dbb", #USINAGEM
-    "6787f9ecc03fde256fd24826", #NEW BV
-]
+LISTAS_FEITOS = listar_ids_feitos()
 
 URL_CARTAO = "https://api.trello.com/1/cards/{id_cartao}"
 URL_BOARD_CARDS = "https://api.trello.com/1/boards/{id_board}/cards"

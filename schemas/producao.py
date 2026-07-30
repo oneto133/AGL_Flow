@@ -11,3 +11,7 @@ class RegistrarApontamento(BaseModel):
     data_hora: datetime | str | None = None
     status: str | None = None
     observacao: str | None = None
+    manual: bool = False
+    secao: str | None = None
+    linha: str | None = None
+    descricao: str | None = None

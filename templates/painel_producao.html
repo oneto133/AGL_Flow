@@ -8,18 +8,13 @@
     <link rel="stylesheet" href="/style/painel_producao.css">
   </head>
   <body class="login-page painel-producao-page">
-    <main class="login-shell painel-producao-shell">
-      <header class="login-header painel-producao-header">
-        <div class="painel-producao-header__title">
-          <p class="eyebrow">PAINEL DE PRODUÇÃO</p>
-        </div>
-
+    <header class="login-header painel-producao-header">
         <div class="painel-producao-header__actions">
-          <a href="/tela_inicial" class="primary-button">Voltar</a>
-          <button type="button" class="primary-button" id="btnAtualizarPainel">Atualizar agora</button>
+          <a href="/tela_inicial" class="primary-button" style="text-decoration: none;">Voltar</a>
+          <button type="button" class="painel-gear" id="btnPainelConfig" aria-label="Abrir configurações">⚙</button>
         </div>
       </header>
-
+    <main class="login-shell painel-producao-shell">
       <section class="login-card painel-resumo">
         <div class="painel-resumo__item">
           <span>Seções ativas</span>
@@ -39,6 +34,21 @@
 
       <section id="painelSecoes" class="painel-secoes"></section>
     </main>
+    <aside class="painel-sidebar" id="painelSidebar" aria-hidden="true">
+      <div class="painel-sidebar__header"><div><p class="eyebrow">ANÁLISE</p><h2>Eficiência por linha</h2></div><button type="button" class="modal-close" id="btnFecharConfig">×</button></div>
+      <div class="painel-sidebar__body">
+        <button type="button" class="primary-button" id="btnAtualizarPainel">Atualizar agora</button>
+        <label>Seção<select id="eficienciaSecao" class="tipo"></select></label>
+        <label>Linha<select id="eficienciaLinha" class="tipo"></select></label>
+        <label>Período<select id="eficienciaPeriodo" class="tipo"><option value="dia">Produzido no dia</option><option value="semana">Produzido na semana</option><option value="mes">Produzido no mês</option><option value="total" selected>Total</option></select></label>
+        <label>Gráfico<select id="eficienciaTipo" class="tipo"><option value="line">Linhas</option><option value="bar">Barras</option></select></label>
+        <div class="eficiencia-actions"><button type="button" class="primary-button" id="btnAtualizarEficiencia">Filtrar</button><button type="button" class="secondary-button" id="btnImprimirEficiencia">Imprimir</button></div>
+        <div id="eficienciaIndicador" class="eficiencia-indicador">Selecione uma linha.</div>
+        <h3 id="eficienciaPrintTitle" class="eficiencia-print-title">Eficiência de produção</h3>
+        <div class="eficiencia-chart-wrap"><canvas id="eficienciaChart" width="720" height="330"></canvas></div>
+        <div id="eficienciaResumo" class="eficiencia-resumo"></div>
+      </div>
+    </aside>
 
     <template id="painelCardTemplate">
       <article class="painel-card">
@@ -78,6 +88,10 @@
             <span>Sequenciamento</span>
             <strong data-field="sequenciamento">-</strong>
           </div>
+          <div>
+            <span>Posição no Trello</span>
+            <strong data-field="posicao">-</strong>
+          </div>
         </div>
 
         <div class="painel-progresso">
@@ -100,6 +114,14 @@
       </article>
     </template>
 
+    <div class="painel-modal" id="painelModal" aria-hidden="true">
+      <div class="painel-modal__backdrop" data-close-modal></div>
+      <section class="painel-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="modalLinhaTitulo">
+        <header class="painel-modal__header"><div><p class="eyebrow">DETALHES DA LINHA</p><h2 id="modalLinhaTitulo">Linha</h2><p id="modalLinhaSubtitulo"></p></div><button type="button" class="modal-close" data-close-modal aria-label="Fechar">×</button></header>
+        <nav class="painel-tabs" role="tablist"><button class="painel-tab is-active" data-tab="visao">Visão geral</button><button class="painel-tab" data-tab="ordens">Ordens sequenciadas</button><button class="painel-tab" data-tab="apontamentos">Apontamentos registrados</button></nav>
+        <div class="painel-modal__content"><div id="modalVisao" class="painel-tab-content is-active"></div><div id="modalOrdens" class="painel-tab-content"></div><div id="modalApontamentos" class="painel-tab-content"></div></div>
+      </section>
+    </div>
     <script src="/style/painel_producao.js"></script>
   </body>
 </html>

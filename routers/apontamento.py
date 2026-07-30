@@ -40,6 +40,11 @@ async def registro_apontamento(op: int):
 async def abrir_modal(request: Request):
     return templates.TemplateResponse(request, "modal-produto.html")
 
+
+@router.get("/apontamento/manual")
+async def apontamento_manual(request: Request):
+    return templates.TemplateResponse(request, "apontamento_manual.html")
+
 @router.post("/api/atualizar-base-reposicao")
 async def _atualizar_base_reposicao(codigo: int, descricao: str, ean: int):
     return await atualizar_base_reposicao(codigo, descricao, ean)

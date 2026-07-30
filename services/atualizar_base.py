@@ -1,4 +1,4 @@
-import pandas as pd
+import pandas as pd                 
 import openpyxl as xl
 
 caminho_base = r"relatorio/base.xlsx"

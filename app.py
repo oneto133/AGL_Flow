@@ -29,6 +29,7 @@ from routers.trello import router as trello_router
 from routers.estoque import router as estoque_router
 from routers.qualidade import router as qualidade_router
 from routers.apontamento import router as apontamento_router
+from routers.painel_producao import router as painel_producao_router
 
 try:
     from utils.config_store import APP_HOME, CONFIG_PATH, DEFAULT_CONFIG, load_config, resolve_path, save_config
@@ -175,6 +176,7 @@ app.include_router(trello_router)
 app.include_router(estoque_router)
 app.include_router(qualidade_router)
 app.include_router(apontamento_router)
+app.include_router(painel_producao_router)
 
 style_dir = RESOURCE_DIR / "style"
 images_dir = RESOURCE_DIR / "imagens"
