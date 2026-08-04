@@ -1411,71 +1411,34 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function renderConferencias(registro, detalhe = null) {
-      if (!modalLista) {
-        return;
-      }
-
+      if (!modalLista) return;
+      const linhas = Array.isArray(detalhe?.linhas_relatorio) ? detalhe.linhas_relatorio : [];
       modalLista.innerHTML = "";
-
-      const conferencias = Array.isArray(detalhe?.conferencias) ? detalhe.conferencias : [];
-      const fallbackItens = Array.isArray(registro.itens_inspecionados) ? registro.itens_inspecionados : [];
-      const lista = conferencias.length
-        ? conferencias
-        : fallbackItens.map((item) => ({
-            codigo_item: item.codigo,
-            descricao_item: item.descricao,
-            campo: item.campo,
-            quantidade_programada: registro.quantidade_programada || 0,
-            quantidade_nc: 0,
-            codigo_nc: "",
-            observacao: "",
-            destino: registro.destino || "",
-            sem_fim: "",
-            central: "",
-            inspecoes: "",
-            tensao: "",
-          }));
-
-      if (modalCount) {
-        modalCount.textContent = `${lista.length} itens`;
-      }
-
-      if (!lista.length) {
-        const empty = document.createElement("div");
-        empty.className = "quality-empty";
-        empty.textContent = "Nenhum detalhe encontrado para esta inspeção.";
+      if (modalCount) modalCount.textContent = `${linhas.length} ${linhas.length === 1 ? "linha" : "linhas"}`;
+      if (!linhas.length) {
+        const empty=document.createElement("div");
+        empty.className="quality-empty";
+        empty.textContent="Nenhum detalhe encontrado para esta inspecao.";
         modalLista.appendChild(empty);
         return;
       }
-
-      lista.forEach((item, index) => {
-        const quantidadeProgramada = Number(item.quantidade_programada || registro.quantidade_programada || 0);
-        const quantidadeNc = Number(item.quantidade_nc || 0);
-        const descricaoItem = safeText(item.descricao_item || item.descricao || item.titulo || "Item");
-        const codigoItem = safeText(item.codigo_item || item.codigo || "-");
-        const observacao = safeText(item.observacao || "-");
-        const codigoNc = safeText(item.codigo_nc || "-");
-
-        const card = document.createElement("article");
-        card.className = "quality-card quality-card--day-detail";
-        card.innerHTML = `
-          <p class="quality-card__eyebrow">Item ${index + 1}</p>
-          <h3>${descricaoItem}</h3>
-          <p>Código ${codigoItem}</p>
-          <div class="quality-card__meta">
-            <span class="quality-pill">Programado: ${quantidadeProgramada}</span>
-            <span class="quality-pill ${quantidadeNc > 0 ? "quality-pill--alert" : ""}">Refugo: ${quantidadeNc}</span>
-            <span class="quality-pill">NC: ${codigoNc}</span>
-          </div>
-          <p><strong>Observação:</strong> ${observacao}</p>
-          <p><strong>Destino:</strong> ${safeText(item.destino || registro.destino || "Sem destino")}</p>
-          <p><strong>Sem fim:</strong> ${safeText(item.sem_fim || "-")}</p>
-          <p><strong>Central:</strong> ${safeText(item.central || "-")}</p>
-          <p><strong>Tensão:</strong> ${safeText(item.tensao || "-")}</p>
-          <p><strong>Qtd. inspeções:</strong> ${safeText(item.inspecoes || "-")}</p>
-        `;
-        modalLista.appendChild(card);
+      const table=document.createElement("table");
+      table.className="quality-report-table";
+      table.innerHTML=`
+        <thead><tr><th>OP</th><th>Codigo</th><th>Descricao</th><th>Quantidade</th><th>Data/hora inicio inspecao</th><th>Data/hora fim inspecao</th><th>Status</th><th>Observacao geral</th><th>Item conferido</th><th>Codigo NC</th><th>Observacao refugo</th></tr></thead>
+        <tbody></tbody>
+      `;
+      const tbody=table.querySelector("tbody");
+      linhas.forEach((item)=>{
+        const row=document.createElement("tr");
+        [item.op,item.codigo,item.descricao,item.quantidade,item.data_hora_inicio_inspecao,item.data_hora_fim_inspecao,item.status,item.observacao_geral,item.item_conferido,item.codigo_nc,item.observacao_refugo].forEach((value)=>{
+          const cell=document.createElement("td");
+          cell.textContent=value === null || value === undefined || value === "" ? "-" : String(value);
+          row.appendChild(cell);
+        });
+        tbody.appendChild(row);
       });
+      modalLista.appendChild(table);
     }
 
     async function openDiaModal(registro) {

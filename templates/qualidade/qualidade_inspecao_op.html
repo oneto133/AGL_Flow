@@ -29,7 +29,7 @@
       <div class="quality-stats quality-stats--op">
         <article class="quality-stat quality-stat--highlight">
           <span>OP</span>
-          <strong id="opDestaque">-</strong>
+          <strong" id="opDestaque">-</strong>
         </article>
         <article class="quality-stat quality-stat--highlight">
           <span>Código</span>
@@ -39,7 +39,9 @@
           <span>Quantidade</span>
           <strong id="quantidadeDestaque">-</strong>
         </article>
+      </div>
 
+      <div class="quality-stats quality-stats--op">
         <article class="quality-stat quality-stat--highlight">
           <span>Descrição</span>
           <strong id="fDescricaoVisual"></strong>
@@ -58,27 +60,10 @@
         <input type="hidden" id="fInicio" name="data_hora_inicio_inspecao">
         <input type="hidden" id="fFim" name="data_hora_fim_inspecao">
 
-        <section class="quality-form__group quality-form__group--controls">
-          <div class="quality-field">
-            <label>Status</label>
-            <select id="fStatus" class="tipo">
-              <option value="Iniciado" selected>Iniciado</option>
-              <option value="Pausado">Pausado</option>
-              <option value="Conforme">Conforme</option>
-              <option value="Não conforme">Não conforme</option>
-            </select>
-          </div>
+        <section class="quality-form__group quality-form__group--controls quality-form__group--inspection-controls">
 
           <div class="quality-field">
-            <label>Resultado</label>
-            <select id="fResultado" class="tipo">
-              <option value="true" selected>Aprovado</option>
-              <option value="false">Reprovado</option>
-            </select>
-          </div>
-
-          <div class="quality-field">
-            <label>Destino</label>
+            <label for="fDestino">Destino da OP</label>
             <select id="fDestino" class="tipo" required>
               <option value="">Selecione</option>
               <option value="Nacional">Nacional</option>
@@ -88,15 +73,8 @@
 
           <div class="quality-field quality-field--switch">
             <label class="quality-switch">
-              <input id="fConformidade" type="checkbox" checked>
-              <span>Tem etiqueta?</span>
-            </label>
-          </div>
-
-          <div class="quality-field quality-field--switch">
-            <label class="quality-switch">
               <input id="fRefugo" type="checkbox">
-              <span>Houve refugo</span>
+              <span>Houve refugo?</span>
             </label>
           </div>
 
@@ -109,14 +87,11 @@
         <section class="quality-form__group">
           <div class="quality-panel__header">
             <div>
-              <p class="eyebrow">ITENS INSPECIONADOS</p>
-              <h2>Selecione os itens</h2>
+              <p class="eyebrow">CHECKLIST DA OP</p>
+              <h2>Itens para inspeção</h2>
             </div>
             <span class="quality-chip quality-chip--muted" id="itensSelecionadosCount">0 selecionados</span>
           </div>
-          <p class="quality-empty quality-empty--compact">
-            Clique no item para abrir o modal de refugo. O cartão mostra apenas a descrição e a seleção.
-          </p>
           <div id="itensInspecionados" class="quality-stack"></div>
         </section>
 

@@ -155,14 +155,18 @@ LABEL_STORAGE_KEYS = (
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    relatorio_thread = threading.Thread(target=checar_relatorio, daemon=True)
-    relatorio_thread.start()
+    relatorio_task = asyncio.create_task(checar_relatorio())
 
     task = asyncio.create_task(verificar_cartoes())
 
     yield
 
+    relatorio_task.cancel()
     task.cancel()
+    try:
+        await relatorio_task
+    except asyncio.CancelledError:
+        pass
     try:
         await task
     except asyncio.CancelledError:

@@ -512,11 +512,6 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    if (!statusSelecionado || normalizeText(statusSelecionado) === "iniciado") {
-      setStatus("Selecione um status diferente de Iniciado antes de salvar.", "error");
-      return;
-    }
-
     const { itens, refugos } = collectItems();
     const now = nowForInput();
     const payload = {

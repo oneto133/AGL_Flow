@@ -31,7 +31,7 @@ def registrar_apontamento(dados: RegistrarApontamento):
     )
     if dados.manual:
         inserir_sequenciamento_manual(dados)
-    processar_apontamento_trello(dados.op, dados.status)
+    processar_apontamento_trello(dados.op, dados.codigo, dados.status)
 
 
 def inserir_sequenciamento_manual(dados: RegistrarApontamento) -> None:

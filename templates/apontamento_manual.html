@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Apontamento manual</title><link rel="stylesheet" href="/style/trello.css"><link rel="stylesheet" href="/style/apontamento.css"><link rel="stylesheet" href="/style/apontamento_manual.css">
+</head>
+<body class="login-page"><main class="login-shell manual-page">
+  <header class="login-header manual-header"><a href="/api/apontamento" class="primary-button">Voltar</a><span class="eyebrow">APONTAMENTO MANUAL</span></header>
+  <section class="login-card"><p class="eyebrow">Novo registro</p><h1>Apontar produção</h1>
+    <form id="manualForm" class="login-form">
+      <label><span>Seção</span><select id="manualSecao" required class="tipo"></select></label>
+      <label><span>Linha</span><input id="manualLinha" list="manualLinhas" required class="tipo" placeholder="Digite ou selecione"><datalist id="manualLinhas"></datalist></label>
+      <label><span>OP</span><input id="manualOP" required class="tipo" inputmode="numeric"></label>
+      <label><span>Código interno</span><input id="manualCodigo" required class="tipo" inputmode="numeric"></label>
+      <label><span>Descrição</span><input id="manualDescricao" class="tipo" placeholder="Preenchida pelo código; edite se necessário"></label>
+      <label><span>Quantidade apontada</span><input id="manualQuantidade" required class="tipo" inputmode="numeric" min="1" value="1"></label>
+      <label><span>Status</span><select id="manualStatus" class="tipo"><option value="Em processo">Em processo</option><option value="Pausado">Pausado</option><option value="Concluído">Finalizada</option></select></label>
+      <label><span>Observação</span><textarea id="manualObservacao" rows="4" class="tipo"></textarea></label>
+      <button type="submit" class="primary-button">Registrar apontamento</button>
+    </form><p id="manualStatusMsg" class="login-status"></p>
+  </section>
+</main><script src="/style/apontamento_manual.js"></script></body></html>

@@ -724,3 +724,9 @@
   transform: scale(1.2);
   background-color: #fdd835;
 }
+.quality-report-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px}
+.quality-report-table{width:100%;min-width:1500px;border-collapse:collapse;font-size:.82rem}
+.quality-report-table th,.quality-report-table td{padding:10px 12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;white-space:nowrap}
+.quality-report-table th{position:sticky;top:0;background:var(--panel);color:var(--text-muted);font-weight:700}
+.quality-report-table td{color:var(--text)}
+.quality-report-table tbody tr:last-child td{border-bottom:0}

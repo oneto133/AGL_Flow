@@ -1,5 +1,6 @@
 id,celula_linha,secao,cor_cartao,id_lista
-2,Célula 2 - JULLIE,deslizante,blue,67090b40b3ef02460bc344f5
+10,Célula 1 - JULLIE,deslizante,orange,6a68c64a2feadc1d5c2b40d0
+2,Célula 2 -  TATIANE,deslizante,purple,67090b40b3ef02460bc344f5
 4,Célula 3 - BIANCA,deslizante,red,67090b4ce2eb006f55301420
 3,Célula 5 - CRISTIANE,deslizante,blue,67090b55def36384fdaecaf0
 1,Célula 6 - MARCIELE,deslizante,green,6807d09f630e923a7a6f4357
@@ -8,11 +9,10 @@ id,celula_linha,secao,cor_cartao,id_lista
 7,Célula 1 - PIVOTANTE - ADRIANO,pivotante,blue,68c9668e66279a3ce2c2c962
 8,Célula 2 - PIVOTANTE - CARLOS,pivotante,purple,68c96695d275d94d9daba124
 9,Célula 3 - PIVOTANTE - THALES,pivotante,red,69a6be4d9ffb44018d6dd8d2
-10,Célula 1,cremalheiras,,
-11,Célula 2,cremalheiras,,
-12,Célula 3,cremalheiras,,
-13,Célula 4,cremalheiras,,
+10,MONTAGEM MANUAL,cremalheiras,,
 14,Máquina,cremalheiras,,
 15,Cancelas,cancelas,,
 16,ISACK,acionamentos,,
 17,Linha,acionamentos,,
+18,Barreiras - Isack,barreiras
+19,Cancelas - Rolf,cancelas

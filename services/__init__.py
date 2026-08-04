@@ -2,7 +2,7 @@ from services.enviar_trello import executar
 from .criar_sequenciamento import sequenciar
 from .verificar_cartao import verificar_cartoes
 from .apontamento import registrar_apontamento, retornar_dados_apontamento
-from .painel_producao import painel_resumo, painel_detalhe, eficiencia_historico
+from .painel_producao import painel_resumo, painel_detalhe, eficiencia_historico, painel_exibicao
 from .trello_fila import processar_apontamento_trello, listar_ids_feitos
 from services.cartao import (
     ler_base_de_dados,

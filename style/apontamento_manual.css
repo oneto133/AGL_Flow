@@ -1,0 +1,2 @@
+.manual-header { display:flex; justify-content:space-between; align-items:center; gap:12px; }
+@media (max-width:700px) { .manual-page { width:calc(100% - 18px); } .manual-header { align-items:flex-start; flex-direction:column; } }

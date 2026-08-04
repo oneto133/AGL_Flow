@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Exibição da produção</title>
+    <link rel="stylesheet" href="/style/styles.css">
+    <link rel="stylesheet" href="/style/painel_exibicao.css">
+    <link rel="stylesheet" href="/style/trello.css">
+  </head>
+  <body class="login-page painel-exibicao-page">
+    <header class="painel-exibicao-header">
+      <a href="/painel-producao" class="painel-exibicao-back">Voltar</a>
+      <div class="painel-exibicao-brand">
+        <img src="/imagens/logo_agl.png" alt="AGL">
+      </div>
+      <div class="painel-exibicao-header__info">
+        <span id="exibicaoAtualizado">Aguardando dados</span>
+        <button type="button" class="secondary-button" id="exibicaoPausar">Pausar exibição</button>
+      </div>
+    </header>
+
+    <main class="painel-exibicao-shell">
+      <section id="exibicaoPalco" class="painel-exibicao-stage" aria-live="polite">
+        <div class="painel-exibicao-loading">Carregando informações...</div>
+      </section>
+      <div class="painel-exibicao-progress" aria-hidden="true">
+        <span id="exibicaoProgress"></span>
+      </div>
+    </main>
+
+    <script src="/style/painel_exibicao.js"></script>
+  </body>
+</html>

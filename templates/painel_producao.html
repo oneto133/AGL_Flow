@@ -8,6 +8,13 @@
     <link rel="stylesheet" href="/style/painel_producao.css">
   </head>
   <body class="login-page painel-producao-page">
+    <div class="painel-loading is-hidden" id="painelLoading" role="status" aria-live="polite">
+      <div class="painel-loading__content">
+        <img src="/imagens/logo_agl.png" alt="AGL" class="painel-loading__logo">
+        <strong>Carregando informações</strong>
+        <span class="painel-loading__dots" aria-hidden="true"></span>
+      </div>
+    </div>
     <header class="login-header painel-producao-header">
         <div class="painel-producao-header__actions">
           <a href="/tela_inicial" class="primary-button" style="text-decoration: none;">Voltar</a>
@@ -28,6 +35,11 @@
           <span>OPS em andamento</span>
           <strong id="painelTotalOps">0</strong>
         </div>
+        <div class="painel-resumo__item painel-resumo__item--rotativo" id="painelIndicadorRotativo" aria-live="polite">
+          <span data-indicador-titulo>Produção por seção</span>
+          <strong data-indicador-valor>Aguardando dados</strong>
+          <small data-indicador-detalhe></small>
+        </div>
       </section>
 
       <section class="painel-status" id="painelStatus" aria-live="polite"></section>
@@ -35,18 +47,11 @@
       <section id="painelSecoes" class="painel-secoes"></section>
     </main>
     <aside class="painel-sidebar" id="painelSidebar" aria-hidden="true">
-      <div class="painel-sidebar__header"><div><p class="eyebrow">ANÁLISE</p><h2>Eficiência por linha</h2></div><button type="button" class="modal-close" id="btnFecharConfig">×</button></div>
+      <div class="painel-sidebar__header"><div><p class="eyebrow">MENU</p><h2>Configurações</h2></div><button type="button" class="modal-close" id="btnFecharConfig">×</button></div>
       <div class="painel-sidebar__body">
         <button type="button" class="primary-button" id="btnAtualizarPainel">Atualizar agora</button>
-        <label>Seção<select id="eficienciaSecao" class="tipo"></select></label>
-        <label>Linha<select id="eficienciaLinha" class="tipo"></select></label>
-        <label>Período<select id="eficienciaPeriodo" class="tipo"><option value="dia">Produzido no dia</option><option value="semana">Produzido na semana</option><option value="mes">Produzido no mês</option><option value="total" selected>Total</option></select></label>
-        <label>Gráfico<select id="eficienciaTipo" class="tipo"><option value="line">Linhas</option><option value="bar">Barras</option></select></label>
-        <div class="eficiencia-actions"><button type="button" class="primary-button" id="btnAtualizarEficiencia">Filtrar</button><button type="button" class="secondary-button" id="btnImprimirEficiencia">Imprimir</button></div>
-        <div id="eficienciaIndicador" class="eficiencia-indicador">Selecione uma linha.</div>
-        <h3 id="eficienciaPrintTitle" class="eficiencia-print-title">Eficiência de produção</h3>
-        <div class="eficiencia-chart-wrap"><canvas id="eficienciaChart" width="720" height="330"></canvas></div>
-        <div id="eficienciaResumo" class="eficiencia-resumo"></div>
+        <a href="/painel-producao/exibicao" class="primary-button" style="text-align: center; text-decoration: none;">Modo de exibição</a>
+        <a href="/painel-producao/eficiencia" class="primary-button" style="text-align: center; text-decoration: none;">Eficiência por linha</a>
       </div>
     </aside>
 
@@ -66,7 +71,7 @@
             <strong data-field="programada">0</strong>
           </div>
           <div>
-            <span>Último apontamento</span>
+            <span>Quantidade apontada</span>
             <strong data-field="ultimoApontamento">-</strong>
           </div>
           <div>
@@ -74,8 +79,8 @@
             <strong data-field="previsaoSaida">-</strong>
           </div>
           <div>
-            <span>Eficiência</span>
-            <strong data-field="eficiencia">0%</strong>
+            <span>Desempenho (diferença)</span>
+            <strong data-field="eficiencia">-</strong>
           </div>
         </div>
 
@@ -89,8 +94,8 @@
             <strong data-field="sequenciamento">-</strong>
           </div>
           <div>
-            <span>Posição no Trello</span>
-            <strong data-field="posicao">-</strong>
+            <span>Último apontamento</span>
+            <strong data-field="ultimoApontamentoData">-</strong>
           </div>
         </div>
 
@@ -98,13 +103,15 @@
           <div class="painel-progresso__legenda">
             <span class="painel-progresso__esperado">
               Deveria ter produzido
-              <strong data-field="esperadoQtd">0</strong>
+              <strong data-field="esperadoQtd">-</strong>
             </span>
             <span class="painel-progresso__apontado">
               Apontado
               <strong data-field="apontadoQtd">0</strong>
             </span>
           </div>
+
+          <p class="painel-progresso__aviso" data-field="metricasAviso" hidden></p>
 
           <div class="painel-progresso__barra" aria-hidden="true">
             <span class="painel-progresso__esperado-bar" data-field="esperadoBar"></span>

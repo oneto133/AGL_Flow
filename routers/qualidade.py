@@ -225,8 +225,8 @@ def qualidade_inspecao_op(request: Request, op: int):
 
 
 @router.get("/api/qualidade/inspecoes/secoes")
-def api_qualidade_inspecoes_secoes():
-    return listar_secoes_inspecao()
+async def api_qualidade_inspecoes_secoes():
+    return await listar_secoes_inspecao()
 
 
 @router.get("/api/qualidade/inspecoes/linha/{celula_linha:path}")

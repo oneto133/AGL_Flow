@@ -44,7 +44,7 @@
   },
   "label_width_dots": 320,
   "labels_dir": "etiquetas",
-  "printer_name": "Microsoft Print to PDF",
+  "printer_name": "CÓDIGO DE BARRAS (40X25)",
   "report_dir": "relatorio",
   "reposicao_csv": "dados/csv/Reposicao e Diversos.csv",
   "source_section_prefix": "reposicaoediversos",

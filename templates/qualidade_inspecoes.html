@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Inspeções de Qualidade</title>
+  <link rel="stylesheet" href="/style/estoque.css">
+  <link rel="stylesheet" href="/style/qualidade_inspecoes.css">
+</head>
+<body class="login-page qualidade-page" data-page="qualidade-home">
+
+  <img src="/imagens/logo_agl.png" alt="Logo AGL" class="logo">
+
+  <main class="login-shell qualidade-shell">
+    <header class="login-header qualidade-header">
+      <a href="/tela_inicial" class="primary-button qualidade-header__back">Voltar</a>
+      <button
+        type="button"
+        id="config-button"
+        aria-label="Abrir configurações"
+        style="display: inline-flex !important; align-items: center !important; justify-content: center !important; width: 36px !important; height: 36px !important; cursor: pointer !important; text-decoration: none !important; margin-right: 20px; border: 0; background: transparent;">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" style="width: 24px !important; height: 24px !important; display: block !important;">
+          <path d="M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l-.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zM12 15.5c-1.93 0-3-1.07-3-3s1.07-3 3-3s3 1.07 3 3s-1.07 3-3 3z"/>
+        </svg>
+      </button>
+    </header>
+
+    <section class="login-card qualidade-hero">
+      <p class="eyebrow">QUALIDADE</p>
+      <div class="qualidade-hero__content">
+        <div>
+          <h1>Inspeções de linhas</h1>
+          <p class="qualidade-subtitle">
+            Selecione a seção, escolha a linha e abra a OP para registrar a inspeção.
+          </p>
+        </div>
+
+        <div class="qualidade-actions">
+          <a href="/qualidade" class="primary-button qualidade-action"
+          title="Módulo dedicado a separação e contagem de refugos">
+            Separação de Refugo
+          </a>
+          <p></p>
+          <button type="button" class="primary-button qualidade-action" id="btnAbrirModalLinhas">
+            Inspeção de Linhas
+          </button>
+          <a href="/qualidade/inspecoes/dia" class="primary-button quanlidade-action"
+          style="text-decoration: none; background-color: aqua;"
+          title="Verifique as inspeções já feitas hoje">
+            Inspeções do dia
+          </a>
+        </div>
+      </div>
+
+      <div class="quality-stats" id="qualityStats">
+        <article class="quality-stat">
+          <span>Seções</span>
+          <strong id="statSecoes">0</strong>
+        </article>
+        <article class="quality-stat">
+          <span>Linhas</span>
+          <strong id="statLinhas">0</strong>
+        </article>
+        <article class="quality-stat">
+          <span>OPs ativas</span>
+          <strong id="statOps">0</strong>
+        </article>
+      </div>
+
+      <p id="statusMessage" class="login-status qualidade-status" role="status"></p>
+    </section>
+
+    
+  </main>
+
+  <div id="modalLinhas" class="quality-modal hidden" aria-hidden="true">
+    <div class="quality-modal__backdrop" data-close-modal></div>
+    <section class="quality-modal__panel" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <header class="quality-modal__header">
+        <div>
+          <p class="eyebrow">PAINEL DE LINHAS</p>
+          <h2 id="modalTitle">Selecione uma seção</h2>
+        </div>
+
+        <button type="button" class="quality-modal__close" data-close-modal>&times;</button>
+      </header>
+
+      <div class="quality-modal__toolbar">
+        <button type="button" class="secondary-button" id="btnVoltarSecoes" hidden>
+          Voltar para seções
+        </button>
+        <span class="quality-modal__hint" id="modalHint">
+          Clique em uma seção para ver as linhas disponíveis.
+        </span>
+      </div>
+
+      <div id="secaoCards" class="quality-grid quality-grid--sections"></div>
+      <div id="linhaCards" class="quality-grid quality-grid--lines hidden"></div>
+    </section>
+  </div>
+
+  <div id="configSidebar" class="sidebar-panel">
+    <div class="sidebar-header">
+      <h2>Configurações</h2>
+      <button id="fecharSidebar" class="sidebar-fechar">&times;</button>
+    </div>
+
+    <div class="sidebar-conteudo">
+      <div class="secao-retratil">
+        <p class="titulo-gatilho">
+          Base de Itens Refugo
+          <span class="seta-icone">▼</span>
+        </p>
+
+        <div class="conteudo-gatilho">
+          <div class="config-grupo">
+            <div class="config-sub-opcoes">
+              <button class="btn-acao btn-download" id="btnDownloadHistorico">
+                Baixar Histórico
+              </button>
+
+              <button class="btn-acao btn-download" id="btnDownloadBase">
+                Baixar Base
+              </button>
+
+              <label class="btn-acao btn-upload" style="text-align:center;">
+                Upload Base
+                <input type="file" id="inputUploadBase" hidden>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="secao-retratil">
+        <p class="titulo-gatilho">
+          Base de inspeções qualidade
+          <span class="seta-icone">▼</span>
+        </p>
+
+        <div class="conteudo-gatilho">
+          <div class="config-grupo">
+            <div class="config-sub-opcoes">
+              <button class="btn-acao btn-download" id="btnDownloadBaseQualidade">
+                Base qualidade
+              </button>
+
+              <button class="btn-acao btn-download" id="btnDownloadInspecoes">
+                Baixar histórico inspeções
+              </button>
+
+              <label class="btn-acao btn-upload" style="text-align:center;">
+                Upload Base
+                <input type="file" id="inputUploadBaseQualidade" hidden>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/style/qualidade_inspecoes.js"></script>
+  <script src="/style/qualidade_inspecoes_config.js"></script>
+</body>
+</html>

@@ -332,7 +332,7 @@ def _serializar_op_com_status_qualidade(row: pd.Series) -> dict[str, Any]:
     return op
 
 
-def listar_secoes_inspecao() -> list[dict[str, Any]]:
+async def listar_secoes_inspecao() -> list[dict[str, Any]]:
     df_config = _carregar_config_linhas()
     df_seq = _carregar_sequenciamento()
 
@@ -695,6 +695,62 @@ def refugos_da_inspecao(id_inspecao: int | str) -> int:
     return int(pd.to_numeric(filtro["quantidade"], errors="coerce").sum())
 
 
+
+def refugos_detalhados_da_inspecao(id_inspecao: int | str) -> list[dict[str, Any]]:
+    """
+    Consulta os refugos gravados para uma inspe??o espec?fica, linha a linha.
+    """
+
+    df_refugos = _ler_csv(INSPECOES_REFUGO)
+    if df_refugos.empty or "id_inspecao" not in df_refugos.columns:
+        return []
+
+    alvo = str(id_inspecao).strip()
+    df_refugos = df_refugos.copy()
+    df_refugos["id_inspecao"] = df_refugos["id_inspecao"].astype(str).str.strip()
+    filtro = df_refugos.loc[df_refugos["id_inspecao"] == alvo]
+
+    if filtro.empty:
+        return []
+
+    registros: list[dict[str, Any]] = []
+    for _, row in filtro.iterrows():
+        id_refugo = _to_int(row.get("id", 0))
+        registros.append(
+            {
+                "id_inspecao_refugo": id_refugo,
+                "id": id_refugo,
+                "id_inspecao": _to_int(row.get("id_inspecao", 0)),
+                "codigo": _to_int(row.get("codigo", 0)),
+                "descricao": str(row.get("descricao", "")).strip(),
+                "quantidade": _to_int(row.get("quantidade", 0)),
+                "codigo_nc": str(row.get("codigo_nc", "")).strip(),
+                "codigo_ns": str(row.get("codigo_nc", "")).strip(),
+                "observacao": str(row.get("observacao", "")).strip(),
+            }
+        )
+
+    return registros
+
+
+def linhas_relatorio_inspecao(id_inspecao: int | str) -> list[dict[str, Any]]:
+    """Monta as linhas do relatorio, repetindo a inspecao para cada refugo."""
+    df_inspecoes = _ler_csv(INSPECOES)
+    alvo = str(id_inspecao).strip()
+    if df_inspecoes.empty or "id" not in df_inspecoes.columns:
+        return []
+    row=df_inspecoes.loc[df_inspecoes["id"].astype(str)==alvo]
+    if row.empty:
+        return []
+    row=row.iloc[-1]
+    detalhes=refugos_detalhados_da_inspecao(alvo)
+    itens=itens_inspecionados_da_inspecao(alvo)
+    item_conferido=", ".join(str(item.get("descricao","")).strip() for item in itens if str(item.get("descricao","")).strip())
+    base={"op":_to_int(row.get("op",0)),"codigo":_to_int(row.get("codigo",0)),"descricao":str(row.get("descricao","")).strip(),"quantidade":_to_int(row.get("quantidade",0)),"data_hora_inicio_inspecao":str(row.get("data_hora_inicio_inspecao","")).strip(),"data_hora_fim_inspecao":str(row.get("data_hora_fim_inspecao","")).strip(),"status":str(row.get("status","")).strip(),"observacao_geral":str(row.get("observacao","")).strip(),"item_conferido":item_conferido}
+    if not detalhes:
+        return [{**base,"codigo_nc":"","observacao_refugo":""}]
+    return [{**base,"item_conferido":str(refugo.get("descricao","")).strip() or item_conferido,"codigo_nc":str(refugo.get("codigo_nc","")).strip(),"observacao_refugo":str(refugo.get("observacao","")).strip()} for refugo in detalhes]
+
 def _coletar_refugos(
     dados: InspecaoCreate,
     id_inspecao: int,
@@ -925,6 +981,8 @@ def buscar_inspecao_dados_por_id(id_inspecao: int | str) -> dict[str, Any]:
     retorno["itens_disponiveis"] = _itens_disponiveis_por_codigo(retorno.get("codigo", 0))
     retorno["itens_inspecionados"] = itens_inspecionados_da_inspecao(alvo)
     retorno["refugos"] = refugos_da_inspecao(alvo)
+    retorno["refugos_detalhados"] = refugos_detalhados_da_inspecao(alvo)
+    retorno["linhas_relatorio"] = linhas_relatorio_inspecao(alvo)
     retorno["conferencias"] = df.fillna("").to_dict(orient="records")
     return retorno
 
@@ -1123,6 +1181,7 @@ def listar_inspecoes_do_dia():
                 ),
                 "itens_inspecionados": itens_inspecionados_da_inspecao(id_inspecao),
                 "refugos": refugos_da_inspecao(id_inspecao),
+                "refugos_detalhados": refugos_detalhados_da_inspecao(id_inspecao),
             }
         )
 
@@ -1168,6 +1227,7 @@ def buscar_inspecao_dados_por_id(id_inspecao: int | str) -> dict[str, Any]:
     retorno["itens_disponiveis"] = _itens_disponiveis_por_codigo(retorno.get("codigo", 0))
     retorno["itens_inspecionados"] = itens_inspecionados_da_inspecao(alvo)
     retorno["refugos"] = refugos_da_inspecao(alvo)
+    retorno["refugos_detalhados"] = refugos_detalhados_da_inspecao(alvo)
     return retorno
 
 

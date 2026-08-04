@@ -21,7 +21,71 @@ def exportar_contagens_para_xlsx(caminho_csv: str, caminho_saida_xlsx: str):
         df = df[colunas]
 
     elif nome_arquivo == "inspecoes.csv":
-        pass
+        # Expande a planilha para uma linha por refugo da inspeção.
+        caminho_refugos = Path(caminho_csv).with_name("inspecoes_refugo.csv")
+        df_refugos = pd.read_csv(
+            caminho_refugos,
+            dtype=str,
+            engine="python",
+            on_bad_lines="skip",
+        ).fillna("") if caminho_refugos.exists() else pd.DataFrame()
+
+        colunas_relatorio = [
+            "op",
+            "codigo",
+            "descricao",
+            "quantidade",
+            "data_hora_inicio_inspecao",
+            "data_hora_fim_inspecao",
+            "status",
+            "observacao geral",
+            "item conferido",
+            "codigo nc",
+            "observacao_refugo",
+        ]
+
+        if df_refugos.empty or "id_inspecao" not in df_refugos.columns:
+            df["observacao geral"] = df.get("observacao", "")
+            df["item conferido"] = ""
+            df["codigo nc"] = ""
+            df["observacao_refugo"] = ""
+        else:
+            df["id"] = df["id"].astype(str).str.strip()
+            df_refugos["id_inspecao"] = df_refugos["id_inspecao"].astype(str).str.strip()
+            linhas = []
+
+            for _, inspecao in df.iterrows():
+                refugos = df_refugos.loc[
+                    df_refugos["id_inspecao"] == str(inspecao.get("id", "")).strip()
+                ]
+
+                if refugos.empty:
+                    refugos = [None]
+                else:
+                    refugos = refugos.to_dict(orient="records")
+
+                for refugo in refugos:
+                    linha = inspecao.to_dict()
+                    linha["observacao geral"] = str(inspecao.get("observacao", "")).strip()
+
+                    if refugo is None:
+                        linha["item conferido"] = ""
+                        linha["codigo nc"] = ""
+                        linha["observacao_refugo"] = ""
+                    else:
+                        linha["item conferido"] = str(refugo.get("descricao", "")).strip()
+                        linha["codigo nc"] = str(refugo.get("codigo_nc", "")).strip()
+                        linha["observacao_refugo"] = str(refugo.get("observacao", "")).strip()
+
+                    linhas.append(linha)
+
+            df = pd.DataFrame(linhas)
+
+        for coluna in colunas_relatorio:
+            if coluna not in df.columns:
+                df[coluna] = ""
+
+        df = df[colunas_relatorio]
     
     else:
         colunas = [

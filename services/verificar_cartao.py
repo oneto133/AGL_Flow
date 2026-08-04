@@ -83,11 +83,6 @@ def inserir_data_inicio(df):
     
     df.loc[condicao, "hora_inicio_fila"] = df.loc[condicao, "linha"].map(dicionario).astype("string")
 
-    caminho = CSV_DIR / "sequenciamento.csv"
-    df.to_csv(caminho, index=False, encoding="utf-8", sep=",", quotechar='"', quoting=csv.QUOTE_MINIMAL)
-
-
-
 def calcular_previsao_em_lote(df):
     # Removido o 'agora = datetime.now()' do topo, pois nÃ£o iniciaremos os cÃ¡lculos por ele
     df["quantidade"] = pd.to_numeric(df["quantidade"], errors="coerce").fillna(0)
@@ -257,35 +252,78 @@ def atualizar_e_calcular_csv(id_cartao: str, df: pd.DataFrame, caminho: str = No
 
 async def verificar_cartao(
     id_cartao: str,
-    df: pd.DataFrame,
     boards_cache: dict,
     cache_lock: asyncio.Lock,
 ):
     dados = await consultar_cartao_async(id_cartao)
 
     if dados is None:
-        return
+        return None
 
     # CartÃ£o concluÃ­do
     if dados["closed"] or dados["idList"] in LISTAS_FEITOS:
-        atualizar_e_calcular_csv(id_cartao, df)
-        return
+        return ("concluido", id_cartao)
 
     id_board = dados["idBoard"]
 
-    if id_board not in boards_cache:
-        async with cache_lock:
-            if id_board not in boards_cache:
-                boards_cache[id_board] = await baixar_cartoes_board_async(id_board)
+    async with cache_lock:
+        tarefa_board = boards_cache.get(id_board)
+        if tarefa_board is None:
+            tarefa_board = asyncio.create_task(baixar_cartoes_board_async(id_board))
+            boards_cache[id_board] = tarefa_board
+
+    cartoes_board = await tarefa_board
 
     ranking = obter_rank_cartao(
         id_cartao=id_cartao,
         id_lista=dados["idList"],
-        cartoes_board=boards_cache[id_board]
+        cartoes_board=cartoes_board,
     )
 
     if ranking is not None:
-        atualizar_prioridade(id_cartao, ranking, df)
+        return ("fila", id_cartao, ranking)
+
+    return None
+
+
+def aplicar_atualizacoes(df: pd.DataFrame, atualizacoes: list[tuple]) -> None:
+    """Aplica todas as respostas no DataFrame, em uma única etapa síncrona."""
+    for atualizacao in atualizacoes:
+        if atualizacao[0] == "concluido":
+            atualizar_e_calcular_csv(atualizacao[1], df)
+        elif atualizacao[0] == "fila":
+            atualizar_prioridade(atualizacao[1], atualizacao[2], df)
+
+
+def salvar_se_houver_mudanca(
+    df_anterior: pd.DataFrame,
+    df: pd.DataFrame,
+    caminho,
+) -> bool:
+    if df.equals(df_anterior):
+        return False
+
+    df.to_csv(
+        caminho,
+        index=False,
+        encoding="utf-8",
+        sep=",",
+        quotechar='"',
+        quoting=csv.QUOTE_MINIMAL,
+    )
+    return True
+
+
+def processar_e_salvar(
+    df: pd.DataFrame,
+    df_anterior: pd.DataFrame,
+    atualizacoes: list[tuple],
+    caminho,
+) -> bool:
+    aplicar_atualizacoes(df, atualizacoes)
+    inserir_data_inicio(df)
+    calcular_previsao_em_lote(df)
+    return salvar_se_houver_mudanca(df_anterior, df, caminho)
 
 async def verificar_cartoes():
     while True:
@@ -293,7 +331,8 @@ async def verificar_cartoes():
             boards_cache = {}
             cache_lock = asyncio.Lock()
             caminho = CSV_DIR / "sequenciamento.csv"
-            df = carregar_sequenciamento()
+            df = await asyncio.to_thread(carregar_sequenciamento)
+            df_anterior = df.copy(deep=True)
             
             pendentes = df[df["status"].fillna("") != "Concluído"]
 
@@ -302,16 +341,31 @@ async def verificar_cartoes():
                 id_cartao = linha["id_cartao"]
                 if pd.notna(id_cartao):
                     tarefas.append(
-                        verificar_cartao(id_cartao, df, boards_cache, cache_lock)
+                        verificar_cartao(id_cartao, boards_cache, cache_lock)
                     )
 
             if tarefas:
-                await asyncio.gather(*tarefas)
+                respostas = await asyncio.gather(*tarefas, return_exceptions=True)
+            else:
+                respostas = []
 
-            inserir_data_inicio(df)
-            calcular_previsao_em_lote(df)
+            atualizacoes = []
+            for resposta in respostas:
+                if isinstance(resposta, Exception):
+                    print(f"Erro ao verificar um cartão: {resposta}")
+                    continue
+                if resposta is not None:
+                    atualizacoes.append(resposta)
 
-            df.to_csv(caminho, index=False, encoding="utf-8", sep=",", quotechar='"', quoting=csv.QUOTE_MINIMAL)
+            mudou = await asyncio.to_thread(
+                processar_e_salvar,
+                df,
+                df_anterior,
+                atualizacoes,
+                caminho,
+            )
+            if mudou:
+                print("Sequenciamento atualizado")
 
         except Exception as e:
             print(f"Erro no loop principal: {e}")

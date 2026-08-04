@@ -6,6 +6,81 @@ body.qualidade-op-page .quality-form__group--controls {
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
 }
 
+body.qualidade-op-page .quality-form__group--inspection-controls {
+  background: linear-gradient(180deg, rgba(241, 194, 50, 0.16), rgba(255, 255, 255, 0.03));
+  border-color: rgba(241, 194, 50, 0.22);
+  box-shadow: inset 0 3px 0 rgba(241, 194, 50, 0.72);
+}
+
+body.qualidade-op-page .quality-form__group--inspection-controls .quality-field label {
+  color: var(--text);
+}
+
+body.qualidade-op-page .quality-form__group--inspection-controls .quality-field select,
+body.qualidade-op-page .quality-form__group--inspection-controls .quality-field textarea {
+  background: var(--panel-soft);
+  border-color: var(--line);
+  color: var(--text);
+}
+
+body.qualidade-op-page .quality-form__group--inspection-controls .quality-switch {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: var(--line);
+  color: var(--text);
+}
+
+body.qualidade-op-page .quality-form__group--inspection-controls .quality-switch:has(input:checked) {
+  background: rgba(241, 194, 50, 0.12);
+  border-color: var(--accent);
+}
+
+body.qualidade-op-page .quality-form__group:not(.quality-form__group--inspection-controls) {
+  background: linear-gradient(180deg, rgba(241, 194, 50, 0.11), rgba(255, 255, 255, 0.03));
+  border-color: rgba(241, 194, 50, 0.18);
+}
+
+body.qualidade-op-page .quality-form__group:not(.quality-form__group--inspection-controls) .quality-panel__header {
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 14px;
+}
+
+body.qualidade-op-page .quality-form__group:not(.quality-form__group--inspection-controls) .eyebrow {
+  color: var(--accent);
+}
+
+body.qualidade-op-page .quality-form__group:not(.quality-form__group--inspection-controls) .quality-chip--muted {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: var(--line);
+  color: var(--text);
+}
+
+body.qualidade-op-page .quality-form__group:not(.quality-form__group--inspection-controls) .quality-empty--compact {
+  background: rgba(255, 255, 255, 0.045);
+  border: 1px solid rgba(241, 194, 50, 0.14);
+  color: var(--muted);
+}
+
+body.qualidade-op-page .quality-item-card {
+  background: linear-gradient(180deg, var(--panel), var(--panel-soft));
+  border-color: var(--line);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+body.qualidade-op-page .quality-item-card.is-selected,
+body.qualidade-op-page .quality-item-card.has-refugo {
+  background: linear-gradient(180deg, rgba(241, 194, 50, 0.13), var(--panel));
+  border-color: var(--accent);
+  box-shadow: 0 8px 22px rgba(241, 194, 50, 0.1);
+}
+
+body.qualidade-op-page .quality-item-card__title strong {
+  color: var(--text);
+}
+
+body.qualidade-op-page .quality-item-card__title small {
+  color: var(--muted);
+}
+
 body.qualidade-op-page .quality-field--full {
   grid-column: 1 / -1;
 }

@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Eficiência por linha</title>
+  <link rel="stylesheet" href="/style/styles.css">
+  <link rel="stylesheet" href="/style/eficiencia_linha.css">
+</head>
+<body class="login-page eficiencia-page">
+  <main class="eficiencia-shell">
+    <header class="eficiencia-header">
+      <div><p class="eyebrow">HISTÓRICO DE PRODUÇÃO</p><h1>Eficiência por linha</h1></div>
+      <a href="/painel-producao" class="primary-button">Voltar</a>
+    </header>
+    <section class="eficiencia-card eficiencia-filtros">
+      <label>Seção<select id="filtroSecao"></select></label>
+      <label>Linha<select id="filtroLinha"></select></label>
+      <label>Período<select id="filtroPeriodo"><option value="dia">Produzido no dia</option><option value="semana">Produzido na semana</option><option value="mes">Produzido no mês</option><option value="total" selected>Total</option></select></label>
+      <label>Gráfico<select id="filtroTipo"><option value="line">Linhas</option><option value="bar">Barras</option></select></label>
+      <button id="btnFiltrar" class="primary-button">Filtrar</button>
+      <button id="btnImprimir" class="secondary-button">Imprimir</button>
+    </section>
+    <section class="eficiencia-card">
+      <h2 id="tituloGrafico">Eficiência de produção</h2>
+      <div class="eficiencia-indicador" id="indicador"></div>
+      <div class="eficiencia-grafico-wrap"><canvas id="grafico" width="1000" height="420"></canvas><div id="graficoTooltip" class="eficiencia-grafico-tooltip" hidden></div></div>
+    </section>
+    <section class="eficiencia-card"><h2>Resumo por seção, linha e operador</h2><div id="resumo" class="resumo-grid"></div></section>
+  </main>
+  <script src="/style/eficiencia_linha.js"></script>
+</body>
+</html>

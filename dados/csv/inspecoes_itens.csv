@@ -42,3 +42,403 @@ id,id_inspecao,codigo,descricao,data
 41,5,2007087,Jumper,jumper
 42,5,2007087,KIT,kit
 43,5,2007087,Manual,manual
+44,6,2007087,Estator,estator
+45,6,2007087,Sem fim,sem_fim
+46,6,2007087,Furo,furo
+47,6,2007087,Capacitor,capacitor
+48,6,2007087,Placa,placa
+49,6,2007087,Jumper,jumper
+50,6,2007087,KIT,kit
+51,6,2007087,Manual,manual
+52,6,2007087,Etiqueta Tampa,etiqueta_tampa
+53,7,2007087,Estator,estator
+54,7,2007087,Sem fim,sem_fim
+55,7,2007087,Furo,furo
+56,7,2007087,Capacitor,capacitor
+57,7,2007087,Placa,placa
+58,7,2007087,Jumper,jumper
+59,7,2007087,KIT,kit
+60,7,2007087,Manual,manual
+61,7,2007087,Etiqueta Tampa,etiqueta_tampa
+62,8,2007089,Estator,estator
+63,8,2007089,Sem fim,sem_fim
+64,8,2007089,Furo,furo
+65,8,2007089,Capacitor,capacitor
+66,8,2007089,Placa,placa
+67,8,2007089,Jumper,jumper
+68,8,2007089,KIT,kit
+69,8,2007089,Manual,manual
+70,8,2007089,Etiqueta Tampa,etiqueta_tampa
+71,9,2008002,Estator,estator
+72,9,2008002,Sem fim,sem_fim
+73,9,2008002,Capacitor,capacitor
+74,9,2008002,Jumper,jumper
+75,9,2008002,Tampa,tampa
+76,9,2008002,Manual,manual
+77,9,2008002,Etiqueta Tampa,etiqueta_tampa
+78,10,2006041,Estator,estator
+79,10,2006041,Sem fim,sem_fim
+80,10,2006041,Engrenagem,engrenagem
+81,10,2006041,Capacitor,capacitor
+82,10,2006041,Placa,placa
+83,10,2006041,Base,base
+84,10,2006041,Tampa,tampa
+85,10,2006041,Manual,manual
+86,10,2006041,Cilindro e chave,cilindro_e_chave
+87,10,2006041,Etiqueta Tampa,etiqueta_tampa
+88,11,2006041,Estator,estator
+89,11,2006041,Sem fim,sem_fim
+90,11,2006041,Engrenagem,engrenagem
+91,11,2006041,Capacitor,capacitor
+92,11,2006041,Placa,placa
+93,11,2006041,Base,base
+94,11,2006041,Tampa,tampa
+95,11,2006041,Manual,manual
+96,11,2006041,Cilindro e chave,cilindro_e_chave
+97,11,2006041,Etiqueta Tampa,etiqueta_tampa
+98,12,2006041,Estator,estator
+99,12,2006041,Sem fim,sem_fim
+100,12,2006041,Engrenagem,engrenagem
+101,12,2006041,Capacitor,capacitor
+102,12,2006041,Placa,placa
+103,12,2006041,Base,base
+104,12,2006041,Tampa,tampa
+105,12,2006041,Manual,manual
+106,12,2006041,Cilindro e chave,cilindro_e_chave
+107,12,2006041,Etiqueta Tampa,etiqueta_tampa
+108,13,2006151,Estator,estator
+109,13,2006151,Sem fim,sem_fim
+110,13,2006151,Engrenagem,engrenagem
+111,13,2006151,Capacitor,capacitor
+112,13,2006151,Placa,placa
+113,13,2006151,Base,base
+114,13,2006151,Tampa,tampa
+115,13,2006151,Manual,manual
+116,13,2006151,Cilindro e chave,cilindro_e_chave
+117,13,2006151,Etiqueta Tampa,etiqueta_tampa
+118,14,2001161,Estator,estator
+119,14,2001161,Sem fim,sem_fim
+120,14,2001161,Engrenagem,engrenagem
+121,14,2001161,Capacitor,capacitor
+122,14,2001161,Placa,placa
+123,14,2001161,Base,base
+124,14,2001161,Tampa,tampa
+125,14,2001161,Manual,manual
+126,14,2001161,Cilindro e chave,cilindro_e_chave
+127,14,2001161,Etiqueta Tampa,etiqueta_tampa
+128,15,2007089,Estator,estator
+129,15,2007089,Sem fim,sem_fim
+130,15,2007089,Furo,furo
+131,15,2007089,Capacitor,capacitor
+132,15,2007089,Placa,placa
+133,15,2007089,Jumper,jumper
+134,15,2007089,KIT,kit
+135,15,2007089,Manual,manual
+136,15,2007089,Etiqueta Tampa,etiqueta_tampa
+137,16,2007089,Estator,estator
+138,16,2007089,Sem fim,sem_fim
+139,16,2007089,Furo,furo
+140,16,2007089,Capacitor,capacitor
+141,16,2007089,Placa,placa
+142,16,2007089,Jumper,jumper
+143,16,2007089,Manual,manual
+144,16,2007089,Etiqueta Tampa,etiqueta_tampa
+145,17,2007089,Estator,estator
+146,17,2007089,Sem fim,sem_fim
+147,17,2007089,Furo,furo
+148,17,2007089,Capacitor,capacitor
+149,17,2007089,Placa,placa
+150,17,2007089,Jumper,jumper
+151,17,2007089,KIT,kit
+152,17,2007089,Manual,manual
+153,17,2007089,Etiqueta Tampa,etiqueta_tampa
+154,18,2008002,Estator,estator
+155,18,2008002,Sem fim,sem_fim
+156,18,2008002,Capacitor,capacitor
+157,18,2008002,Jumper,jumper
+158,18,2008002,Tampa,tampa
+159,18,2008002,Manual,manual
+160,18,2008002,Etiqueta Tampa,etiqueta_tampa
+161,19,2006041,Estator,estator
+162,19,2006041,Sem fim,sem_fim
+163,19,2006041,Engrenagem,engrenagem
+164,19,2006041,Capacitor,capacitor
+165,19,2006041,Placa,placa
+166,19,2006041,Base,base
+167,19,2006041,Tampa,tampa
+168,19,2006041,Manual,manual
+169,19,2006041,Cilindro e chave,cilindro_e_chave
+170,19,2006041,Etiqueta Tampa,etiqueta_tampa
+171,20,2008002,Estator,estator
+172,20,2008002,Calço,calco
+173,20,2008002,Rosca,rosca
+174,20,2008002,Capacitor,capacitor
+175,20,2008002,Jumper,jumper
+176,20,2008002,Kit,kit
+177,20,2008002,Manual,manual
+178,20,2008002,Etiqueta Interna,etiqueta_interna
+179,20,2008002,Etiqueta Tampa,etiqueta_tampa
+180,20,2008002,Etiqueta Externa,etiqueta_externa
+181,20,2008002,Base,base
+182,20,2008002,Carcaça,carcaca
+183,20,2008002,Parafusos Carcaça,parafusos_carcaca
+184,20,2008002,Limpeza,limpeza
+185,21,2007089,Estator,estator
+186,21,2007089,Induzido,induzido
+187,21,2007089,Calço,calco
+188,21,2007089,Furo,furo
+189,21,2007089,Capacitor,capacitor
+190,21,2007089,Placa,placa
+191,21,2007089,Jumper,jumper
+192,21,2007089,Manual,manual
+193,21,2007089,Etiqueta Interna,etiqueta_interna
+194,21,2007089,Etiqueta Tampa,etiqueta_tampa
+195,21,2007089,Etiqueta Externa,etiqueta_externa
+196,21,2007089,Carcaça,carcaca
+197,21,2007089,Parafusos Carcaça,parafusos_carcaca
+198,21,2007089,Parafuso Lateral,parafuso_lateral
+199,21,2007089,Limpeza,limpeza
+200,22,2007089,Estator,estator
+201,22,2007089,Induzido,induzido
+202,22,2007089,Calço,calco
+203,22,2007089,Furo,furo
+204,22,2007089,Capacitor,capacitor
+205,22,2007089,Placa,placa
+206,22,2007089,Jumper,jumper
+207,22,2007089,Kit,kit
+208,22,2007089,Manual,manual
+209,22,2007089,Etiqueta Interna,etiqueta_interna
+210,22,2007089,Etiqueta Tampa,etiqueta_tampa
+211,22,2007089,Etiqueta Externa,etiqueta_externa
+212,22,2007089,Carcaça,carcaca
+213,22,2007089,Parafusos Carcaça,parafusos_carcaca
+214,22,2007089,Parafuso Lateral,parafuso_lateral
+215,22,2007089,Limpeza,limpeza
+216,23,2001161,Estator,estator
+217,23,2001161,Sem fim,sem_fim
+218,23,2001161,Engrenagem,engrenagem
+219,23,2001161,Capacitor,capacitor
+220,23,2001161,Placa,placa
+221,23,2001161,Encoder,encoder
+222,23,2001161,Kit,kit
+223,23,2001161,Tampa,tampa
+224,23,2001161,Manual,manual
+225,23,2001161,Cilindro,cilindro
+226,23,2001161,Etiqueta Interna,etiqueta_interna
+227,23,2001161,Etiqueta Tampa,etiqueta_tampa
+228,23,2001161,Etiqueta Externa,etiqueta_externa
+229,23,2001161,Limpeza,limpeza
+230,24,2001042,Estator,estator
+231,24,2001042,Sem fim,sem_fim
+232,24,2001042,Engrenagem,engrenagem
+233,24,2001042,Capacitor,capacitor
+234,24,2001042,Placa,placa
+235,24,2001042,Jumper,jumper
+236,24,2001042,Encoder,encoder
+237,24,2001042,Kit,kit
+238,24,2001042,Tampa,tampa
+239,24,2001042,Manual,manual
+240,24,2001042,Cilindro,cilindro
+241,24,2001042,Etiqueta Interna,etiqueta_interna
+242,24,2001042,Etiqueta Tampa,etiqueta_tampa
+243,24,2001042,Etiqueta Externa,etiqueta_externa
+244,24,2001042,Limpeza,limpeza
+245,25,2006041,Estator,estator
+246,25,2006041,Sem fim,sem_fim
+247,25,2006041,Engrenagem,engrenagem
+248,25,2006041,Capacitor,capacitor
+249,25,2006041,Placa,placa
+250,25,2006041,Encoder,encoder
+251,25,2006041,Kit,kit
+252,25,2006041,Tampa,tampa
+253,25,2006041,Módulo,modulo
+254,25,2006041,Manual,manual
+255,25,2006041,Cilindro,cilindro
+256,25,2006041,Etiqueta Interna,etiqueta_interna
+257,25,2006041,Etiqueta Tampa,etiqueta_tampa
+258,25,2006041,Etiqueta Externa,etiqueta_externa
+259,25,2006041,Limpeza,limpeza
+260,26,2006041,Estator,estator
+261,26,2006041,Sem fim,sem_fim
+262,26,2006041,Engrenagem,engrenagem
+263,26,2006041,Capacitor,capacitor
+264,26,2006041,Placa,placa
+265,26,2006041,Encoder,encoder
+266,26,2006041,Kit,kit
+267,26,2006041,Tampa,tampa
+268,26,2006041,Módulo,modulo
+269,26,2006041,Manual,manual
+270,26,2006041,Cilindro,cilindro
+271,26,2006041,Etiqueta Interna,etiqueta_interna
+272,26,2006041,Etiqueta Tampa,etiqueta_tampa
+273,26,2006041,Etiqueta Externa,etiqueta_externa
+274,26,2006041,Limpeza,limpeza
+275,27,2008004,Estator,estator
+276,27,2008004,Induzido,induzido
+277,27,2008004,Calço,calco
+278,27,2008004,Rosca,rosca
+279,27,2008004,Capacitor,capacitor
+280,27,2008004,Jumper,jumper
+281,27,2008004,Kit,kit
+282,27,2008004,Manual,manual
+283,27,2008004,Etiqueta Interna,etiqueta_interna
+284,27,2008004,Etiqueta Tampa,etiqueta_tampa
+285,27,2008004,Etiqueta Externa,etiqueta_externa
+286,27,2008004,Base,base
+287,27,2008004,Carcaça,carcaca
+288,27,2008004,Parafusos Carcaça,parafusos_carcaca
+289,27,2008004,Limpeza,limpeza
+290,28,2007089,Estator,estator
+291,28,2007089,Induzido,induzido
+292,28,2007089,Calço,calco
+293,28,2007089,Furo,furo
+294,28,2007089,Capacitor,capacitor
+295,28,2007089,Placa,placa
+296,28,2007089,Jumper,jumper
+297,28,2007089,Kit,kit
+298,28,2007089,Manual,manual
+299,28,2007089,Etiqueta Interna,etiqueta_interna
+300,28,2007089,Etiqueta Tampa,etiqueta_tampa
+301,28,2007089,Etiqueta Externa,etiqueta_externa
+302,28,2007089,Carcaça,carcaca
+303,28,2007089,Parafusos Carcaça,parafusos_carcaca
+304,28,2007089,Parafuso Lateral,parafuso_lateral
+305,28,2007089,Limpeza,limpeza
+306,29,2007089,Estator,estator
+307,29,2007089,Induzido,induzido
+308,29,2007089,Calço,calco
+309,29,2007089,Furo,furo
+310,29,2007089,Capacitor,capacitor
+311,29,2007089,Placa,placa
+312,29,2007089,Jumper,jumper
+313,29,2007089,Kit,kit
+314,29,2007089,Manual,manual
+315,29,2007089,Etiqueta Interna,etiqueta_interna
+316,29,2007089,Etiqueta Tampa,etiqueta_tampa
+317,29,2007089,Etiqueta Externa,etiqueta_externa
+318,29,2007089,Carcaça,carcaca
+319,29,2007089,Parafusos Carcaça,parafusos_carcaca
+320,29,2007089,Parafuso Lateral,parafuso_lateral
+321,29,2007089,Limpeza,limpeza
+322,30,2006151,Estator,estator
+323,30,2006151,Sem fim,sem_fim
+324,30,2006151,Engrenagem,engrenagem
+325,30,2006151,Capacitor,capacitor
+326,30,2006151,Placa,placa
+327,30,2006151,Encoder,encoder
+328,30,2006151,Kit,kit
+329,30,2006151,Tampa,tampa
+330,30,2006151,Módulo,modulo
+331,30,2006151,Manual,manual
+332,30,2006151,Cilindro,cilindro
+333,30,2006151,Etiqueta Interna,etiqueta_interna
+334,30,2006151,Etiqueta Tampa,etiqueta_tampa
+335,30,2006151,Etiqueta Externa,etiqueta_externa
+336,30,2006151,Limpeza,limpeza
+337,31,2006041,Estator,estator
+338,31,2006041,Sem fim,sem_fim
+339,31,2006041,Engrenagem,engrenagem
+340,31,2006041,Capacitor,capacitor
+341,31,2006041,Placa,placa
+342,31,2006041,Encoder,encoder
+343,31,2006041,Kit,kit
+344,31,2006041,Tampa,tampa
+345,31,2006041,Módulo,modulo
+346,31,2006041,Manual,manual
+347,31,2006041,Cilindro,cilindro
+348,31,2006041,Etiqueta Interna,etiqueta_interna
+349,31,2006041,Etiqueta Tampa,etiqueta_tampa
+350,31,2006041,Etiqueta Externa,etiqueta_externa
+351,31,2006041,Limpeza,limpeza
+352,32,2006041,Estator,estator
+353,32,2006041,Sem fim,sem_fim
+354,32,2006041,Engrenagem,engrenagem
+355,32,2006041,Capacitor,capacitor
+356,32,2006041,Placa,placa
+357,32,2006041,Encoder,encoder
+358,32,2006041,Kit,kit
+359,32,2006041,Tampa,tampa
+360,32,2006041,Módulo,modulo
+361,32,2006041,Manual,manual
+362,32,2006041,Cilindro,cilindro
+363,32,2006041,Etiqueta Interna,etiqueta_interna
+364,32,2006041,Etiqueta Tampa,etiqueta_tampa
+365,32,2006041,Etiqueta Externa,etiqueta_externa
+366,32,2006041,Limpeza,limpeza
+367,33,2006041,Estator,estator
+368,33,2006041,Sem fim,sem_fim
+369,33,2006041,Engrenagem,engrenagem
+370,33,2006041,Capacitor,capacitor
+371,33,2006041,Placa,placa
+372,33,2006041,Encoder,encoder
+373,33,2006041,Kit,kit
+374,33,2006041,Tampa,tampa
+375,33,2006041,Módulo,modulo
+376,33,2006041,Manual,manual
+377,33,2006041,Cilindro,cilindro
+378,33,2006041,Etiqueta Interna,etiqueta_interna
+379,33,2006041,Etiqueta Tampa,etiqueta_tampa
+380,33,2006041,Etiqueta Externa,etiqueta_externa
+381,33,2006041,Limpeza,limpeza
+382,34,2008002,Estator,estator
+383,34,2008002,Induzido,induzido
+384,34,2008002,Calço,calco
+385,34,2008002,Rosca,rosca
+386,34,2008002,Capacitor,capacitor
+387,34,2008002,Jumper,jumper
+388,34,2008002,Kit,kit
+389,34,2008002,Manual,manual
+390,34,2008002,Etiqueta Interna,etiqueta_interna
+391,34,2008002,Etiqueta Tampa,etiqueta_tampa
+392,34,2008002,Etiqueta Externa,etiqueta_externa
+393,34,2008002,Base,base
+394,34,2008002,Carcaça,carcaca
+395,34,2008002,Parafusos Carcaça,parafusos_carcaca
+396,34,2008002,Limpeza,limpeza
+397,35,2008004,Estator,estator
+398,35,2008004,Induzido,induzido
+399,35,2008004,Calço,calco
+400,35,2008004,Rosca,rosca
+401,35,2008004,Capacitor,capacitor
+402,35,2008004,Jumper,jumper
+403,35,2008004,Kit,kit
+404,35,2008004,Manual,manual
+405,35,2008004,Etiqueta Interna,etiqueta_interna
+406,35,2008004,Etiqueta Tampa,etiqueta_tampa
+407,35,2008004,Etiqueta Externa,etiqueta_externa
+408,35,2008004,Base,base
+409,35,2008004,Carcaça,carcaca
+410,35,2008004,Parafusos Carcaça,parafusos_carcaca
+411,35,2008004,Limpeza,limpeza
+412,36,2007089,Estator,estator
+413,36,2007089,Induzido,induzido
+414,36,2007089,Calço,calco
+415,36,2007089,Furo,furo
+416,36,2007089,Capacitor,capacitor
+417,36,2007089,Placa,placa
+418,36,2007089,Jumper,jumper
+419,36,2007089,Kit,kit
+420,36,2007089,Manual,manual
+421,36,2007089,Etiqueta Interna,etiqueta_interna
+422,36,2007089,Etiqueta Tampa,etiqueta_tampa
+423,36,2007089,Etiqueta Externa,etiqueta_externa
+424,36,2007089,Carcaça,carcaca
+425,36,2007089,Parafusos Carcaça,parafusos_carcaca
+426,36,2007089,Parafuso Lateral,parafuso_lateral
+427,36,2007089,Limpeza,limpeza
+428,37,2007089,Estator,estator
+429,37,2007089,Induzido,induzido
+430,37,2007089,Calço,calco
+431,37,2007089,Furo,furo
+432,37,2007089,Capacitor,capacitor
+433,37,2007089,Placa,placa
+434,37,2007089,Jumper,jumper
+435,37,2007089,Kit,kit
+436,37,2007089,Manual,manual
+437,37,2007089,Etiqueta Interna,etiqueta_interna
+438,37,2007089,Etiqueta Tampa,etiqueta_tampa
+439,37,2007089,Etiqueta Externa,etiqueta_externa
+440,37,2007089,Carcaça,carcaca
+441,37,2007089,Parafusos Carcaça,parafusos_carcaca
+442,37,2007089,Parafuso Lateral,parafuso_lateral
+443,37,2007089,Limpeza,limpeza
