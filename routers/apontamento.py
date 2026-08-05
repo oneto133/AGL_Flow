@@ -43,7 +43,7 @@ async def abrir_modal(request: Request):
 
 @router.get("/apontamento/manual")
 async def apontamento_manual(request: Request):
-    return templates.TemplateResponse(request, "apontamento_manual.html")
+    return templates.TemplateResponse(request, "apontamento/apontamento_manual.html")
 
 @router.post("/api/atualizar-base-reposicao")
 async def _atualizar_base_reposicao(codigo: int, descricao: str, ean: int):

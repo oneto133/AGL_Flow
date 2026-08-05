@@ -21,10 +21,10 @@ def enviar_cartao_trello(dados: DadosCartao):
     if enviar_trello:
         return {"mensagem": "Cartão enviado para o Trello com sucesso."}
 
-    return {'erro': 'NÃ£o foi possÃ­vel enviar o cartÃ£o parao Trello'}
+    return {'erro': 'Não foi possível enviar o cartão para o Trello'}
 
 
 @router.get("/api/apontamento")
 def apontamento(request: Request):
-    return templates.TemplateResponse(request, "apontamento.html")
+    return templates.TemplateResponse(request, "apontamento/apontamento.html")
 
