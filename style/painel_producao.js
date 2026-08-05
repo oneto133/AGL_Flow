@@ -8,6 +8,11 @@
     "'": "&#039;",
   }[char]));
   const fmt = (value) => new Intl.NumberFormat("pt-BR").format(Number(value || 0));
+  const normalizarStatus = (value) => String(value ?? "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .trim()
+    .toLowerCase();
   const loading = $("#painelLoading");
   const indicador = $("#painelIndicadorRotativo");
   let loadingTimer = null;
@@ -92,6 +97,7 @@
     const apontadoOp = Number(item.quantidade_apontada ?? item.quantidade_produzida ?? 0);
     const apontado = Number(item.quantidade_apontada_dia ?? 0);
     const diferenca = Number(item.diferenca_eficiencia || 0);
+    const desempenho = esperado > 0 ? apontado / esperado * 100 : 0;
     const programada = Number(item.quantidade_programada || 0);
     const progressoTotal = programada ? Math.min(100, apontadoOp / programada * 100) : 0;
     const progressoEsperado = programada ? Math.min(100, esperado / programada * 100) : 0;
@@ -110,7 +116,7 @@
     $("[data-field=ultimoApontamento]", el).textContent = fmt(apontadoOp);
     $("[data-field=previsaoSaida]", el).textContent = item.previsao_saida;
     $("[data-field=eficiencia]", el).textContent = disponivel
-      ? `${diferenca > 0 ? "+" : ""}${fmt(diferenca)} un`
+      ? `${fmt(desempenho)}%`
       : "Dados insuficientes";
     $("[data-field=inicioFila]", el).textContent = item.hora_inicio_fila || "-";
     $("[data-field=sequenciamento]", el).textContent = item.data_sequenciamento || "-";
@@ -121,7 +127,12 @@
     $("[data-field=apontadoBar]", el).style.width = disponivel ? `${progressoDesempenho}%` : `${progressoTotal}%`;
     $(".painel-card__title", el).textContent = item.linha;
     $(".painel-card__subtitle", el).textContent = `OP ${item.op} · ${item.codigo} · ${item.descricao}`;
-    $(".painel-badge", el).textContent = item.status || "Em fila";
+    const badge = $(".painel-badge", el);
+    const status = item.status || "Em fila";
+    const statusNormalizado = normalizarStatus(status);
+    badge.textContent = status;
+    badge.classList.toggle("painel-badge--em-processo", statusNormalizado === "em processo");
+    badge.classList.toggle("painel-badge--pausado", statusNormalizado === "pausado");
 
     const aviso = $("[data-field=metricasAviso]", el);
     if (aviso) {
@@ -174,20 +185,21 @@
     }
   }
 
-  function tabela(rows, tipo) {
+  function tabela(rows, tipo, secao = "", linha = "") {
     if (!rows.length) return '<div class="painel-vazio">Nenhum registro encontrado.</div>';
     const ordens = tipo === "ordens";
+    const permiteImpressao = ordens && normalizarStatus(secao) === "basculante";
     const cols = ordens
-      ? ["OP", "Codigo", "Descricao", "Quantidade", "Data/hora sequencia", "Inicio fila", "Previsao saida", "Status"]
+      ? ["OP", "Codigo", "Descricao", "Quantidade", "Data/hora sequencia", "Inicio fila", "Previsao saida", "Status", ...(permiteImpressao ? ["Imprimir"] : [])]
       : ["OP", "Codigo", "Quantidade", "Data/hora", "Status", "Observacao"];
     const body = rows.map((row) => ordens
-      ? `<tr><td>${esc(row.op)}</td><td>${esc(row.codigo)}</td><td>${esc(row.descricao)}</td><td>${fmt(row.quantidade_programada)}</td><td>${esc(row.data_sequenciamento)}</td><td>${esc(row.hora_inicio_fila || "-")}</td><td>${esc(row.previsao_saida)}</td><td>${esc(row.status)}</td></tr>`
+      ? `<tr><td>${esc(row.op)}</td><td>${esc(row.codigo)}</td><td>${esc(row.descricao)}</td><td>${fmt(row.quantidade_programada)}</td><td>${esc(row.data_sequenciamento)}</td><td>${esc(row.hora_inicio_fila || "-")}</td><td>${esc(row.previsao_saida)}</td><td>${esc(row.status)}</td>${permiteImpressao ? `<td><button type="button" class="painel-imprimir-ordem" data-op="${esc(row.op)}" data-codigo="${esc(row.codigo)}" data-linha="${esc(row.linha || linha)}" title="Imprimir ordem" aria-label="Imprimir ordem">🖨</button></td>` : ""}</tr>`
       : `<tr><td>${esc(row.op)}</td><td>${esc(row.codigo)}</td><td>${fmt(row.quantidade)}</td><td>${esc(row.data_hora)}</td><td>${esc(row.status)}</td><td>${esc(row.observacao || "-")}</td></tr>`
     ).join("");
     return `<div class="painel-table-wrap"><table class="painel-table"><thead><tr>${cols.map((col) => `<th>${col}</th>`).join("")}</tr></thead><tbody>${body}</tbody></table></div>`;
   }
 
-  function desenharGraficoApontamentos(canvas, tooltip, pontos, tipo) {
+  function desenharGraficoApontamentos(canvas, tooltip, pontos, tipo, mostrarMediaMovel) {
     const ctx = canvas.getContext("2d");
     const cssW = canvas.clientWidth || 760;
     const cssH = 300;
@@ -253,6 +265,22 @@
       });
     }
 
+    if (mostrarMediaMovel && pontos.length) {
+      const janela = 3;
+      const medias = pontos.map((_, index) => {
+        const inicio = Math.max(0, index - janela + 1);
+        const amostra = pontos.slice(inicio, index + 1);
+        return amostra.reduce((total, ponto) => total + Number(ponto.quantidade || 0), 0) / amostra.length;
+      });
+      ctx.strokeStyle = "#f1c232";
+      ctx.lineWidth = 2;
+      ctx.setLineDash([6, 4]);
+      ctx.beginPath();
+      medias.forEach((media, index) => index ? ctx.lineTo(x(index), y(media)) : ctx.moveTo(x(index), y(media)));
+      ctx.stroke();
+      ctx.setLineDash([]);
+    }
+
     const mostrarTooltip = (event) => {
       const rect = canvas.getBoundingClientRect();
       const posicao = Math.max(0, Math.min(cssW, event.clientX - rect.left));
@@ -261,7 +289,7 @@
         : Math.round((posicao - margemEsquerda) / (larguraUtil / Math.max(1, pontos.length - 1)));
       const ponto = pontos[Math.max(0, Math.min(pontos.length - 1, indice))];
       if (!ponto) return;
-      tooltip.textContent = `${ponto.hora} · ${fmt(ponto.quantidade)} apontadas`;
+      tooltip.textContent = `${ponto.hora} · ${fmt(ponto.quantidade)} apontadas${ponto.observacao ? ` · Observação: ${ponto.observacao}` : ""}`;
       tooltip.hidden = false;
       tooltip.style.left = `${Math.min(rect.width - 190, Math.max(8, event.clientX - rect.left + 12))}px`;
       tooltip.style.top = `${Math.max(8, event.clientY - rect.top - 38)}px`;
@@ -276,13 +304,19 @@
     const wrapper = document.createElement("section");
     wrapper.className = "painel-grafico-apontamentos";
     wrapper.innerHTML = `<header class="painel-grafico-apontamentos__header"><div><p class="eyebrow">PRODUÇÃO POR HORA</p><h3>Apontamentos da linha</h3></div><div class="painel-grafico-apontamentos__actions"><select aria-label="Tipo do grafico"><option value="bar">Barras</option><option value="line">Linhas</option></select><select aria-label="Periodo do grafico" data-periodo-grafico><option value="dia">Dia atual</option><option value="semana">Semana</option></select><button type="button" class="secondary-button">Imprimir</button></div></header><div class="painel-grafico-apontamentos__canvas"><canvas height="300"></canvas><div class="painel-grafico-tooltip" hidden></div></div><div class="painel-grafico-apontamentos__kpis"><div><span>Deveria ter produzido (OP atual)</span><strong>${resumo.metricas_disponiveis ? fmt(Math.min(Number(resumo.quantidade_deveria_produzida || 0), Number(resumo.quantidade_programada || 0))) : "Dados insuficientes"}</strong></div><div><span>Apontado (OP atual)</span><strong data-kpi-apontado>${fmt(resumo.quantidade_apontada)}</strong></div><div><span>Média por hora (linha)</span><strong data-kpi-media>${fmt(resumo.media_por_hora)} un/h</strong></div></div>`;
+    const actions = $(".painel-grafico-apontamentos__actions", wrapper);
+    const mediaMovel = document.createElement("label");
+    mediaMovel.className = "painel-grafico-media-movel";
+    mediaMovel.innerHTML = '<input type="checkbox" checked aria-label="Exibir média móvel"> Média móvel';
+    actions.insertBefore(mediaMovel, $("button", actions));
     const canvas = $("canvas", wrapper);
     const tooltip = $(".painel-grafico-tooltip", wrapper);
     const tipo = $("select", wrapper);
     const periodo = $("[data-periodo-grafico]", wrapper);
     let pontos = dados.apontamentos_hora || [];
-    const desenhar = () => desenharGraficoApontamentos(canvas, tooltip, pontos, tipo.value);
+    const desenhar = () => desenharGraficoApontamentos(canvas, tooltip, pontos, tipo.value, $("input", mediaMovel).checked);
     tipo.addEventListener("change", desenhar);
+    $("input", mediaMovel).addEventListener("change", desenhar);
     periodo.addEventListener("change", async () => {
       const atualizado = await fetch(`/api/painel-producao/linha/${encodeURIComponent(dados.linha)}?periodo=${periodo.value}`).then((response) => response.json());
       pontos = atualizado.apontamentos_hora || [];
@@ -308,10 +342,11 @@
     try {
       const dados = await fetch(`/api/painel-producao/linha/${encodeURIComponent(linha)}`).then((response) => response.json());
       const atual = dados.ordens[0] || {};
+      const desempenhoAtual = Number(atual.quantidade_deveria_produzida || 0) > 0 ? Number(atual.quantidade_apontada_dia || 0) / Number(atual.quantidade_deveria_produzida) * 100 : 0;
       $("#modalLinhaSubtitulo").textContent = `${atual.codigo || "-"} · ${atual.descricao || "-"} · ${dados.secao.toUpperCase()} · Confiança: ${dados.capacidade.confianca.toUpperCase()}`;
-      $("#modalVisao").innerHTML = `<div class="modal-kpis"><div><span>OP atual</span><strong>${esc(atual.op || "-")}</strong></div><div><span>Programada</span><strong>${fmt(atual.quantidade_programada)}</strong></div><div><span>Apontada</span><strong>${fmt(atual.quantidade_apontada ?? atual.quantidade_produzida)}</strong></div><div><span>Desempenho</span><strong>${atual.metricas_disponiveis ? `${atual.diferenca_eficiencia > 0 ? "+" : ""}${fmt(atual.diferenca_eficiencia)} un` : "Dados insuficientes"}</strong></div></div><div class="modal-overview"><div><p><b>Inicio da fila:</b> ${esc(atual.hora_inicio_fila || "-")}</p><p><b>Previsao de saida:</b> ${esc(atual.previsao_saida)}</p><p><b>Ultimo apontamento:</b> ${esc(atual.ultimo_apontamento)}</p><p><b>Metricas:</b> ${esc(atual.metricas_mensagem || "-")}</p></div></div>`;
+      $("#modalVisao").innerHTML = `<div class="modal-kpis"><div><span>OP atual</span><strong>${esc(atual.op || "-")}</strong></div><div><span>Programada</span><strong>${fmt(atual.quantidade_programada)}</strong></div><div><span>Apontado no dia</span><strong>${fmt(atual.quantidade_apontada_dia || 0)}</strong></div><div><span>Desempenho</span><strong>${atual.metricas_disponiveis ? `${fmt(desempenhoAtual)}%` : "Dados insuficientes"}</strong></div></div><div class="modal-overview"><div><p><b>Inicio da fila:</b> ${esc(atual.hora_inicio_fila || "-")}</p><p><b>Previsao de saida:</b> ${esc(atual.previsao_saida)}</p><p><b>Ultimo apontamento:</b> ${esc(atual.ultimo_apontamento)}</p><p><b>Metricas:</b> ${esc(atual.metricas_mensagem || "-")}</p></div></div>`;
       $("#modalVisao").appendChild(montarGraficoApontamentos(dados));
-      $("#modalOrdens").innerHTML = tabela(dados.ordens, "ordens");
+      $("#modalOrdens").innerHTML = tabela(dados.ordens, "ordens", dados.secao, dados.linha);
       $("#modalApontamentos").innerHTML = tabela(dados.apontamentos, "apontamentos");
     } catch (error) {
       $("#modalVisao").textContent = "Nao foi possivel carregar os detalhes.";
@@ -324,6 +359,16 @@
   };
 
   document.addEventListener("click", (event) => {
+    const imprimirOrdem = event.target.closest(".painel-imprimir-ordem");
+    if (imprimirOrdem) {
+      const params = new URLSearchParams({
+        op: imprimirOrdem.dataset.op || "",
+        codigo: imprimirOrdem.dataset.codigo || "",
+        linha: imprimirOrdem.dataset.linha || "",
+      });
+      window.open(`/painel-producao/impressao/basculante?${params.toString()}`, "_blank", "noopener");
+      return;
+    }
     if (event.target.matches("[data-close-modal]")) fechar();
     if (event.target.matches(".painel-tab")) {
       document.querySelectorAll(".painel-tab, .painel-tab-content").forEach((element) => element.classList.remove("is-active"));

@@ -317,17 +317,92 @@ def _ultima_inspecao_por_op(op: int | str) -> dict[str, Any] | None:
         return None
 
 
-def _serializar_op_com_status_qualidade(row: pd.Series) -> dict[str, Any]:
+def _indice_status_qualidade(df_inspecoes: pd.DataFrame) -> dict[str, dict[str, str]]:
+    """Prepara os dados de qualidade uma vez para a listagem de seções.
+
+    A rota de seções pode retornar várias OPs. Ler e processar o CSV de
+    inspeções para cada OP tornava o custo da resposta proporcional a
+    (quantidade de OPs x quantidade de leituras do arquivo).
+    """
+    if df_inspecoes.empty or "op" not in df_inspecoes.columns:
+        return {}
+
+    dados: dict[str, dict[str, str]] = {}
+    tem_fim = "data_hora_fim_inspecao" in df_inspecoes.columns
+    tem_inicio = "data_hora_inicio_inspecao" in df_inspecoes.columns
+
+    for indice, grupo in df_inspecoes.groupby(df_inspecoes["op"].astype(str), sort=False):
+        grupo = grupo.copy()
+        ultimo = grupo.iloc[-1]
+        item = {
+            "status": str(ultimo.get("status", "")).strip(),
+            "data_ultima_conferencia": "",
+            "observacao": "",
+        }
+
+        if tem_fim:
+            grupo["data_fim_dt"] = pd.to_datetime(grupo["data_hora_fim_inspecao"], errors="coerce")
+            grupo_ordenado_fim = grupo.sort_values(by=["data_fim_dt"], ascending=False)
+            observacao = grupo_ordenado_fim.iloc[0].get("observacao", "")
+            item["observacao"] = str(observacao).strip()
+        else:
+            item["observacao"] = str(ultimo.get("observacao", "")).strip()
+
+        if tem_fim:
+            grupo["data_inicio_dt"] = (
+                pd.to_datetime(grupo["data_hora_inicio_inspecao"], errors="coerce")
+                if tem_inicio
+                else pd.NaT
+            )
+            grupo["data_referencia_dt"] = grupo["data_fim_dt"].fillna(grupo["data_inicio_dt"])
+            referencia = grupo.sort_values(by=["data_referencia_dt"], ascending=False).iloc[0]["data_referencia_dt"]
+        elif tem_inicio:
+            grupo["data_inicio_dt"] = pd.to_datetime(grupo["data_hora_inicio_inspecao"], errors="coerce")
+            referencia = grupo.sort_values(by=["data_inicio_dt"], ascending=False).iloc[0]["data_inicio_dt"]
+        else:
+            referencia = pd.NaT
+
+        if not pd.isna(referencia):
+            referencia_dt = pd.to_datetime(referencia, errors="coerce")
+            if not pd.isna(referencia_dt):
+                item["data_ultima_conferencia"] = referencia_dt.isoformat()
+
+        dados[str(indice)] = item
+
+    return dados
+
+
+def _serializar_op_com_status_qualidade(
+    row: pd.Series,
+    indice_status: dict[str, dict[str, str]] | None = None,
+) -> dict[str, Any]:
     op = _serializar_op(row)
-    status_qualidade = _ultimo_status_qualidade(op["op"])
+    dados_qualidade = (
+        indice_status.get(str(op["op"]), {})
+        if indice_status is not None
+        else {}
+    )
+    status_qualidade = (
+        dados_qualidade.get("status", "")
+        if indice_status is not None
+        else _ultimo_status_qualidade(op["op"])
+    )
     if status_qualidade:
         op["status_qualidade"] = status_qualidade
         op["status"] = status_qualidade
     else:
         op["status_qualidade"] = op["status"]
 
-    op["data_ultima_conferencia"] = _ultima_conferencia_por_op(op["op"])
-    op["observacao"] = _ultima_observacao_qualidade(op["op"])
+    op["data_ultima_conferencia"] = (
+        dados_qualidade.get("data_ultima_conferencia", "")
+        if indice_status is not None
+        else _ultima_conferencia_por_op(op["op"])
+    )
+    op["observacao"] = (
+        dados_qualidade.get("observacao", "")
+        if indice_status is not None
+        else _ultima_observacao_qualidade(op["op"])
+    )
 
     return op
 
@@ -335,6 +410,7 @@ def _serializar_op_com_status_qualidade(row: pd.Series) -> dict[str, Any]:
 async def listar_secoes_inspecao() -> list[dict[str, Any]]:
     df_config = _carregar_config_linhas()
     df_seq = _carregar_sequenciamento()
+    indice_status = _indice_status_qualidade(_ler_csv(INSPECOES))
 
     if df_config.empty:
         return []
@@ -345,13 +421,27 @@ async def listar_secoes_inspecao() -> list[dict[str, Any]]:
     ordenadas = [secao for secao in SECOES_ORDEM if secao in secao_keys]
     ordenadas.extend([secao for secao in secao_keys if secao not in ordenadas])
 
+    # Filtra/ordena cada linha uma vez, em vez de repetir o trabalho para
+    # cada seção durante a construção da resposta.
+    ops_por_linha = {
+        normalize_text(linha): _ops_ativas_da_linha(df_seq, linha)
+        for linha in df_config["celula_linha"].drop_duplicates().tolist()
+    }
+    serializados_por_indice: dict[Any, dict[str, Any]] = {}
+
+    def serializar(row: pd.Series) -> dict[str, Any]:
+        chave = row.name
+        if chave not in serializados_por_indice:
+            serializados_por_indice[chave] = _serializar_op_com_status_qualidade(row, indice_status)
+        return serializados_por_indice[chave]
+
     for secao_normalizada in ordenadas:
         linhas_secao = df_config.loc[df_config["secao_normalizada"] == secao_normalizada]
         linhas: list[dict[str, Any]] = []
 
         for _, row in linhas_secao.iterrows():
-            ops_linha = _ops_ativas_da_linha(df_seq, row.get("celula_linha", ""))
-            op_atual = _serializar_op_com_status_qualidade(ops_linha.iloc[0]) if not ops_linha.empty else None
+            ops_linha = ops_por_linha.get(normalize_text(row.get("celula_linha", "")), pd.DataFrame())
+            op_atual = serializar(ops_linha.iloc[0]) if not ops_linha.empty else None
 
             linhas.append(
                 {
@@ -362,7 +452,7 @@ async def listar_secoes_inspecao() -> list[dict[str, Any]]:
                     "id_lista": str(row.get("id_lista", "")).strip(),
                     "quantidade_ops": int(len(ops_linha)),
                     "op_atual": op_atual,
-                    "ops": [_serializar_op_com_status_qualidade(item) for _, item in ops_linha.iterrows()],
+                    "ops": [serializar(item) for _, item in ops_linha.iterrows()],
                 }
             )
 

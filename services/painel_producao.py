@@ -1,9 +1,13 @@
 from __future__ import annotations
 
 from datetime import datetime
+from pathlib import Path
 from typing import Any
 
 import pandas as pd
+from openpyxl import load_workbook
+from copy import copy
+from tempfile import NamedTemporaryFile
 
 from config import CSV_DIR
 from utils import _ler_csv, adicionar_horas_uteis, calcular_horas_uteis, normalize_text
@@ -12,6 +16,10 @@ from utils import _ler_csv, adicionar_horas_uteis, calcular_horas_uteis, normali
 SEQUENCIAMENTO = CSV_DIR / "sequenciamento.csv"
 APONTAMENTO = CSV_DIR / "apontamento.csv"
 CONFIG_LINHAS = CSV_DIR / "config_linhas.csv"
+CRONOANALISE = CSV_DIR / "cronoanalise.csv"
+BASCULANTES_XLSX = CSV_DIR.parent / "xlsx" / "basculantes.xlsx"
+BASCULANTES_CSV = CSV_DIR / "basculantes.csv"
+MODELO_BASCULANTE_XLSX = CSV_DIR.parent / "xlsx" / "modelo_impressao_basculante.xlsx"
 
 FAIXAS_MINUTOS = {
     "deslizante": (3.0, 7.0),
@@ -65,11 +73,118 @@ def _data_exibicao(valor: Any) -> str:
     return data.strftime("%d/%m/%Y %H:%M:%S")
 
 
+def dados_impressao_basculante(op: str, codigo: str, linha: str = "") -> dict[str, Any] | None:
+    seq, _, config = _carga()
+    config_map = {normalize_text(row["celula_linha"]): row for _, row in config.iterrows()}
+    linha_chave = normalize_text(linha)
+    candidatos = seq.loc[seq["op"].astype(str).str.strip() == str(op).strip()]
+    if linha_chave:
+        candidatos = candidatos.loc[candidatos["linha"].astype(str).map(normalize_text) == linha_chave]
+    if candidatos.empty:
+        return None
+
+    ordem = candidatos.iloc[-1]
+    conf = config_map.get(normalize_text(ordem.get("linha", linha)), {})
+    secao = normalize_text(conf.get("secao", "")) if hasattr(conf, "get") else ""
+    if secao != "basculante":
+        return None
+
+    codigo_texto = str(codigo or ordem.get("codigo_produto", "")).strip()
+    produto = {}
+    if BASCULANTES_CSV.exists():
+        base_basculantes = pd.read_csv(BASCULANTES_CSV, encoding="utf-8-sig", dtype=str).fillna("")
+        base_basculantes.columns = [str(col).strip() for col in base_basculantes.columns]
+        registro = base_basculantes.loc[
+            base_basculantes["CÓD DO PRODUTO"].astype(str).str.strip() == codigo_texto
+        ]
+        if not registro.empty:
+            valores = registro.iloc[0]
+            produto = {
+                "descricao": valores.get("DESCRIÇÃO", ""),
+                "central": valores.get("CENTRAL", ""),
+                "carenagem": valores.get("CARENAGEM", ""),
+                "estator": valores.get("ESTATOR E SEM FIM", ""),
+                "capacitor": valores.get("CAPACITOR", ""),
+            }
+
+    return {
+        "titulo": "LINHA BASCULANTE ANTIGO",
+        "emissao": pd.Timestamp.now().strftime("%d/%m/%Y"),
+        "codigo": codigo_texto,
+        "quantidade": int(_numero(ordem.get("quantidade"))),
+        "descricao": _texto(produto.get("descricao")) or _texto(ordem.get("descricao_produto")),
+        "central": _texto(produto.get("central")),
+        "carenagem": _texto(produto.get("carenagem")),
+        "estator": _texto(produto.get("estator")),
+        "capacitor": _texto(produto.get("capacitor")),
+        "op": _texto(ordem.get("op")),
+        "data_etiq": "--",
+        "aj_est": "",
+        "prev_entrega": _data_exibicao(ordem.get("previsao_entrada")),
+    }
+
+
+def gerar_planilha_impressao_basculante(op: str, codigo: str, linha: str = "") -> str | None:
+    """Gera uma cópia temporária do modelo Excel sem alterar o original."""
+    dados = dados_impressao_basculante(op, codigo, linha)
+    if not dados or not MODELO_BASCULANTE_XLSX.exists():
+        return None
+
+    arquivo_temporario = NamedTemporaryFile(prefix="impressao_basculante_", suffix=".xlsx", delete=False)
+    caminho = arquivo_temporario.name
+    arquivo_temporario.close()
+    try:
+        workbook = load_workbook(MODELO_BASCULANTE_XLSX)
+        sheet = workbook.active
+        for row in range(4, 24):
+            for column in range(1, 12):
+                sheet.cell(row=row, column=column).value = None
+        sheet.delete_rows(18, 3)
+
+        sheet["C3"] = f"EMISSÃO: {dados['emissao']}"
+        valores = [
+            dados["codigo"], dados["quantidade"], dados["descricao"], dados["central"],
+            dados["carenagem"], dados["estator"], dados["capacitor"], dados["op"],
+            dados["data_etiq"], dados["aj_est"], dados["prev_entrega"],
+        ]
+        for column, valor in enumerate(valores, start=1):
+            cell = sheet.cell(row=6, column=column)
+            cell.value = valor
+            alinhamento = copy(cell.alignment)
+            alinhamento.shrink_to_fit = True
+            cell.alignment = alinhamento
+            if column == 11:
+                fonte = copy(cell.font)
+                fonte.bold = True
+                cell.font = fonte
+
+        sheet.column_dimensions["K"].width = 20
+        sheet.column_dimensions["C"].width = 58
+
+        sheet["B18"] = "=SUM(B5:B17)"
+        sheet.print_area = "A1:K18"
+        sheet.sheet_properties.pageSetUpPr.fitToPage = True
+        sheet.page_setup.orientation = sheet.ORIENTATION_LANDSCAPE
+        sheet.page_setup.paperSize = sheet.PAPERSIZE_A4
+        sheet.page_setup.fitToWidth = 1
+        sheet.page_setup.fitToHeight = 1
+        sheet.print_options.horizontalCentered = True
+        workbook.save(caminho)
+        workbook.close()
+        return caminho
+    except Exception:
+        try:
+            Path(caminho).unlink(missing_ok=True)
+        except OSError:
+            pass
+        raise
+
+
 def _carga() -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     seq = _ler_csv(SEQUENCIAMENTO)
     apont = _ler_csv(APONTAMENTO)
     config = _ler_csv(CONFIG_LINHAS)
-    for df, cols in ((seq, ["op", "codigo_produto", "descricao_produto", "quantidade", "linha", "operador", "status", "fila", "data_hora_sequenciamento", "data_hora_finalizacao", "hora_inicio_fila", "previsao_entrada", "tempo_total_fila"]), (apont, ["op", "codigo", "quantidade", "data_hora", "status"]), (config, ["celula_linha", "secao"])):
+    for df, cols in ((seq, ["op", "codigo_produto", "descricao_produto", "quantidade", "linha", "operador", "status", "fila", "data_hora_sequenciamento", "data_hora_finalizacao", "hora_inicio_fila", "previsao_entrada", "tempo_total_fila"]), (apont, ["op", "codigo", "quantidade", "data_hora", "status", "observacao"]), (config, ["celula_linha", "secao"])):
         for col in cols:
             if col not in df.columns:
                 df[col] = ""
@@ -117,21 +232,48 @@ def calcular_metricas_producao(
     secao: str,
     agora: pd.Timestamp | None = None,
     capacidade: dict[str, Any] | None = None,
+    crono: pd.DataFrame | None = None,
 ) -> dict[str, Any]:
     """Calcula quanto deveria ter sido produzido até o momento atual."""
     inicio = _data(row.get("hora_inicio_fila"))
-    ritmo = capacidade or _ritmo_historico(
-        seq,
-        linha=linha,
-        secao=secao,
-        codigo=_texto(row.get("codigo_produto")),
+    ritmo_crono = _taxa_cronoanalise(
+        crono if crono is not None else pd.DataFrame(),
+        linha,
+        secao,
+        _texto(row.get("codigo_produto")),
+        _texto(row.get("descricao_produto")),
     )
+    ritmo = (
+        {"minutos_por_unidade": 60 / ritmo_crono[0], "amostras": 0, "origem": ritmo_crono[1]}
+        if ritmo_crono and ritmo_crono[0] > 0
+        else capacidade or _ritmo_historico(
+            seq,
+            linha=linha,
+            secao=secao,
+            codigo=_texto(row.get("codigo_produto")),
+        )
+    )
+
+    fim = agora or pd.Timestamp.now()
+    inicio_dia = fim.normalize() + pd.Timedelta(hours=7)
+    inicio_producao = min(fim, inicio_dia)
+    registros_com_data = apontamentos.copy()
+    if "data" not in registros_com_data.columns:
+        registros_com_data["data"] = registros_com_data["data_hora"].map(_data)
+    registros_dia = registros_com_data.loc[
+        registros_com_data["data"].notna()
+        & (registros_com_data["data"] >= inicio_dia)
+        & (registros_com_data["data"] <= fim)
+    ]
+    quantidade_apontada_dia = int(registros_dia["quantidade"].map(_numero).sum()) if not registros_dia.empty else 0
 
     base = {
         "disponivel": False,
         "mensagem": "Dados insuficientes para gerar métricas.",
         "quantidade_deveria_produzida": 0,
         "quantidade_apontada": int(apontamentos["quantidade"].map(_numero).sum()) if not apontamentos.empty else 0,
+        "quantidade_apontada_dia": quantidade_apontada_dia,
+        "desempenho_percentual": 0,
         "diferenca": None,
         "minutos_por_unidade": None,
         "horas_uteis_decorridas": None,
@@ -142,23 +284,22 @@ def calcular_metricas_producao(
     if pd.isna(inicio) or ritmo is None or ritmo["minutos_por_unidade"] <= 0:
         return base
 
-    fim = agora or pd.Timestamp.now()
-    horas_decorridas = calcular_horas_uteis(inicio, fim)
+    minutos_decorridos = min(9 * 60, max(0, calcular_horas_uteis(inicio_producao, fim) * 60))
     programada = _numero(row.get("quantidade"))
-    deveria = min(
-        programada,
-        int((horas_decorridas * 60) / ritmo["minutos_por_unidade"]),
-    )
-    apontada = base["quantidade_apontada"]
+    deveria_calculado = int((minutos_decorridos / ritmo["minutos_por_unidade"]) if ritmo["minutos_por_unidade"] > 0 else 0)
+    deveria = min(programada, deveria_calculado) if programada > 0 else 0
+    apontada = base["quantidade_apontada_dia"]
 
     base.update(
         {
             "disponivel": True,
             "mensagem": "Métrica calculada com base no histórico.",
             "quantidade_deveria_produzida": max(0, deveria),
+            "desempenho_percentual": round((apontada / deveria) * 100, 1) if deveria > 0 else 0,
             "diferenca": apontada - max(0, deveria),
             "minutos_por_unidade": ritmo["minutos_por_unidade"],
-            "horas_uteis_decorridas": horas_decorridas,
+            "horas_uteis_decorridas": minutos_decorridos / 60,
+            "origem_ritmo": ritmo.get("origem", ritmo.get("origem_confianca")),
         }
     )
     return base
@@ -168,6 +309,7 @@ def _previsao_saida(
     seq: pd.DataFrame,
     row: pd.Series,
     capacidade: dict[str, Any],
+    crono: pd.DataFrame | None = None,
 ) -> pd.Timestamp:
     """Usa a entrada da próxima OP ou calcula respeitando o expediente útil."""
     inicio = _data(row.get("hora_inicio_fila"))
@@ -189,13 +331,21 @@ def _previsao_saida(
         if not pd.isna(entrada_proxima) and entrada_proxima > inicio:
             return entrada_proxima
 
-    if not capacidade.get("amostras") or capacidade["minutos_por_unidade"] <= 0:
+    taxa_crono = _taxa_cronoanalise(
+        crono if crono is not None else pd.DataFrame(),
+        linha_atual,
+        _texto(row.get("secao", "")),
+        _texto(row.get("codigo_produto", "")),
+        _texto(row.get("descricao_produto", "")),
+    )
+    minutos_por_unidade = 60 / taxa_crono[0] if taxa_crono and taxa_crono[0] > 0 else capacidade.get("minutos_por_unidade", 0)
+    if minutos_por_unidade <= 0 or (not taxa_crono and not capacidade.get("amostras")):
         return pd.NaT
 
     apontada = _numero(row.get("quantidade_produzida", 0))
     quantidade = _numero(row.get("quantidade"))
     restante = max(quantidade - apontada, 0)
-    horas_restantes = restante * capacidade["minutos_por_unidade"] / 60
+    horas_restantes = restante * minutos_por_unidade / 60
     return adicionar_horas_uteis(inicio, horas_restantes)
 
 
@@ -225,21 +375,85 @@ def _apontamentos_por_hora(apontamentos: pd.DataFrame, periodo: str = "dia") -> 
     df = apontamentos.copy()
     df["data"] = df["data_hora"].map(_data)
     df["quantidade_num"] = df["quantidade"].map(_numero)
+    if "observacao" not in df.columns:
+        df["observacao"] = ""
     df = df.loc[df["data"].notna()].copy()
     if df.empty:
         return []
 
     df["hora"] = df["data"].dt.floor("h")
-    agrupado = df.groupby("hora", as_index=False)["quantidade_num"].sum()
-    agrupado = agrupado.sort_values("hora")
+    agrupado = df.groupby("hora", as_index=False).agg(
+        quantidade=("quantidade_num", "sum"),
+        observacao=("observacao", lambda valores: " | ".join(dict.fromkeys(
+            str(valor).strip() for valor in valores if str(valor).strip()
+        )),
+    )).sort_values("hora")
     return [
         {
             "hora": row["hora"].strftime("%d/%m %H:00"),
             "hora_iso": row["hora"].isoformat(),
-            "quantidade": int(row["quantidade_num"]),
+            "quantidade": int(row["quantidade"]),
+            "observacao": str(row["observacao"] or "").strip(),
         }
         for _, row in agrupado.iterrows()
     ]
+
+
+def _preparar_cronoanalise(crono: pd.DataFrame) -> pd.DataFrame:
+    if crono.empty:
+        return pd.DataFrame(columns=["secao_normalizada", "linha_normalizada", "produto_normalizado", "taxa_hora"])
+
+    df = crono.copy()
+    for coluna in ("secao", "linha", "produto", "tempo_mensurado", "quantidade", "itens_hora", "itens_dia"):
+        if coluna not in df.columns:
+            df[coluna] = ""
+    df["secao_normalizada"] = df["secao"].astype(str).map(lambda valor: normalize_text(valor).replace(" ", ""))
+    df["linha_normalizada"] = df["linha"].astype(str).map(normalize_text)
+    df["produto_normalizado"] = df["produto"].astype(str).map(normalize_text)
+    df["tempo_num"] = df["tempo_mensurado"].map(_numero)
+    df["quantidade_num"] = df["quantidade"].map(_numero)
+    df["itens_hora_num"] = df["itens_hora"].map(_numero)
+    df["itens_dia_num"] = df["itens_dia"].map(_numero)
+
+    # Usa a medição bruta e os dois indicadores cadastrados. Como itens_dia
+    # representa um turno de 9 horas, ele é convertido para itens/hora antes
+    # da média.
+    taxa_mensurada = (df["quantidade_num"] * 60 / df["tempo_num"].replace(0, pd.NA)).fillna(0)
+    taxa_hora = df["itens_hora_num"].where(df["itens_hora_num"] > 0, taxa_mensurada)
+    taxa_dia_hora = (df["itens_dia_num"] / 9).where(df["itens_dia_num"] > 0, taxa_mensurada)
+    df["taxa_hora"] = pd.concat([taxa_mensurada, taxa_hora, taxa_dia_hora], axis=1).replace(0, pd.NA).mean(axis=1).fillna(0)
+    return df.loc[df["taxa_hora"] > 0].copy()
+
+
+def _taxa_cronoanalise(
+    crono: pd.DataFrame,
+    linha: str,
+    secao: str,
+    codigo: str,
+    descricao: str,
+) -> tuple[float, str] | None:
+    if crono.empty:
+        return None
+
+    linha_chave = normalize_text(linha)
+    secao_chave = normalize_text(secao).replace(" ", "")
+    produtos_chave = {normalize_text(codigo), normalize_text(descricao)} - {""}
+    filtros = (
+        (crono["linha_normalizada"] == linha_chave)
+        & crono["produto_normalizado"].isin(produtos_chave)
+    )
+    if filtros.any():
+        return float(crono.loc[filtros, "taxa_hora"].mean()), "cronoanálise da linha e produto"
+
+    filtros = crono["linha_normalizada"] == linha_chave
+    if filtros.any():
+        return float(crono.loc[filtros, "taxa_hora"].mean()), "cronoanálise da linha"
+
+    filtros = crono["secao_normalizada"] == secao_chave
+    if filtros.any():
+        return float(crono.loc[filtros, "taxa_hora"].mean()), "cronoanálise da seção"
+
+    return None
 
 
 def _serializa_op(
@@ -250,15 +464,16 @@ def _serializa_op(
     linha: str,
     secao: str,
     limite_programacao: pd.Timestamp | None = None,
+    crono: pd.DataFrame | None = None,
 ) -> dict[str, Any]:
     op = _texto(row["op"])
     registros = _apontamentos_da_op(apont, op)
     programada = _numero(row["quantidade"])
     produzida = float(registros["quantidade"].map(_numero).sum()) if not registros.empty else 0
-    metricas = calcular_metricas_producao(seq, row, registros, linha, secao, capacidade=capacidade)
+    metricas = calcular_metricas_producao(seq, row, registros, linha, secao, capacidade=capacidade, crono=crono)
     agora = pd.Timestamp.now()
     registros_dia = registros.loc[registros["data"] >= agora.normalize()] if not registros.empty else registros
-    quantidade_apontada_dia = int(registros_dia["quantidade"].map(_numero).sum()) if not registros_dia.empty else 0
+    quantidade_apontada_dia = metricas["quantidade_apontada_dia"]
     ultima = registros.iloc[-1] if not registros.empty else None
     inicio = _data(row.get("hora_inicio_fila"))
     if limite_programacao is None:
@@ -267,12 +482,14 @@ def _serializa_op(
     quantidade_programada_exibicao = programada if programada_disponivel else 0
     row_com_producao = row.copy()
     row_com_producao["quantidade_produzida"] = produzida
-    previsao = _previsao_saida(seq, row_com_producao, capacidade)
+    row_com_producao["secao"] = secao
+    previsao = _previsao_saida(seq, row_com_producao, capacidade, crono=crono)
     return {"op": op, "operador": _texto(row.get("operador", "")) or "Não informado", "codigo": _texto(row["codigo_produto"]), "descricao": _texto(row["descricao_produto"]), "quantidade_programada": int(quantidade_programada_exibicao), "quantidade_produzida": int(produzida), "quantidade_apontada": metricas["quantidade_apontada"], "quantidade_apontada_dia": quantidade_apontada_dia, "quantidade_deveria_produzida": metricas["quantidade_deveria_produzida"] if programada_disponivel else 0, "diferenca_eficiencia": metricas["diferenca"] if programada_disponivel else 0, "metricas_disponiveis": metricas["disponivel"] and programada_disponivel, "metricas_mensagem": metricas["mensagem"], "metricas_amostras": metricas["amostras"], "metricas_origem": metricas["origem_ritmo"], "ultima_quantidade": int(_numero(ultima["quantidade"])) if ultima is not None else 0, "ultimo_apontamento": _data_exibicao(ultima["data_hora"]) if ultima is not None else "Nenhum registro", "ultima_observacao": _texto(ultima["observacao"]) if ultima is not None and "observacao" in registros.columns else "", "status": _texto(ultima["status"]) if ultima is not None else (_texto(row["status"]) or "Em fila"), "hora_inicio_fila": _data_exibicao(row.get("hora_inicio_fila")), "inicio_producao": inicio.strftime("%d/%m/%Y %H:%M:%S") if not pd.isna(inicio) else "-", "previsao_saida": previsao.strftime("%d/%m/%Y %H:%M:%S") if not pd.isna(previsao) else "-", "fila": int(_numero(row["fila"])) if _texto(row["fila"]) else None, "data_sequenciamento": _data_exibicao(row["data_hora_sequenciamento"]), "posicao": int(_numero(row["fila"])) if _texto(row["fila"]) else None, "capacidade": capacidade}
 
 
 def _linhas_ativas() -> list[dict[str, Any]]:
     seq, apont, config = _carga()
+    crono = _preparar_cronoanalise(_ler_csv(CRONOANALISE))
     agora = pd.Timestamp.now()
     inicio_dia = agora.normalize()
     datas_apontamentos = apont["data_hora"].map(_data).dropna()
@@ -295,7 +512,7 @@ def _linhas_ativas() -> list[dict[str, Any]]:
         secao = _texto(conf.get("secao", "outras")) if hasattr(conf, "get") else "outras"
         chave = normalize_text(secao).replace(" ", "") or "outras"
         capacidade = _capacidade(seq, linha, chave, _texto(grupo.iloc[0]["codigo_produto"]))
-        item = _serializa_op(grupo.iloc[0], apont, capacidade, seq, linha, chave, limite_programacao)
+        item = _serializa_op(grupo.iloc[0], apont, capacidade, seq, linha, chave, limite_programacao, crono)
         data_apontamentos = apont["data_hora"].map(_data)
         apontamentos_linha_dia = apont.loc[
             apont["op"].astype(str).str.strip().isin(seq.loc[seq["linha"].astype(str).str.strip() == linha, "op"].astype(str).str.strip())
@@ -329,6 +546,7 @@ def painel_resumo() -> dict[str, Any]:
 
 def painel_detalhe(linha: str, periodo: str = "dia") -> dict[str, Any]:
     seq, apont, config = _carga()
+    crono = _preparar_cronoanalise(_ler_csv(CRONOANALISE))
     config_map = {normalize_text(row["celula_linha"]): row for _, row in config.iterrows()}
     seq = seq.copy()
     seq["secao"] = seq["linha"].map(lambda valor: _texto(config_map.get(normalize_text(valor), {}).get("secao", "")) if hasattr(config_map.get(normalize_text(valor), {}), "get") else "")
@@ -338,7 +556,7 @@ def painel_detalhe(linha: str, periodo: str = "dia") -> dict[str, Any]:
     ops["fila_num"] = ops["fila"].map(_numero)
     ops = ops.sort_values("fila_num")
     capacidade = _capacidade(seq, linha, normalize_text(secao).replace(" ", ""), _texto(ops.iloc[0]["codigo_produto"]) if not ops.empty else "")
-    ordens = [_serializa_op(row, apont, capacidade, seq, linha, normalize_text(secao).replace(" ", "")) for _, row in ops.iterrows()]
+    ordens = [_serializa_op(row, apont, capacidade, seq, linha, normalize_text(secao).replace(" ", ""), crono=crono) for _, row in ops.iterrows()]
     ops_linha = seq.loc[seq["linha"].astype(str).str.strip() == linha.strip(), "op"].astype(str).str.strip().tolist()
     registros_linha = apont.loc[apont["op"].astype(str).str.strip().isin(ops_linha)].copy()
     agora = pd.Timestamp.now()

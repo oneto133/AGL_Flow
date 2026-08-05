@@ -52,9 +52,9 @@ document.addEventListener("DOMContentLoaded", () => {
     return response.json();
   }
 
-  function createCard({ eyebrow, title, description, meta = [], actionLabel, onClick, actionOnClick }) {
+  function createCard({ eyebrow, title, description, meta = [], actionLabel, onClick, actionOnClick, statusClass = "" }) {
     const card = document.createElement("article");
-    card.className = "quality-card quality-card--clickable";
+    card.className = `quality-card quality-card--clickable ${statusClass}`.trim();
 
     if (onClick) {
       card.addEventListener("click", onClick);
@@ -190,6 +190,16 @@ document.addEventListener("DOMContentLoaded", () => {
       secao.linhas.forEach((linha) => {
         const opAtual = linha.op_atual;
         const meta = [`${linha.quantidade_ops} OPs selecionadas`];
+        const statusNormalizado = safeText(opAtual?.status)
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
+          .trim()
+          .toLowerCase();
+        const statusClass = statusNormalizado === "em processo"
+          ? "quality-card--em-processo"
+          : statusNormalizado === "pausado"
+            ? "quality-card--pausado"
+            : "";
 
         if (opAtual) {
           meta.push(`OP atual: ${opAtual.op}`);
@@ -203,6 +213,7 @@ document.addEventListener("DOMContentLoaded", () => {
             : "Sem OP ativa no momento.",
           meta,
           actionLabel: "Abrir linha",
+          statusClass,
           onClick: () => {
             window.location.href = `/qualidade/inspecoes/linha/${encodeURIComponent(linha.celula_linha)}`;
           },

@@ -198,6 +198,16 @@
   border-color: rgba(241, 194, 50, 0.38);
 }
 
+.quality-card--em-processo {
+  border-color: rgba(31, 186, 116, 0.72);
+  background: linear-gradient(180deg, rgba(31, 186, 116, 0.32), rgba(31, 186, 116, 0.12));
+}
+
+.quality-card--pausado {
+  border-color: rgba(243, 178, 60, 0.78);
+  background: linear-gradient(180deg, rgba(243, 178, 60, 0.34), rgba(243, 178, 60, 0.13));
+}
+
 .quality-empty {
   border: 1px dashed var(--line);
   border-radius: 14px;

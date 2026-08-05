@@ -4,3 +4,4 @@ from .sequenciar import SequenciarLinha
 from .historico_inventario import HistoricoInventario, RegistrarContagem
 from .qualidade_request import ItensBase, RegistrarColeta, InspecaoCreate, ItemInspecionado, RefugoInspecao, InspecaoResponse
 from .producao import RegistrarApontamento
+from .cronoanalise import CronoAnaliseCreate
