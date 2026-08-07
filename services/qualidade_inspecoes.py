@@ -897,6 +897,14 @@ def _salvar_inspecao_principal(
     data_inicio = pd.to_datetime(dados.data_hora_inicio_inspecao).isoformat()
     data_fim = pd.to_datetime(dados.data_hora_fim_inspecao).isoformat()
 
+    resumo_op = (
+        "Completa"
+        if dados.inspecao_completa is True
+        else "Incompleta"
+        if dados.inspecao_completa is False
+        else str(dados.status or "").strip()
+    )
+
     linha = {
         "id": id_inspecao,
         "op": dados.op or item_base["op"],
@@ -907,7 +915,7 @@ def _salvar_inspecao_principal(
         "data_hora_fim_inspecao": data_fim,
         "possui_op": dados.possui_op,
         "qtd_etiquetas": dados.qtd_etiquetas,
-        "status": dados.status,
+        "status": resumo_op,
         "conformidade": dados.conformidade,
         "refugo": dados.refugo,
         "aprovado": dados.aprovado,
@@ -1318,6 +1326,34 @@ def buscar_inspecao_dados_por_id(id_inspecao: int | str) -> dict[str, Any]:
     retorno["itens_inspecionados"] = itens_inspecionados_da_inspecao(alvo)
     retorno["refugos"] = refugos_da_inspecao(alvo)
     retorno["refugos_detalhados"] = refugos_detalhados_da_inspecao(alvo)
+    conferencias = (
+        df_dados.loc[df_dados["id_inspecao"].astype(str) == alvo].fillna("").to_dict(orient="records")
+        if not df_dados.empty and "id_inspecao" in df_dados.columns
+        else []
+    )
+    if not conferencias:
+        refugos_por_item = {
+            (_to_int(item.get("codigo", 0)), normalize_text(item.get("descricao", ""))): item
+            for item in refugos_detalhados_da_inspecao(alvo)
+        }
+        conferencias = []
+        for item in retorno["itens_inspecionados"]:
+            refugo = refugos_por_item.get(
+                (_to_int(item.get("codigo", 0)), normalize_text(item.get("descricao", ""))),
+                {},
+            )
+            conferencias.append(
+                {
+                    "id_inspecao": _to_int(id_inspecao),
+                    "codigo_item": _to_int(item.get("codigo", 0)),
+                    "descricao_item": str(item.get("descricao", "")).strip(),
+                    "quantidade_nc": _to_int(refugo.get("quantidade", 0)),
+                    "codigo_nc": str(refugo.get("codigo_nc", "")).strip(),
+                    "observacao": str(refugo.get("observacao", "")).strip(),
+                }
+            )
+    retorno["conferencias"] = conferencias
+    retorno["linhas_relatorio"] = linhas_relatorio_inspecao(alvo)
     return retorno
 
 

@@ -5,3 +5,4 @@ id,id_inspecao,codigo,descricao,quantidade,codigo_nc,observacao
 4,29,2007089,Carcaça,1,,Carcaças trincadas
 5,29,2007089,Limpeza,1,,Motores sujos de PU
 6,37,2007089,Etiqueta Externa,15,,Etiqueta externa com OP diferente da interna (OP de outro pedido)
+7,38,2006063,Etiqueta Externa,1,,trocada

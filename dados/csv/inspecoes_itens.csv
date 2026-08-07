@@ -442,3 +442,18 @@ id,id_inspecao,codigo,descricao,data
 441,37,2007089,Parafusos Carcaça,parafusos_carcaca
 442,37,2007089,Parafuso Lateral,parafuso_lateral
 443,37,2007089,Limpeza,limpeza
+444,38,2006063,Estator,estator
+445,38,2006063,Sem fim,sem_fim
+446,38,2006063,Engrenagem,engrenagem
+447,38,2006063,Capacitor,capacitor
+448,38,2006063,Placa,placa
+449,38,2006063,Encoder,encoder
+450,38,2006063,Kit,kit
+451,38,2006063,Tampa,tampa
+452,38,2006063,Módulo,modulo
+453,38,2006063,Manual,manual
+454,38,2006063,Cilindro,cilindro
+455,38,2006063,Etiqueta Interna,etiqueta_interna
+456,38,2006063,Etiqueta Tampa,etiqueta_tampa
+457,38,2006063,Etiqueta Externa,etiqueta_externa
+458,38,2006063,Limpeza,limpeza

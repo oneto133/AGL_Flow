@@ -740,3 +740,5 @@
 .quality-report-table th{position:sticky;top:0;background:var(--panel);color:var(--text-muted);font-weight:700}
 .quality-report-table td{color:var(--text)}
 .quality-report-table tbody tr:last-child td{border-bottom:0}
+.quality-table-row--clickable{cursor:pointer}
+.quality-table-row--clickable:hover,.quality-table-row--clickable:focus{background:rgba(74,144,226,.1);outline:none}

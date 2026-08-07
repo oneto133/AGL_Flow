@@ -1367,6 +1367,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const modalLista = document.querySelector("#diaModalLista");
     const modalCount = document.querySelector("#diaModalCount");
     const btnConferirNovamente = document.querySelector("#btnConferirNovamenteDia");
+    const refugoModal = document.querySelector("#refugoDiaModal");
+    const refugoModalTitle = document.querySelector("#refugoDiaTitle");
+    const refugoModalDetalhes = document.querySelector("#refugoDiaDetalhes");
     let registroAtivo = null;
     let detalheAtivo = null;
 
@@ -1380,6 +1383,32 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
+    function closeRefugoModal() {
+      refugoModal?.classList.add("hidden");
+      refugoModal?.setAttribute("aria-hidden", "true");
+    }
+
+    function openRefugoModal(item) {
+      if (!refugoModal || !item) return;
+      if (refugoModalTitle) refugoModalTitle.textContent = item.descricao_item || item.item_conferido || "Item";
+      if (refugoModalDetalhes) {
+        refugoModalDetalhes.innerHTML = "";
+        [
+          ["Item conferido", item.descricao_item || item.item_conferido || "-"],
+          ["Quantidade refugada", item.quantidade_nc || item.quantidade_refugada || 0],
+          ["Código NC", item.codigo_nc || "-"],
+          ["Observação", item.observacao || item.observacao_refugo || "-"],
+        ].forEach(([label, value]) => {
+          const box = document.createElement("article");
+          box.className = "quality-stat";
+          box.innerHTML = `<span>${safeText(label)}</span><strong>${safeText(value)}</strong>`;
+          refugoModalDetalhes.appendChild(box);
+        });
+      }
+      refugoModal.classList.remove("hidden");
+      refugoModal.setAttribute("aria-hidden", "false");
+    }
+
     modal?.querySelectorAll("[data-close-dia-modal]").forEach((button) => {
       button.addEventListener("click", closeDiaModal);
     });
@@ -1388,6 +1417,9 @@ document.addEventListener("DOMContentLoaded", () => {
       if (event.key === "Escape") {
         closeDiaModal();
       }
+    });
+    refugoModal?.querySelectorAll("[data-close-refugo-dia-modal]").forEach((button) => {
+      button.addEventListener("click", closeRefugoModal);
     });
 
     function renderResumo(registro, detalhe = null) {
@@ -1405,7 +1437,7 @@ document.addEventListener("DOMContentLoaded", () => {
         { label: "OP", value: registro.op || "-" },
         { label: "Linha", value: registro.linha || "-" },
         { label: "Código", value: registro.codigo || "-" },
-        { label: "Destino", value: registro.destino || "Sem destino" },
+        { label: "Resumo da OP", value: registro.status || "-" },
         { label: "Itens", value: quantidadeItens },
         { label: "Refugos", value: quantidadeRefugos },
       ];
@@ -1423,9 +1455,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function renderConferencias(registro, detalhe = null) {
       if (!modalLista) return;
-      const linhas = Array.isArray(detalhe?.linhas_relatorio) ? detalhe.linhas_relatorio : [];
+      const linhas = Array.isArray(detalhe?.conferencias) ? detalhe.conferencias : [];
       modalLista.innerHTML = "";
-      if (modalCount) modalCount.textContent = `${linhas.length} ${linhas.length === 1 ? "linha" : "linhas"}`;
+      if (modalCount) modalCount.textContent = `${linhas.length} ${linhas.length === 1 ? "item" : "itens"}`;
       if (!linhas.length) {
         const empty=document.createElement("div");
         empty.className="quality-empty";
@@ -1436,13 +1468,22 @@ document.addEventListener("DOMContentLoaded", () => {
       const table=document.createElement("table");
       table.className="quality-report-table";
       table.innerHTML=`
-        <thead><tr><th>OP</th><th>Codigo</th><th>Descricao</th><th>Quantidade</th><th>Data/hora inicio inspecao</th><th>Data/hora fim inspecao</th><th>Status</th><th>Observacao geral</th><th>Item conferido</th><th>Codigo NC</th><th>Observacao refugo</th></tr></thead>
+        <thead><tr><th>Item conferido</th><th>Quantidade refugada</th><th>Código NC</th><th>Observação</th></tr></thead>
         <tbody></tbody>
       `;
       const tbody=table.querySelector("tbody");
       linhas.forEach((item)=>{
         const row=document.createElement("tr");
-        [item.op,item.codigo,item.descricao,item.quantidade,item.data_hora_inicio_inspecao,item.data_hora_fim_inspecao,item.status,item.observacao_geral,item.item_conferido,item.codigo_nc,item.observacao_refugo].forEach((value)=>{
+        const temRefugo = Number(item.quantidade_nc || 0) > 0 || item.codigo_nc || item.observacao;
+        if (temRefugo) {
+          row.classList.add("quality-table-row--clickable");
+          row.tabIndex = 0;
+          row.addEventListener("click", () => openRefugoModal(item));
+          row.addEventListener("keydown", (event) => {
+            if (event.key === "Enter" || event.key === " ") openRefugoModal(item);
+          });
+        }
+        [item.descricao_item || "-", item.quantidade_nc || 0, item.codigo_nc || "-", item.observacao || "-"].forEach((value)=>{
           const cell=document.createElement("td");
           cell.textContent=value === null || value === undefined || value === "" ? "-" : String(value);
           row.appendChild(cell);
@@ -1518,7 +1559,7 @@ document.addEventListener("DOMContentLoaded", () => {
           description: `${registro.hora || "-"} | OP ${registro.op || "-"}`,
           meta: [
             `${registro.codigo || "-"} - ${registro.descricao || ""}`,
-            registro.destino || "Sem destino",
+            registro.status || "-",
             `${Number(registro.quantidade_programada || 0)} programados`,
             quantidadeRefugos ? `${quantidadeRefugos} refugos` : "Sem refugo",
           ],

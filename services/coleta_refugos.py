@@ -24,6 +24,37 @@ def _registrar_contagem(dados: RegistrarColeta):
         "observacao": getattr(dados, "observacao", "")
     }
 
+    if caminho.exists():
+        historico = pd.read_csv(
+            caminho,
+            dtype={"codigo": str, "local": str},
+            encoding="utf-8",
+            engine="python",
+            quotechar='"',
+        ).fillna("")
+
+        if not historico.empty and {"codigo", "local", "data_hora"}.issubset(historico.columns):
+            datas = pd.to_datetime(
+                historico["data_hora"],
+                format="%d/%m/%Y %H:%M:%S",
+                errors="coerce",
+            )
+            hoje = datetime.now().date()
+            mesmo_item_local = (
+                historico["codigo"].astype(str).str.strip() == str(dados.codigo).strip()
+            ) & (
+                historico["local"].astype(str).str.strip().str.casefold()
+                == str(dados.local).strip().casefold()
+            ) & (datas.dt.date == hoje)
+
+            indices = historico.index[mesmo_item_local]
+            if len(indices):
+                indice = indices[-1]
+                for coluna, valor in nova_linha.items():
+                    historico.at[indice, coluna] = valor
+                historico.to_csv(caminho, index=False, encoding="utf-8")
+                return True
+
     df = pd.DataFrame([nova_linha])
 
     # evita problema de arquivo inexistente

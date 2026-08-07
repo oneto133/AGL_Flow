@@ -84,19 +84,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function normalizeDestinoValue(value) {
     const normalized = normalizeText(value);
-    if (normalized === "true") {
-      return "Nacional";
+    if (normalized === "completa" || normalized === "true") {
+      return "Completa";
     }
-    if (normalized === "false") {
-      return "Exportação";
-    }
-    if (normalized === "exportacao") {
-      return "Exportação";
-    }
-    if (normalized === "nacional") {
-      return "Nacional";
+    if (normalized === "incompleta" || normalized === "false") {
+      return "Incompleta";
     }
     return safeText(value).trim();
+  }
+
+  function isCompleteValue(value) {
+    return [true, 1, "1", "true", "True", "completa", "Completa"].includes(value);
   }
 
   function setSelectValue(select, value) {
@@ -359,7 +357,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function aplicarReinspecao(dados = {}) {
     if (fields.destino) {
-      setSelectValue(fields.destino, normalizeDestinoValue(dados.destino || ""));
+      setSelectValue(fields.destino, normalizeDestinoValue(
+        dados.inspecao_completa != null ? (isCompleteValue(dados.inspecao_completa) ? "Completa" : "Incompleta") : dados.status || ""
+      ));
     }
     if (fields.status) {
       setSelectValue(fields.status, normalizeStatusValue(dados.status || dados.status_qualidade || "Iniciado"));
@@ -428,7 +428,9 @@ document.addEventListener("DOMContentLoaded", () => {
       if (fields.inicio) fields.inicio.value = nowForInput();
       if (fields.fim) fields.fim.value = "";
       if (fields.observacao) fields.observacao.value = safeText(dados.observacao || "");
-      if (fields.destino) setSelectValue(fields.destino, normalizeDestinoValue(dados.destino || ""));
+      if (fields.destino) setSelectValue(fields.destino, normalizeDestinoValue(
+        dados.inspecao_completa != null ? (isCompleteValue(dados.inspecao_completa) ? "Completa" : "Incompleta") : dados.status || ""
+      ));
       if (fields.status) setSelectValue(fields.status, normalizeStatusValue(dados.status || dados.status_qualidade || "Iniciado"));
       if (fields.resultado) setSelectValue(fields.resultado, dados.resultado === "Reprovado" ? "false" : "true");
 
@@ -504,11 +506,10 @@ document.addEventListener("DOMContentLoaded", () => {
   form?.addEventListener("submit", async (event) => {
     event.preventDefault();
 
-    const destino = normalizeDestinoValue(fields.destino?.value || "");
-    const statusSelecionado = normalizeStatusValue(fields.status?.value || "");
+    const resumoOp = normalizeDestinoValue(fields.destino?.value || "");
 
-    if (!destino) {
-      setStatus("Selecione o destino do produto antes de salvar.", "error");
+    if (!resumoOp) {
+      setStatus("Selecione se a OP está completa ou incompleta antes de salvar.", "error");
       return;
     }
 
@@ -525,7 +526,7 @@ document.addEventListener("DOMContentLoaded", () => {
       data_hora_fim_inspecao: now,
       possui_op: true,
       qtd_etiquetas: itens.length || 1,
-      status: statusSelecionado,
+      status: resumoOp,
       conformidade: !!fields.conformidade?.checked,
       refugo: !!refugoToggle?.checked,
       aprovado: fields.resultado?.value === "true",
@@ -535,7 +536,8 @@ document.addEventListener("DOMContentLoaded", () => {
       itens_inspecionados: itens,
       refugos: refugoToggle?.checked ? refugos : [],
       codigo_nc: refugos[0]?.codigo_nc || "",
-      destino,
+      destino: "",
+      inspecao_completa: resumoOp === "Completa",
     };
 
     try {

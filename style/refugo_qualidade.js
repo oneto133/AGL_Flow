@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const btnAtualizar = document.getElementById("btnAtualizar");
 
     const modalColeta = document.getElementById("modalColeta");
+    const btnSalvarColeta = document.getElementById("btnSalvarColeta");
 
     // =========================
     // CARREGAR PENDENTES
@@ -109,8 +110,13 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("c_codigo").textContent = item.codigo;
         document.getElementById("c_descricao").textContent = item.descricao;
 
-        document.getElementById("c_quantidade").value = "";
-        document.getElementById("c_local").value = "DZ";
+        const quantidade = item.quantidade ?? "";
+        const local = item.local ? String(item.local).trim() : "DZ";
+        document.getElementById("c_quantidade").value = quantidade;
+        document.getElementById("c_local").value = local;
+        if (btnSalvarColeta) {
+            btnSalvarColeta.textContent = exibindoContados ? "Alterar contagem" : "Registrar";
+        }
 
         modalColeta.classList.remove("hidden");
     }
